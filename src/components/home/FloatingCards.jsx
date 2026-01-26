@@ -1,5 +1,7 @@
 import { useRef, useState, useEffect } from 'react';
 
+// Cards with start positions (spread around edges) and end positions (converged to center)
+// Positions are in viewport percentages
 const CARDS = [
   {
     id: 'jaarrekening',
@@ -9,11 +11,12 @@ const CARDS = [
     value: '€2.4M',
     trend: '+18%',
     color: '#0d9488',
-    position: { top: '8%', left: '2%' },
+    // Start position (spread) - top left area
+    startPos: { top: '6%', left: '-5%' },
+    // End position (converged) - closer to center
+    endPos: { top: '25%', left: '15%' },
     rotation: '-6deg',
-    // Animation config - where it comes from
-    from: { x: -150, y: 80 },
-    speed: 1.2, // Faster = moves more with scroll
+    zIndex: 2,
     floatDuration: '7s',
   },
   {
@@ -22,10 +25,10 @@ const CARDS = [
     title: 'Profit & Loss',
     value: '+32%',
     color: '#1e3a5f',
-    position: { top: '5%', right: '3%' },
+    startPos: { top: '3%', right: '-8%' },
+    endPos: { top: '20%', right: '18%' },
     rotation: '4deg',
-    from: { x: 120, y: 100 },
-    speed: 0.9,
+    zIndex: 4,
     floatDuration: '6s',
   },
   {
@@ -35,10 +38,10 @@ const CARDS = [
     value: '94',
     maxValue: '100',
     color: '#0d9488',
-    position: { bottom: '12%', left: '0%' },
+    startPos: { bottom: '5%', left: '-8%' },
+    endPos: { bottom: '22%', left: '12%' },
     rotation: '5deg',
-    from: { x: -180, y: -60 },
-    speed: 1.4,
+    zIndex: 1,
     floatDuration: '8s',
   },
   {
@@ -48,10 +51,10 @@ const CARDS = [
     value: '#3',
     subtitle: 'in sector',
     color: '#475569',
-    position: { top: '40%', right: '0%' },
+    startPos: { top: '45%', right: '-10%' },
+    endPos: { top: '40%', right: '8%' },
     rotation: '-3deg',
-    from: { x: 160, y: 40 },
-    speed: 1.1,
+    zIndex: 3,
     floatDuration: '7.5s',
   },
   {
@@ -61,10 +64,10 @@ const CARDS = [
     status: 'Complete',
     items: '847 items',
     color: '#1e3a5f',
-    position: { bottom: '5%', right: '5%' },
+    startPos: { bottom: '8%', right: '-5%' },
+    endPos: { bottom: '18%', right: '20%' },
     rotation: '-4deg',
-    from: { x: 100, y: -80 },
-    speed: 0.8,
+    zIndex: 5,
     floatDuration: '6.5s',
   },
 ];
@@ -184,43 +187,78 @@ const CARD_COMPONENTS = {
   status: StatusCard,
 };
 
+// Interpolate between two position objects based on progress
+function interpolatePosition(startPos, endPos, progress) {
+  const result = {};
+
+  // Handle top/bottom
+  if ('top' in startPos && 'top' in endPos) {
+    const startVal = parseFloat(startPos.top);
+    const endVal = parseFloat(endPos.top);
+    result.top = `${startVal + (endVal - startVal) * progress}%`;
+  } else if ('top' in startPos) {
+    result.top = startPos.top;
+  } else if ('bottom' in startPos && 'bottom' in endPos) {
+    const startVal = parseFloat(startPos.bottom);
+    const endVal = parseFloat(endPos.bottom);
+    result.bottom = `${startVal + (endVal - startVal) * progress}%`;
+  } else if ('bottom' in startPos) {
+    result.bottom = startPos.bottom;
+  }
+
+  // Handle left/right
+  if ('left' in startPos && 'left' in endPos) {
+    const startVal = parseFloat(startPos.left);
+    const endVal = parseFloat(endPos.left);
+    result.left = `${startVal + (endVal - startVal) * progress}%`;
+  } else if ('left' in startPos) {
+    result.left = startPos.left;
+  } else if ('right' in startPos && 'right' in endPos) {
+    const startVal = parseFloat(startPos.right);
+    const endVal = parseFloat(endPos.right);
+    result.right = `${startVal + (endVal - startVal) * progress}%`;
+  } else if ('right' in startPos) {
+    result.right = startPos.right;
+  }
+
+  return result;
+}
+
 function FloatingCard({ card, progress }) {
   const CardComponent = CARD_COMPONENTS[card.type];
 
-  // Each card has different timing based on its speed property
-  // Higher speed = card animates in faster (completes earlier)
-  const startPoint = 0.08 / card.speed;
-  const endPoint = 0.45 / card.speed;
-  const animationProgress = Math.min(1, Math.max(0, (progress - startPoint) / (endPoint - startPoint)));
+  // Easing function for smooth animation
+  const easeOutCubic = (t) => 1 - Math.pow(1 - t, 3);
+  const easedProgress = easeOutCubic(progress);
 
-  // Easing function for smooth animation (ease-out-expo for snappier feel)
-  const easeOutExpo = (t) => t === 1 ? 1 : 1 - Math.pow(2, -10 * t);
-  const easedProgress = easeOutExpo(animationProgress);
-
-  // Calculate current position from starting offset to final position
-  const currentX = card.from.x * (1 - easedProgress);
-  const currentY = card.from.y * (1 - easedProgress);
-
-  // Scale starts at 0.8 and goes to 1
-  const scale = 0.8 + (0.2 * easedProgress);
+  // Interpolate position from start to end
+  const currentPosition = interpolatePosition(card.startPos, card.endPos, easedProgress);
 
   // Rotation interpolates smoothly
   const rotationDegrees = parseFloat(card.rotation);
-  const currentRotationDeg = rotationDegrees * easedProgress;
+  const currentRotationDeg = rotationDegrees * (0.3 + 0.7 * easedProgress);
+
+  // Scale: starts slightly smaller
+  const scale = 0.9 + (0.1 * easedProgress);
+
+  // Opacity: fade in during first 30% of progress
+  const opacity = Math.min(1, progress * 3.33);
 
   return (
     <div
-      className="absolute z-10"
+      className="absolute"
       style={{
-        ...card.position,
-        opacity: easedProgress,
-        transform: `translate(${currentX}px, ${currentY}px) rotate(${currentRotationDeg}deg) scale(${scale})`,
-        willChange: 'transform, opacity',
+        ...currentPosition,
+        zIndex: card.zIndex,
+        opacity,
+        transform: `rotate(${currentRotationDeg}deg) scale(${scale})`,
+        willChange: 'transform, opacity, top, left, right, bottom',
+        transition: 'transform 0.1s ease-out',
       }}
     >
       <div
         style={{
-          animation: easedProgress > 0.9 ? `float-gentle ${card.floatDuration} ease-in-out infinite` : 'none',
+          animation: progress > 0.7 ? `float-gentle ${card.floatDuration} ease-in-out infinite` : 'none',
         }}
       >
         <CardComponent card={card} />
@@ -229,9 +267,9 @@ function FloatingCard({ card, progress }) {
   );
 }
 
-// Hook for scroll-driven progress with requestAnimationFrame
-function useScrollProgress() {
-  const ref = useRef(null);
+// Hook for sticky scroll progress
+function useStickyScrollProgress() {
+  const containerRef = useRef(null);
   const [progress, setProgress] = useState(0);
   const rafRef = useRef(null);
 
@@ -239,22 +277,27 @@ function useScrollProgress() {
     const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
     const calculateProgress = () => {
-      if (!ref.current) return;
+      if (!containerRef.current) return;
 
-      const rect = ref.current.getBoundingClientRect();
-      const windowHeight = window.innerHeight;
+      const rect = containerRef.current.getBoundingClientRect();
+      const sectionHeight = containerRef.current.offsetHeight;
+      const viewportHeight = window.innerHeight;
 
-      // Calculate how far through the section we've scrolled
-      const sectionTop = rect.top;
-      const sectionHeight = rect.height;
+      // Scroll range = section height minus one viewport (the sticky portion)
+      const scrollRange = sectionHeight - viewportHeight;
 
-      // Start animation when section enters viewport
-      const scrollProgress = (windowHeight - sectionTop) / (windowHeight + sectionHeight);
+      // How much we've scrolled into the section
+      // When rect.top = 0, we're at the start of sticky
+      // When rect.top = -(scrollRange), we're at the end
+      const scrolled = Math.max(0, -rect.top);
+
+      // Progress from 0 to 1 over the scroll range
+      const newProgress = Math.max(0, Math.min(1, scrolled / scrollRange));
 
       if (prefersReducedMotion) {
-        setProgress(scrollProgress > 0.2 ? 1 : 0);
+        setProgress(newProgress > 0.1 ? 1 : 0);
       } else {
-        setProgress(Math.max(0, Math.min(1, scrollProgress)));
+        setProgress(newProgress);
       }
     };
 
@@ -276,54 +319,61 @@ function useScrollProgress() {
     };
   }, []);
 
-  return { ref, progress };
+  return { containerRef, progress };
 }
 
 export function FloatingCards() {
-  const { ref, progress } = useScrollProgress();
+  const { containerRef, progress } = useStickyScrollProgress();
 
-  // Calculate headline progress (slightly delayed from cards)
-  const headlineProgress = Math.min(1, Math.max(0, (progress - 0.15) * 3));
-  const headlineEased = 1 - Math.pow(1 - headlineProgress, 3);
+  // Headline fades out as cards converge (inverse of progress)
+  const headlineOpacity = Math.max(0, 1 - progress * 1.5);
+  const headlineScale = 1 - (progress * 0.1);
 
   return (
+    // Outer container - tall to create scroll room (2.5x viewport)
     <section
-      ref={ref}
-      className="relative min-h-screen flex items-center justify-center px-6 py-20 bg-cream overflow-hidden"
+      ref={containerRef}
+      className="relative bg-cream"
+      style={{ height: '250vh' }}
     >
-      {/* Floating cards */}
-      {CARDS.map((card) => (
-        <FloatingCard
-          key={card.id}
-          card={card}
-          progress={progress}
-        />
-      ))}
-
-      {/* Central content - Much larger like Jeton */}
+      {/* Sticky container - stays in view while scrolling */}
       <div
-        className="text-center relative z-20 px-8"
-        style={{
-          opacity: headlineEased,
-          transform: `translateY(${30 * (1 - headlineEased)}px) scale(${0.95 + (0.05 * headlineEased)})`,
-          willChange: 'transform, opacity',
-        }}
+        className="sticky top-0 h-screen flex items-center justify-center overflow-hidden"
       >
-        <h2 className="text-[clamp(3rem,10vw,8rem)] font-semibold leading-[0.95] tracking-tight text-text-dark">
-          Unify your
-          <br />
-          <span className="text-primary">opportunities</span>
-        </h2>
-      </div>
+        {/* Floating cards - positioned absolutely within sticky container */}
+        {CARDS.map((card) => (
+          <FloatingCard
+            key={card.id}
+            card={card}
+            progress={progress}
+          />
+        ))}
 
-      {/* Background gradient */}
-      <div className="absolute inset-0 pointer-events-none">
+        {/* Central headline - fades as cards converge */}
         <div
-          className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[800px] rounded-full"
+          className="text-center relative z-0 px-8 pointer-events-none"
           style={{
-            background: 'radial-gradient(circle, rgba(13, 148, 136, 0.04) 0%, transparent 60%)',
+            opacity: headlineOpacity,
+            transform: `scale(${headlineScale})`,
+            willChange: 'transform, opacity',
           }}
-        />
+        >
+          <h2 className="text-[clamp(3rem,10vw,8rem)] font-semibold leading-[0.95] tracking-tight text-text-dark">
+            Unify your
+            <br />
+            <span className="text-primary">opportunities</span>
+          </h2>
+        </div>
+
+        {/* Background gradient */}
+        <div className="absolute inset-0 pointer-events-none -z-10">
+          <div
+            className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[800px] rounded-full"
+            style={{
+              background: 'radial-gradient(circle, rgba(13, 148, 136, 0.04) 0%, transparent 60%)',
+            }}
+          />
+        </div>
       </div>
     </section>
   );
