@@ -1,7 +1,7 @@
 import { useRef, useState, useEffect } from 'react';
 
-// Cards with start positions (spread around edges) and end positions (converged to center)
-// Positions are in viewport percentages
+// Cards with start positions (spread around edges) and end positions (stacked in center)
+// All cards converge to the CENTER and stack on top of each other
 const CARDS = [
   {
     id: 'jaarrekening',
@@ -11,11 +11,12 @@ const CARDS = [
     value: '€2.4M',
     trend: '+18%',
     color: '#0d9488',
-    // Start position (spread) - top left area
-    startPos: { top: '6%', left: '-5%' },
-    // End position (converged) - closer to center
-    endPos: { top: '25%', left: '15%' },
-    rotation: '-6deg',
+    // Start: top left, outside viewport
+    startPos: { top: '8%', left: '-15%' },
+    // End: stacked in center (slight offset for visual interest)
+    endPos: { top: '38%', left: '38%' },
+    startRotation: -12,
+    endRotation: -6,
     zIndex: 2,
     floatDuration: '7s',
   },
@@ -25,9 +26,10 @@ const CARDS = [
     title: 'Profit & Loss',
     value: '+32%',
     color: '#1e3a5f',
-    startPos: { top: '3%', right: '-8%' },
-    endPos: { top: '20%', right: '18%' },
-    rotation: '4deg',
+    startPos: { top: '5%', right: '-18%' },
+    endPos: { top: '32%', right: '35%' },
+    startRotation: 15,
+    endRotation: 5,
     zIndex: 4,
     floatDuration: '6s',
   },
@@ -38,9 +40,10 @@ const CARDS = [
     value: '94',
     maxValue: '100',
     color: '#0d9488',
-    startPos: { bottom: '5%', left: '-8%' },
-    endPos: { bottom: '22%', left: '12%' },
-    rotation: '5deg',
+    startPos: { bottom: '5%', left: '-20%' },
+    endPos: { bottom: '30%', left: '40%' },
+    startRotation: 10,
+    endRotation: 4,
     zIndex: 1,
     floatDuration: '8s',
   },
@@ -51,9 +54,10 @@ const CARDS = [
     value: '#3',
     subtitle: 'in sector',
     color: '#475569',
-    startPos: { top: '45%', right: '-10%' },
-    endPos: { top: '40%', right: '8%' },
-    rotation: '-3deg',
+    startPos: { top: '50%', right: '-20%' },
+    endPos: { top: '42%', right: '38%' },
+    startRotation: -8,
+    endRotation: -3,
     zIndex: 3,
     floatDuration: '7.5s',
   },
@@ -64,9 +68,10 @@ const CARDS = [
     status: 'Complete',
     items: '847 items',
     color: '#1e3a5f',
-    startPos: { bottom: '8%', right: '-5%' },
-    endPos: { bottom: '18%', right: '20%' },
-    rotation: '-4deg',
+    startPos: { bottom: '10%', right: '-15%' },
+    endPos: { bottom: '28%', right: '36%' },
+    startRotation: -15,
+    endRotation: -4,
     zIndex: 5,
     floatDuration: '6.5s',
   },
@@ -74,24 +79,24 @@ const CARDS = [
 
 function DocumentCard({ card }) {
   return (
-    <div className="bg-white rounded-2xl shadow-elevated p-5 w-[180px]">
-      <div className="flex items-center gap-2 mb-3">
+    <div className="bg-white rounded-3xl shadow-elevated p-6 w-[220px]">
+      <div className="flex items-center gap-3 mb-4">
         <div
-          className="w-8 h-8 rounded-lg flex items-center justify-center"
+          className="w-12 h-12 rounded-xl flex items-center justify-center"
           style={{ backgroundColor: `${card.color}15` }}
         >
-          <svg className="w-4 h-4" style={{ color: card.color }} fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
+          <svg className="w-6 h-6" style={{ color: card.color }} fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
             <path strokeLinecap="round" strokeLinejoin="round" d="M19.5 14.25v-2.625a3.375 3.375 0 00-3.375-3.375h-1.5A1.125 1.125 0 0113.5 7.125v-1.5a3.375 3.375 0 00-3.375-3.375H8.25m0 12.75h7.5m-7.5 3H12M10.5 2.25H5.625c-.621 0-1.125.504-1.125 1.125v17.25c0 .621.504 1.125 1.125 1.125h12.75c.621 0 1.125-.504 1.125-1.125V11.25a9 9 0 00-9-9z" />
           </svg>
         </div>
         <div>
-          <p className="text-xs font-medium text-text-dark">{card.title}</p>
-          <p className="text-[10px] text-text-medium">{card.subtitle}</p>
+          <p className="text-sm font-semibold text-text-dark">{card.title}</p>
+          <p className="text-xs text-text-medium">{card.subtitle}</p>
         </div>
       </div>
       <div className="flex items-baseline gap-2">
-        <span className="text-2xl font-semibold text-text-dark">{card.value}</span>
-        <span className="text-xs font-medium text-green-500">{card.trend}</span>
+        <span className="text-3xl font-bold text-text-dark">{card.value}</span>
+        <span className="text-sm font-semibold text-green-500">{card.trend}</span>
       </div>
     </div>
   );
@@ -99,9 +104,9 @@ function DocumentCard({ card }) {
 
 function ChartCard({ card }) {
   return (
-    <div className="bg-white rounded-2xl shadow-elevated p-5 w-[160px]">
-      <p className="text-xs font-medium text-text-medium mb-2">{card.title}</p>
-      <div className="flex items-end gap-1 h-12 mb-2">
+    <div className="bg-white rounded-3xl shadow-elevated p-6 w-[200px]">
+      <p className="text-sm font-semibold text-text-medium mb-3">{card.title}</p>
+      <div className="flex items-end gap-1.5 h-16 mb-3">
         {[40, 65, 45, 80, 60, 90, 75].map((h, i) => (
           <div
             key={i}
@@ -113,7 +118,7 @@ function ChartCard({ card }) {
           />
         ))}
       </div>
-      <span className="text-xl font-semibold" style={{ color: card.color }}>{card.value}</span>
+      <span className="text-2xl font-bold" style={{ color: card.color }}>{card.value}</span>
     </div>
   );
 }
@@ -121,38 +126,38 @@ function ChartCard({ card }) {
 function ScoreCard({ card }) {
   const percentage = (parseInt(card.value) / parseInt(card.maxValue)) * 100;
   return (
-    <div className="bg-white rounded-2xl shadow-elevated p-5 w-[150px]">
-      <p className="text-xs font-medium text-text-medium mb-3">{card.title}</p>
-      <div className="relative w-16 h-16 mx-auto mb-2">
-        <svg className="w-full h-full -rotate-90">
-          <circle cx="32" cy="32" r="28" fill="none" stroke="#e5e7eb" strokeWidth="6" />
+    <div className="bg-white rounded-3xl shadow-elevated p-6 w-[180px]">
+      <p className="text-sm font-semibold text-text-medium mb-4">{card.title}</p>
+      <div className="relative w-20 h-20 mx-auto mb-3">
+        <svg className="w-full h-full -rotate-90" viewBox="0 0 80 80">
+          <circle cx="40" cy="40" r="34" fill="none" stroke="#e5e7eb" strokeWidth="8" />
           <circle
-            cx="32"
-            cy="32"
-            r="28"
+            cx="40"
+            cy="40"
+            r="34"
             fill="none"
             stroke={card.color}
-            strokeWidth="6"
-            strokeDasharray={`${percentage * 1.76} 176`}
+            strokeWidth="8"
+            strokeDasharray={`${percentage * 2.136} 214`}
             strokeLinecap="round"
           />
         </svg>
-        <span className="absolute inset-0 flex items-center justify-center text-lg font-semibold text-text-dark">
+        <span className="absolute inset-0 flex items-center justify-center text-2xl font-bold text-text-dark">
           {card.value}
         </span>
       </div>
-      <p className="text-[10px] text-text-medium text-center">out of {card.maxValue}</p>
+      <p className="text-xs text-text-medium text-center">out of {card.maxValue}</p>
     </div>
   );
 }
 
 function PositionCard({ card }) {
   return (
-    <div className="bg-white rounded-2xl shadow-elevated p-5 w-[140px]">
-      <p className="text-xs font-medium text-text-medium mb-2">{card.title}</p>
-      <div className="flex items-baseline gap-1">
-        <span className="text-3xl font-bold" style={{ color: card.color }}>{card.value}</span>
-        <span className="text-xs text-text-medium">{card.subtitle}</span>
+    <div className="bg-white rounded-3xl shadow-elevated p-6 w-[170px]">
+      <p className="text-sm font-semibold text-text-medium mb-3">{card.title}</p>
+      <div className="flex items-baseline gap-2">
+        <span className="text-4xl font-bold" style={{ color: card.color }}>{card.value}</span>
+        <span className="text-sm text-text-medium">{card.subtitle}</span>
       </div>
     </div>
   );
@@ -160,21 +165,21 @@ function PositionCard({ card }) {
 
 function StatusCard({ card }) {
   return (
-    <div className="bg-white rounded-2xl shadow-elevated p-5 w-[160px]">
-      <div className="flex items-center justify-between mb-3">
-        <p className="text-xs font-medium text-text-dark">{card.title}</p>
+    <div className="bg-white rounded-3xl shadow-elevated p-6 w-[200px]">
+      <div className="flex items-center justify-between mb-4">
+        <p className="text-sm font-semibold text-text-dark">{card.title}</p>
         <div
-          className="w-2 h-2 rounded-full"
+          className="w-3 h-3 rounded-full"
           style={{ backgroundColor: card.color }}
         />
       </div>
-      <div className="flex items-center gap-2 mb-1">
-        <svg className="w-4 h-4 text-green-500" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+      <div className="flex items-center gap-2 mb-2">
+        <svg className="w-5 h-5 text-green-500" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
           <path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" />
         </svg>
-        <span className="text-sm font-medium text-green-600">{card.status}</span>
+        <span className="text-base font-semibold text-green-600">{card.status}</span>
       </div>
-      <p className="text-[10px] text-text-medium">{card.items}</p>
+      <p className="text-xs text-text-medium">{card.items}</p>
     </div>
   );
 }
@@ -234,15 +239,14 @@ function FloatingCard({ card, progress }) {
   // Interpolate position from start to end
   const currentPosition = interpolatePosition(card.startPos, card.endPos, easedProgress);
 
-  // Rotation interpolates smoothly
-  const rotationDegrees = parseFloat(card.rotation);
-  const currentRotationDeg = rotationDegrees * (0.3 + 0.7 * easedProgress);
+  // Rotation interpolates from startRotation to endRotation
+  const currentRotationDeg = card.startRotation + (card.endRotation - card.startRotation) * easedProgress;
 
-  // Scale: starts slightly smaller
-  const scale = 0.9 + (0.1 * easedProgress);
+  // Scale: starts smaller, ends at full size
+  const scale = 0.85 + (0.15 * easedProgress);
 
-  // Opacity: fade in during first 30% of progress
-  const opacity = Math.min(1, progress * 3.33);
+  // Opacity: fade in during first 25% of progress
+  const opacity = Math.min(1, progress * 4);
 
   return (
     <div
@@ -253,12 +257,11 @@ function FloatingCard({ card, progress }) {
         opacity,
         transform: `rotate(${currentRotationDeg}deg) scale(${scale})`,
         willChange: 'transform, opacity, top, left, right, bottom',
-        transition: 'transform 0.1s ease-out',
       }}
     >
       <div
         style={{
-          animation: progress > 0.7 ? `float-gentle ${card.floatDuration} ease-in-out infinite` : 'none',
+          animation: progress > 0.85 ? `float-gentle ${card.floatDuration} ease-in-out infinite` : 'none',
         }}
       >
         <CardComponent card={card} />
