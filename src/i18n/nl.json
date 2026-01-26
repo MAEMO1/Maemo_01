@@ -1,0 +1,60 @@
+{
+  "meta": {
+    "title": "MAEMO | Exclusief Bedrijfsadvies",
+    "description": "Wij kiezen onze klanten."
+  },
+  "nav": {
+    "home": "Home",
+    "approach": "Aanpak",
+    "contact": "Contact"
+  },
+  "language": {
+    "en": "EN",
+    "nl": "NL",
+    "fr": "FR",
+    "select": "Taal"
+  },
+  "home": {
+    "hero": {
+      "tagline": "Wij kiezen onze klanten.",
+      "subtitle": "MAEMO is een exclusieve business consultancy die proactief hoogpotentiele ondernemingen identificeert en strategische tools biedt om hun groeipotentieel te realiseren.",
+      "cta": "Onze Aanpak"
+    }
+  },
+  "approach": {
+    "title": "Onze Aanpak",
+    "subtitle": "Vier pijlers van strategische analyse die ons selectieve partnerschapsproces begeleiden.",
+    "pillars": {
+      "market": {
+        "title": "Marktpositie",
+        "description": "Analyse van het concurrentielandschap, marktaandeel en strategische positionering binnen de sector."
+      },
+      "financial": {
+        "title": "Financiele Gezondheid",
+        "description": "Beoordeling van financiele structuren, cashflow-optimalisatie en kapitaalefficiientie."
+      },
+      "growth": {
+        "title": "Groeipotentieel",
+        "description": "Identificatie van expansiemogelijkheden, schaalbaarheidsfactoren en onbenutte marktsegmenten."
+      },
+      "digital": {
+        "title": "Digitale Aanwezigheid",
+        "description": "Evaluatie van digitale infrastructuur, online zichtbaarheid en technology stack optimalisatie."
+      }
+    }
+  },
+  "contact": {
+    "title": "Contact",
+    "subtitle": "MAEMO werkt uitsluitend met geselecteerde ondernemingen. Wij identificeren en benaderen proactief bedrijven die uitzonderlijk groeipotentieel vertonen.",
+    "invitation": "Uitsluitend Op Uitnodiging",
+    "message": "MAEMO werkt uitsluitend met geselecteerde ondernemingen. Wij identificeren en benaderen proactief bedrijven die uitzonderlijk groeipotentieel vertonen.",
+    "disclaimer": "Inkomende aanvragen worden zorgvuldig overwogen maar acceptatie is niet gegarandeerd.",
+    "email": "inquiries@maemo.be",
+    "emailLabel": "Voor vragen",
+    "location": "Gent, Belgie"
+  },
+  "footer": {
+    "copyright": "MAEMO. Alle rechten voorbehouden.",
+    "tagline": "Wij kiezen onze klanten."
+  }
+}

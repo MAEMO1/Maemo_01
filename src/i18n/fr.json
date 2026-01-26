@@ -1,0 +1,60 @@
+{
+  "meta": {
+    "title": "MAEMO | Conseil d'Affaires Exclusif",
+    "description": "Nous choisissons nos clients."
+  },
+  "nav": {
+    "home": "Accueil",
+    "approach": "Approche",
+    "contact": "Contact"
+  },
+  "language": {
+    "en": "EN",
+    "nl": "NL",
+    "fr": "FR",
+    "select": "Langue"
+  },
+  "home": {
+    "hero": {
+      "tagline": "Nous choisissons nos clients.",
+      "subtitle": "MAEMO est un cabinet de conseil exclusif qui identifie proactivement les entreprises a haut potentiel et fournit des outils strategiques pour realiser leur potentiel de croissance.",
+      "cta": "Notre Approche"
+    }
+  },
+  "approach": {
+    "title": "Notre Approche",
+    "subtitle": "Quatre piliers d'analyse strategique qui guident notre processus de partenariat selectif.",
+    "pillars": {
+      "market": {
+        "title": "Position sur le Marche",
+        "description": "Analyse du paysage concurrentiel, de la part de marche et du positionnement strategique dans le secteur."
+      },
+      "financial": {
+        "title": "Sante Financiere",
+        "description": "Evaluation des structures financieres, optimisation des flux de tresorerie et efficacite du capital."
+      },
+      "growth": {
+        "title": "Potentiel de Croissance",
+        "description": "Identification des opportunites d'expansion, des facteurs d'evolutivite et des segments de marche inexploites."
+      },
+      "digital": {
+        "title": "Presence Numerique",
+        "description": "Evaluation de l'infrastructure numerique, de la visibilite en ligne et de l'optimisation de la pile technologique."
+      }
+    }
+  },
+  "contact": {
+    "title": "Contact",
+    "subtitle": "MAEMO travaille exclusivement avec des entreprises selectionnees. Nous identifions et approchons proactivement les entreprises qui demontrent un potentiel de croissance exceptionnel.",
+    "invitation": "Sur Invitation Uniquement",
+    "message": "MAEMO travaille exclusivement avec des entreprises selectionnees. Nous identifions et approchons proactivement les entreprises qui demontrent un potentiel de croissance exceptionnel.",
+    "disclaimer": "Les demandes entrantes sont soigneusement examinees mais l'acceptation n'est pas garantie.",
+    "email": "inquiries@maemo.be",
+    "emailLabel": "Pour les demandes",
+    "location": "Gand, Belgique"
+  },
+  "footer": {
+    "copyright": "MAEMO. Tous droits reserves.",
+    "tagline": "Nous choisissons nos clients."
+  }
+}

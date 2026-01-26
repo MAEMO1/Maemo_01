@@ -1,0 +1,60 @@
+{
+  "meta": {
+    "title": "MAEMO | Exclusive Business Consultancy",
+    "description": "We choose our clients."
+  },
+  "nav": {
+    "home": "Home",
+    "approach": "Approach",
+    "contact": "Contact"
+  },
+  "language": {
+    "en": "EN",
+    "nl": "NL",
+    "fr": "FR",
+    "select": "Language"
+  },
+  "home": {
+    "hero": {
+      "tagline": "We choose our clients.",
+      "subtitle": "MAEMO is an exclusive business consultancy that proactively identifies high-potential enterprises and provides strategic tools to realize their growth potential.",
+      "cta": "Our Approach"
+    }
+  },
+  "approach": {
+    "title": "Our Approach",
+    "subtitle": "Four pillars of strategic analysis that guide our selective partnership process.",
+    "pillars": {
+      "market": {
+        "title": "Market Position",
+        "description": "Analysis of competitive landscape, market share, and strategic positioning within the sector."
+      },
+      "financial": {
+        "title": "Financial Health",
+        "description": "Assessment of financial structures, cash flow optimization, and capital efficiency."
+      },
+      "growth": {
+        "title": "Growth Potential",
+        "description": "Identification of expansion opportunities, scalability factors, and untapped market segments."
+      },
+      "digital": {
+        "title": "Digital Presence",
+        "description": "Evaluation of digital infrastructure, online visibility, and technology stack optimization."
+      }
+    }
+  },
+  "contact": {
+    "title": "Contact",
+    "subtitle": "MAEMO works exclusively with select enterprises. We proactively identify and approach companies that demonstrate exceptional growth potential.",
+    "invitation": "By Invitation Only",
+    "message": "MAEMO works exclusively with select enterprises. We proactively identify and approach companies that demonstrate exceptional growth potential.",
+    "disclaimer": "Incoming inquiries are carefully considered but acceptance is not guaranteed.",
+    "email": "inquiries@maemo.be",
+    "emailLabel": "For inquiries",
+    "location": "Ghent, Belgium"
+  },
+  "footer": {
+    "copyright": "MAEMO. All rights reserved.",
+    "tagline": "We choose our clients."
+  }
+}
