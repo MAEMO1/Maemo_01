@@ -1,4 +1,5 @@
 import { Hero } from '../components/home/Hero';
+import { FloatingCards } from '../components/home/FloatingCards';
 import { FeatureItem } from '../components/ui/FeatureItem';
 import { AnimatedSection } from '../components/ui/AnimatedSection';
 import { useTranslation } from '../hooks/useTranslation';
@@ -28,6 +29,9 @@ export default function HomePage() {
           </h2>
         </AnimatedSection>
       </section>
+
+      {/* Floating Cards Section - Jeton style */}
+      <FloatingCards />
 
       {/* Icon + Word Features */}
       <section className="py-32 px-6 bg-white">
