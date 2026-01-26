@@ -82,7 +82,24 @@
     }
   }
 
+  /* Gentle floating animation like Jeton.com */
+  @keyframes float-gentle {
+    0%, 100% {
+      transform: translateY(0) rotate(0deg);
+    }
+    25% {
+      transform: translateY(-8px) rotate(0.5deg);
+    }
+    50% {
+      transform: translateY(-12px) rotate(-0.5deg);
+    }
+    75% {
+      transform: translateY(-4px) rotate(0.3deg);
+    }
+  }
+
   --animate-float-card: float-card 1s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+  --animate-float-gentle: float-gentle 6s ease-in-out infinite;
 }
 
 /* Base */
