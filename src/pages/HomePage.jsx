@@ -1,6 +1,6 @@
 import { Hero } from '../components/home/Hero';
 import { FloatingCards } from '../components/home/FloatingCards';
-import { FeatureItem } from '../components/ui/FeatureItem';
+import { ActionStack } from '../components/home/ActionStack';
 import { AnimatedSection } from '../components/ui/AnimatedSection';
 import { useTranslation } from '../hooks/useTranslation';
 import { Link } from 'react-router-dom';
@@ -33,20 +33,8 @@ export default function HomePage() {
       {/* Floating Cards Section - Jeton style */}
       <FloatingCards />
 
-      {/* Icon + Word Features */}
-      <section className="py-32 px-6 bg-white">
-        <div className="max-w-4xl mx-auto space-y-16">
-          <AnimatedSection>
-            <FeatureItem word="Analyze" color="teal" icon="chart" />
-          </AnimatedSection>
-          <AnimatedSection delay={100}>
-            <FeatureItem word="Strategize" color="navy" icon="lightbulb" />
-          </AnimatedSection>
-          <AnimatedSection delay={200}>
-            <FeatureItem word="Transform" color="slate" icon="bolt" />
-          </AnimatedSection>
-        </div>
-      </section>
+      {/* Action Stack - Jeton Add/Send/Exchange style */}
+      <ActionStack />
 
       {/* Full-bleed Primary Section */}
       <section className="py-32 px-6 bg-primary">
