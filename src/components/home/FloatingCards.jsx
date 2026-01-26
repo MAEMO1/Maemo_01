@@ -1,4 +1,4 @@
-import { useScrollAnimation } from '../../hooks/useScrollAnimation';
+import { useRef, useState, useEffect } from 'react';
 
 const CARDS = [
   {
@@ -9,9 +9,11 @@ const CARDS = [
     value: '€2.4M',
     trend: '+18%',
     color: '#0d9488',
-    position: { top: '5%', left: '-2%' },
+    position: { top: '8%', left: '2%' },
     rotation: '-6deg',
-    delay: 0,
+    // Animation config - where it comes from
+    from: { x: -150, y: 80 },
+    speed: 1.2, // Faster = moves more with scroll
     floatDuration: '7s',
   },
   {
@@ -20,9 +22,10 @@ const CARDS = [
     title: 'Profit & Loss',
     value: '+32%',
     color: '#1e3a5f',
-    position: { top: '8%', right: '-3%' },
+    position: { top: '5%', right: '3%' },
     rotation: '4deg',
-    delay: 200,
+    from: { x: 120, y: 100 },
+    speed: 0.9,
     floatDuration: '6s',
   },
   {
@@ -32,9 +35,10 @@ const CARDS = [
     value: '94',
     maxValue: '100',
     color: '#0d9488',
-    position: { bottom: '15%', left: '-4%' },
+    position: { bottom: '12%', left: '0%' },
     rotation: '5deg',
-    delay: 400,
+    from: { x: -180, y: -60 },
+    speed: 1.4,
     floatDuration: '8s',
   },
   {
@@ -44,9 +48,10 @@ const CARDS = [
     value: '#3',
     subtitle: 'in sector',
     color: '#475569',
-    position: { top: '35%', right: '-5%' },
+    position: { top: '40%', right: '0%' },
     rotation: '-3deg',
-    delay: 300,
+    from: { x: 160, y: 40 },
+    speed: 1.1,
     floatDuration: '7.5s',
   },
   {
@@ -56,9 +61,10 @@ const CARDS = [
     status: 'Complete',
     items: '847 items',
     color: '#1e3a5f',
-    position: { bottom: '8%', right: '2%' },
+    position: { bottom: '5%', right: '5%' },
     rotation: '-4deg',
-    delay: 500,
+    from: { x: 100, y: -80 },
+    speed: 0.8,
     floatDuration: '6.5s',
   },
 ];
@@ -178,22 +184,43 @@ const CARD_COMPONENTS = {
   status: StatusCard,
 };
 
-function FloatingCard({ card, isVisible }) {
+function FloatingCard({ card, progress }) {
   const CardComponent = CARD_COMPONENTS[card.type];
+
+  // Each card has different timing based on its speed property
+  // Higher speed = card animates in faster (completes earlier)
+  const startPoint = 0.08 / card.speed;
+  const endPoint = 0.45 / card.speed;
+  const animationProgress = Math.min(1, Math.max(0, (progress - startPoint) / (endPoint - startPoint)));
+
+  // Easing function for smooth animation (ease-out-expo for snappier feel)
+  const easeOutExpo = (t) => t === 1 ? 1 : 1 - Math.pow(2, -10 * t);
+  const easedProgress = easeOutExpo(animationProgress);
+
+  // Calculate current position from starting offset to final position
+  const currentX = card.from.x * (1 - easedProgress);
+  const currentY = card.from.y * (1 - easedProgress);
+
+  // Scale starts at 0.8 and goes to 1
+  const scale = 0.8 + (0.2 * easedProgress);
+
+  // Rotation interpolates smoothly
+  const rotationDegrees = parseFloat(card.rotation);
+  const currentRotationDeg = rotationDegrees * easedProgress;
 
   return (
     <div
       className="absolute z-10"
       style={{
         ...card.position,
-        opacity: isVisible ? 1 : 0,
-        transform: `translateY(${isVisible ? 0 : 60}px) rotate(${isVisible ? card.rotation : '0deg'}) scale(${isVisible ? 1 : 0.8})`,
-        transition: `all 1s cubic-bezier(0.16, 1, 0.3, 1) ${card.delay}ms`,
+        opacity: easedProgress,
+        transform: `translate(${currentX}px, ${currentY}px) rotate(${currentRotationDeg}deg) scale(${scale})`,
+        willChange: 'transform, opacity',
       }}
     >
       <div
         style={{
-          animation: isVisible ? `float-gentle ${card.floatDuration} ease-in-out infinite` : 'none',
+          animation: easedProgress > 0.9 ? `float-gentle ${card.floatDuration} ease-in-out infinite` : 'none',
         }}
       >
         <CardComponent card={card} />
@@ -202,8 +229,62 @@ function FloatingCard({ card, isVisible }) {
   );
 }
 
+// Hook for scroll-driven progress with requestAnimationFrame
+function useScrollProgress() {
+  const ref = useRef(null);
+  const [progress, setProgress] = useState(0);
+  const rafRef = useRef(null);
+
+  useEffect(() => {
+    const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+    const calculateProgress = () => {
+      if (!ref.current) return;
+
+      const rect = ref.current.getBoundingClientRect();
+      const windowHeight = window.innerHeight;
+
+      // Calculate how far through the section we've scrolled
+      const sectionTop = rect.top;
+      const sectionHeight = rect.height;
+
+      // Start animation when section enters viewport
+      const scrollProgress = (windowHeight - sectionTop) / (windowHeight + sectionHeight);
+
+      if (prefersReducedMotion) {
+        setProgress(scrollProgress > 0.2 ? 1 : 0);
+      } else {
+        setProgress(Math.max(0, Math.min(1, scrollProgress)));
+      }
+    };
+
+    const handleScroll = () => {
+      if (rafRef.current) {
+        cancelAnimationFrame(rafRef.current);
+      }
+      rafRef.current = requestAnimationFrame(calculateProgress);
+    };
+
+    window.addEventListener('scroll', handleScroll, { passive: true });
+    calculateProgress(); // Initial check
+
+    return () => {
+      window.removeEventListener('scroll', handleScroll);
+      if (rafRef.current) {
+        cancelAnimationFrame(rafRef.current);
+      }
+    };
+  }, []);
+
+  return { ref, progress };
+}
+
 export function FloatingCards() {
-  const { ref, isVisible } = useScrollAnimation({ threshold: 0.15 });
+  const { ref, progress } = useScrollProgress();
+
+  // Calculate headline progress (slightly delayed from cards)
+  const headlineProgress = Math.min(1, Math.max(0, (progress - 0.15) * 3));
+  const headlineEased = 1 - Math.pow(1 - headlineProgress, 3);
 
   return (
     <section
@@ -215,7 +296,7 @@ export function FloatingCards() {
         <FloatingCard
           key={card.id}
           card={card}
-          isVisible={isVisible}
+          progress={progress}
         />
       ))}
 
@@ -223,9 +304,9 @@ export function FloatingCards() {
       <div
         className="text-center relative z-20 px-8"
         style={{
-          opacity: isVisible ? 1 : 0,
-          transform: `translateY(${isVisible ? 0 : 40}px)`,
-          transition: 'all 1s cubic-bezier(0.16, 1, 0.3, 1) 100ms',
+          opacity: headlineEased,
+          transform: `translateY(${30 * (1 - headlineEased)}px) scale(${0.95 + (0.05 * headlineEased)})`,
+          willChange: 'transform, opacity',
         }}
       >
         <h2 className="text-[clamp(3rem,10vw,8rem)] font-semibold leading-[0.95] tracking-tight text-text-dark">
