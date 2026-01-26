@@ -12,7 +12,7 @@ function PageLoader() {
   return (
     <div className="min-h-screen flex items-center justify-center bg-maemo-dark">
       <div className="text-maemo-gold animate-pulse font-serif text-2xl">
-        MAEMO
+        maemo
       </div>
     </div>
   );

@@ -1,12 +1,12 @@
 {
   "meta": {
-    "title": "MAEMO | Exclusief Bedrijfsadvies",
+    "title": "maemo | Exclusief Bedrijfsadvies",
     "description": "Wij kiezen onze klanten."
   },
   "nav": {
     "home": "Home",
     "approach": "Aanpak",
-    "contact": "Contact"
+    "contact": "Pitch ons"
   },
   "language": {
     "en": "EN",
@@ -17,8 +17,8 @@
   "home": {
     "hero": {
       "tagline": "Wij kiezen onze klanten.",
-      "subtitle": "MAEMO is een exclusieve business consultancy die proactief hoogpotentiele ondernemingen identificeert en strategische tools biedt om hun groeipotentieel te realiseren.",
-      "cta": "Neem Contact Op"
+      "subtitle": "maemo is een exclusieve business consultancy die proactief hoogpotentiële ondernemingen identificeert en strategische tools biedt om hun groeipotentieel te realiseren.",
+      "cta": "Pitch ons"
     }
   },
   "approach": {
@@ -44,17 +44,86 @@
     }
   },
   "contact": {
-    "title": "Contact",
-    "subtitle": "MAEMO werkt uitsluitend met geselecteerde ondernemingen. Wij identificeren en benaderen proactief bedrijven die uitzonderlijk groeipotentieel vertonen.",
-    "invitation": "Uitsluitend Op Uitnodiging",
-    "message": "MAEMO werkt uitsluitend met geselecteerde ondernemingen. Wij identificeren en benaderen proactief bedrijven die uitzonderlijk groeipotentieel vertonen.",
-    "disclaimer": "Inkomende aanvragen worden zorgvuldig overwogen maar acceptatie is niet gegarandeerd.",
-    "email": "inquiries@maemo.be",
-    "emailLabel": "Voor vragen",
-    "location": "Gent, Belgie"
+    "badge": "PITCH ONS",
+    "title": "Overtuig ons",
+    "subtitle": "Hoe het werkt",
+    "pathways": {
+      "invited": {
+        "number": "01",
+        "title": "Uitgenodigd",
+        "description": "Als we je hebben benaderd, hebben we al onderzoek gedaan. We zien potentieel en willen verkennen of er een fit is."
+      },
+      "signal": {
+        "number": "02",
+        "title": "Waag je kans",
+        "description": "Niet door ons benaderd? Pitch ons toch. We reageren mogelijk wanneer we potentieel zien."
+      }
+    },
+    "disclaimer": "We reageren niet altijd. Als je niets hoort, zijn we waarschijnlijk op capaciteit of niet de juiste match. Geen antwoord is ook een antwoord.",
+    "form": {
+      "badge": "STUUR JE PITCH",
+      "title": "Vertel ons over je bedrijf",
+      "titleSuffix": "— geen garantie op reactie",
+      "companyName": "Bedrijfsnaam",
+      "companyNamePlaceholder": "Jouw bedrijf B.V.",
+      "website": "Website",
+      "websitePlaceholder": "https://jouwbedrijf.nl",
+      "sector": "Sector",
+      "sectorPlaceholder": "Selecteer een sector",
+      "sectors": {
+        "saas": "SaaS",
+        "ecommerce": "E-commerce",
+        "services": "Dienstverlening",
+        "manufacturing": "Productie",
+        "healthcare": "Gezondheidszorg",
+        "finance": "Financiën",
+        "other": "Anders"
+      },
+      "region": "Regio / Markt",
+      "regionOptional": "(optioneel)",
+      "regionPlaceholder": "Nederland, Benelux, Europa...",
+      "teamSize": "Teamgrootte",
+      "teamSizePlaceholder": "Selecteer teamgrootte",
+      "teamSizes": {
+        "1-10": "1-10",
+        "11-50": "11-50",
+        "51-200": "51-200",
+        "200+": "200+"
+      },
+      "revenue": "Omzetrange",
+      "revenuePlaceholder": "Selecteer omzetrange",
+      "revenues": {
+        "0-500k": "€0 - €500K",
+        "500k-2m": "€500K - €2M",
+        "2m-10m": "€2M - €10M",
+        "10m+": "€10M+"
+      },
+      "goal": "Doel",
+      "goals": {
+        "leads": "Leadgeneratie",
+        "repositioning": "Herpositionering",
+        "tools": "Digitale tools / Stack",
+        "website": "Website / Conversie"
+      },
+      "timing": "Timing",
+      "timings": {
+        "0-30": "0-30 dagen",
+        "30-90": "30-90 dagen",
+        "90+": "90+ dagen"
+      },
+      "name": "Naam",
+      "namePlaceholder": "Jouw naam",
+      "email": "Email",
+      "emailPlaceholder": "jouw@email.nl",
+      "invitationCode": "Uitnodigingscode",
+      "invitationCodeOptional": "(optioneel)",
+      "invitationCodePlaceholder": "Code indien je bent uitgenodigd",
+      "submit": "Verstuur",
+      "submitting": "Versturen..."
+    }
   },
   "footer": {
-    "copyright": "MAEMO. Alle rechten voorbehouden.",
+    "copyright": "maemo. Alle rechten voorbehouden.",
     "tagline": "Wij kiezen onze klanten."
   }
 }

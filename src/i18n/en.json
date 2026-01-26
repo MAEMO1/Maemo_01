@@ -1,12 +1,12 @@
 {
   "meta": {
-    "title": "MAEMO | Exclusive Business Consultancy",
+    "title": "maemo | Exclusive Business Consultancy",
     "description": "We choose our clients."
   },
   "nav": {
     "home": "Home",
     "approach": "Approach",
-    "contact": "Contact"
+    "contact": "Pitch us"
   },
   "language": {
     "en": "EN",
@@ -17,8 +17,8 @@
   "home": {
     "hero": {
       "tagline": "We choose our clients.",
-      "subtitle": "MAEMO is an exclusive business consultancy that proactively identifies high-potential enterprises and provides strategic tools to realize their growth potential.",
-      "cta": "Get in Touch"
+      "subtitle": "maemo is an exclusive business consultancy that proactively identifies high-potential enterprises and provides strategic tools to realize their growth potential.",
+      "cta": "Pitch us"
     }
   },
   "approach": {
@@ -44,17 +44,86 @@
     }
   },
   "contact": {
-    "title": "Contact",
-    "subtitle": "MAEMO works exclusively with select enterprises. We proactively identify and approach companies that demonstrate exceptional growth potential.",
-    "invitation": "By Invitation Only",
-    "message": "MAEMO works exclusively with select enterprises. We proactively identify and approach companies that demonstrate exceptional growth potential.",
-    "disclaimer": "Incoming inquiries are carefully considered but acceptance is not guaranteed.",
-    "email": "inquiries@maemo.be",
-    "emailLabel": "For inquiries",
-    "location": "Ghent, Belgium"
+    "badge": "PITCH US",
+    "title": "Convince us",
+    "subtitle": "How it works",
+    "pathways": {
+      "invited": {
+        "number": "01",
+        "title": "Invited",
+        "description": "If we've reached out to you, we've already done our research. We see potential and want to explore if there's a fit."
+      },
+      "signal": {
+        "number": "02",
+        "title": "Take your shot",
+        "description": "Not approached by us? Pitch us anyway. We may respond when we see potential."
+      }
+    },
+    "disclaimer": "We don't always respond. If you don't hear from us, we're likely at capacity or not the right match. No response is also a response.",
+    "form": {
+      "badge": "SEND YOUR PITCH",
+      "title": "Tell us about your business",
+      "titleSuffix": "— no guarantee of response",
+      "companyName": "Company name",
+      "companyNamePlaceholder": "Your Company Ltd.",
+      "website": "Website",
+      "websitePlaceholder": "https://yourcompany.com",
+      "sector": "Sector",
+      "sectorPlaceholder": "Select a sector",
+      "sectors": {
+        "saas": "SaaS",
+        "ecommerce": "E-commerce",
+        "services": "Services",
+        "manufacturing": "Manufacturing",
+        "healthcare": "Healthcare",
+        "finance": "Finance",
+        "other": "Other"
+      },
+      "region": "Region / Market",
+      "regionOptional": "(optional)",
+      "regionPlaceholder": "Europe, North America...",
+      "teamSize": "Team size",
+      "teamSizePlaceholder": "Select team size",
+      "teamSizes": {
+        "1-10": "1-10",
+        "11-50": "11-50",
+        "51-200": "51-200",
+        "200+": "200+"
+      },
+      "revenue": "Revenue range",
+      "revenuePlaceholder": "Select revenue range",
+      "revenues": {
+        "0-500k": "€0 - €500K",
+        "500k-2m": "€500K - €2M",
+        "2m-10m": "€2M - €10M",
+        "10m+": "€10M+"
+      },
+      "goal": "Goal",
+      "goals": {
+        "leads": "Lead generation",
+        "repositioning": "Repositioning",
+        "tools": "Digital tools / Stack",
+        "website": "Website / Conversion"
+      },
+      "timing": "Timing",
+      "timings": {
+        "0-30": "0-30 days",
+        "30-90": "30-90 days",
+        "90+": "90+ days"
+      },
+      "name": "Name",
+      "namePlaceholder": "Your name",
+      "email": "Email",
+      "emailPlaceholder": "you@email.com",
+      "invitationCode": "Invitation code",
+      "invitationCodeOptional": "(optional)",
+      "invitationCodePlaceholder": "Code if you were invited",
+      "submit": "Submit",
+      "submitting": "Submitting..."
+    }
   },
   "footer": {
-    "copyright": "MAEMO. All rights reserved.",
+    "copyright": "maemo. All rights reserved.",
     "tagline": "We choose our clients."
   }
 }

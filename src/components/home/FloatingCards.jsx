@@ -1,11 +1,14 @@
 import { useRef, useState, useEffect } from 'react';
 
-// Card components with MAEMO topics - diverse styles like Jeton
+// Card size - all cards are the same size like Jeton (bigger)
+const CARD_SIZE = 'w-[260px] h-[280px]';
+
+// Card components with MAEMO topics - all same size like Jeton
 const CARD_COMPONENTS = {
   // Jaarrekening - Green financial card
   jaarrekening: () => (
     <div
-      className="w-[200px] h-[240px] rounded-3xl p-5 flex flex-col justify-between"
+      className={`${CARD_SIZE} rounded-3xl p-5 flex flex-col justify-between`}
       style={{
         background: 'linear-gradient(145deg, #22c55e 0%, #16a34a 100%)',
         boxShadow: '0 25px 50px rgba(34, 197, 94, 0.3)',
@@ -17,7 +20,7 @@ const CARD_COMPONENTS = {
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
           </svg>
         </div>
-        <span className="text-white/80 text-sm font-medium">Jaarrekening</span>
+        <span className="text-white text-base font-semibold">Jaarrekening</span>
       </div>
 
       <div className="space-y-1">
@@ -38,7 +41,7 @@ const CARD_COMPONENTS = {
   // Profit & Loss - Blue card
   profitLoss: () => (
     <div
-      className="w-[180px] h-[200px] rounded-3xl p-5 flex flex-col"
+      className={`${CARD_SIZE} rounded-3xl p-5 flex flex-col`}
       style={{
         background: '#ffffff',
         border: '3px solid #3b82f6',
@@ -51,7 +54,7 @@ const CARD_COMPONENTS = {
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6" />
           </svg>
         </div>
-        <span className="text-blue-600 text-sm font-semibold">P&L</span>
+        <span className="text-blue-600 text-base font-bold">P&L</span>
       </div>
 
       <div className="text-3xl font-bold text-slate-800 mb-1">+34%</div>
@@ -69,7 +72,7 @@ const CARD_COMPONENTS = {
   // Market Position - White dashboard card
   marketPosition: () => (
     <div
-      className="w-[220px] h-[180px] rounded-2xl overflow-hidden"
+      className={`${CARD_SIZE} rounded-2xl overflow-hidden`}
       style={{
         background: '#ffffff',
         boxShadow: '0 25px 50px rgba(0, 0, 0, 0.12)',
@@ -81,7 +84,7 @@ const CARD_COMPONENTS = {
           <div className="w-2.5 h-2.5 rounded-full bg-yellow-400"></div>
           <div className="w-2.5 h-2.5 rounded-full bg-green-400"></div>
         </div>
-        <span className="text-white/70 text-xs ml-2">Market Position</span>
+        <span className="text-white text-sm font-medium ml-2">Market Position</span>
       </div>
 
       <div className="p-4">
@@ -89,7 +92,7 @@ const CARD_COMPONENTS = {
           <span className="text-xs text-slate-400">Market Share</span>
           <span className="text-xs font-semibold text-green-500">+12%</span>
         </div>
-        <div className="flex items-end gap-2 h-16">
+        <div className="flex items-end gap-2 h-28">
           <div className="flex-1 rounded-t" style={{ height: '45%', background: 'rgba(232, 93, 76, 0.2)' }}></div>
           <div className="flex-1 rounded-t" style={{ height: '65%', background: 'rgba(232, 93, 76, 0.4)' }}></div>
           <div className="flex-1 rounded-t" style={{ height: '55%', background: 'rgba(232, 93, 76, 0.6)' }}></div>
@@ -103,7 +106,7 @@ const CARD_COMPONENTS = {
   // Digital Presence - Coral/pink gradient card
   digitalPresence: () => (
     <div
-      className="w-[190px] h-[220px] rounded-2xl overflow-hidden"
+      className={`${CARD_SIZE} rounded-2xl overflow-hidden`}
       style={{
         background: '#ffffff',
         boxShadow: '0 25px 50px rgba(232, 93, 76, 0.15)',
@@ -116,12 +119,12 @@ const CARD_COMPONENTS = {
               <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-1 17.93c-3.95-.49-7-3.85-7-7.93 0-.62.08-1.21.21-1.79L9 15v1c0 1.1.9 2 2 2v1.93zm6.9-2.54c-.26-.81-1-1.39-1.9-1.39h-1v-3c0-.55-.45-1-1-1H8v-2h2c.55 0 1-.45 1-1V7h2c1.1 0 2-.9 2-2v-.41c2.93 1.19 5 4.06 5 7.41 0 2.08-.8 3.97-2.1 5.39z"/>
             </svg>
           </div>
-          <span className="text-sm font-medium text-slate-700">Digital Presence</span>
+          <span className="text-base font-semibold text-slate-800">Digital Presence</span>
         </div>
       </div>
 
       <div
-        className="h-[160px] flex items-center justify-center"
+        className="h-[225px] flex items-center justify-center"
         style={{ background: 'linear-gradient(145deg, #fef2f1 0%, #fee2e2 100%)' }}
       >
         <div className="text-center">
@@ -141,7 +144,7 @@ const CARD_COMPONENTS = {
   // Administration - Pink/purple profile card
   administration: () => (
     <div
-      className="w-[200px] h-[180px] rounded-3xl p-5 flex flex-col items-center justify-center"
+      className={`${CARD_SIZE} rounded-3xl p-5 flex flex-col items-center justify-center`}
       style={{
         background: 'linear-gradient(145deg, #fce7f3 0%, #f5d0fe 100%)',
         boxShadow: '0 25px 50px rgba(236, 72, 153, 0.2)',
@@ -155,7 +158,7 @@ const CARD_COMPONENTS = {
           <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-6 9l2 2 4-4" />
         </svg>
       </div>
-      <div className="text-slate-700 font-semibold">Administration</div>
+      <div className="text-slate-800 text-lg font-bold">Administration</div>
       <div className="text-sm text-slate-500 mt-1">Fully organized</div>
       <div className="flex items-center gap-1 mt-2">
         <svg className="w-4 h-4 text-green-500" fill="currentColor" viewBox="0 0 24 24">
@@ -181,24 +184,24 @@ function FloatingCard({ card, index, progress, totalCards }) {
   const easeOutQuart = (t) => 1 - Math.pow(1 - t, 4);
   const easedProgress = easeOutQuart(progress);
 
-  // Each card has a unique starting position (far from center, at edges)
-  // All cards converge to center and OVERLAP
+  // Each card has a unique starting position (off-screen)
+  // Cards fly in from edges like Jeton
   const startPositions = [
-    { x: -600, y: -300 },  // jaarrekening - top left
-    { x: 550, y: -250 },   // profitLoss - top right
-    { x: -550, y: 200 },   // marketPosition - bottom left
-    { x: 500, y: 250 },    // digitalPresence - bottom right
-    { x: 0, y: 400 },      // administration - bottom center
+    { x: -800, y: -400 },  // jaarrekening - from far top left
+    { x: 800, y: -350 },   // profitLoss - from far top right
+    { x: -750, y: 400 },   // marketPosition - from far bottom left
+    { x: 750, y: 350 },    // digitalPresence - from far bottom right
+    { x: 0, y: 500 },      // administration - from far bottom center
   ];
 
-  // End positions - cards overlap in CENTER (like Jeton)
-  // Slightly offset from each other to create stack effect
+  // End positions - cards CONVERGE to CENTER and OVERLAP tightly (like Jeton)
+  // Very small offsets for a tight stacked deck effect
   const endPositions = [
-    { x: -80, y: -60 },    // jaarrekening
-    { x: 100, y: -40 },    // profitLoss
-    { x: -60, y: 80 },     // marketPosition
-    { x: 120, y: 60 },     // digitalPresence
-    { x: 20, y: 120 },     // administration
+    { x: -30, y: -20 },    // jaarrekening - slightly left and up
+    { x: 25, y: -25 },     // profitLoss - slightly right and up
+    { x: -20, y: 15 },     // marketPosition - slightly left and down
+    { x: 30, y: 10 },      // digitalPresence - slightly right and down
+    { x: 0, y: 0 },        // administration - center (front card)
   ];
 
   const start = startPositions[index];
@@ -207,10 +210,11 @@ function FloatingCard({ card, index, progress, totalCards }) {
   const currentX = start.x + (end.x - start.x) * easedProgress;
   const currentY = start.y + (end.y - start.y) * easedProgress;
 
-  // Scale increases as cards come to center
-  const scale = 0.85 + (0.15 * easedProgress);
-  // Opacity increases as cards come into view
-  const opacity = 0.5 + (0.5 * easedProgress);
+  // Scale: cards start small (0.7) and grow to full size (1.0)
+  const scale = 0.7 + (0.3 * easedProgress);
+  // Opacity: cards snap to full opacity quickly (no gradual transparency)
+  // At 20% progress, cards are already fully opaque
+  const opacity = Math.min(1, easedProgress * 5);
 
   const CardComponent = CARD_COMPONENTS[card.component];
 
@@ -232,12 +236,17 @@ function FloatingCard({ card, index, progress, totalCards }) {
 function useStickyScrollProgress() {
   const containerRef = useRef(null);
   const [progress, setProgress] = useState(0);
+  const targetProgressRef = useRef(0);
+  const currentProgressRef = useRef(0);
   const rafRef = useRef(null);
 
   useEffect(() => {
     const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
-    const calculateProgress = () => {
+    // Lerp factor - lower = more momentum/smoothing (0.08 = smooth glide)
+    const lerpFactor = 0.08;
+
+    const calculateTargetProgress = () => {
       if (!containerRef.current) return;
 
       const rect = containerRef.current.getBoundingClientRect();
@@ -245,24 +254,35 @@ function useStickyScrollProgress() {
       const viewportHeight = window.innerHeight;
       const scrollRange = sectionHeight - viewportHeight;
       const scrolled = Math.max(0, -rect.top);
-      const newProgress = Math.max(0, Math.min(1, scrolled / scrollRange));
+      targetProgressRef.current = Math.max(0, Math.min(1, scrolled / scrollRange));
+    };
 
-      if (prefersReducedMotion) {
-        setProgress(newProgress > 0.1 ? 1 : 0);
-      } else {
-        setProgress(newProgress);
+    // Animation loop that runs continuously for smooth momentum
+    const animate = () => {
+      // Lerp current progress towards target
+      const diff = targetProgressRef.current - currentProgressRef.current;
+
+      // Only update if there's a meaningful difference
+      if (Math.abs(diff) > 0.0001) {
+        currentProgressRef.current += diff * lerpFactor;
+
+        if (prefersReducedMotion) {
+          setProgress(targetProgressRef.current > 0.1 ? 1 : 0);
+        } else {
+          setProgress(currentProgressRef.current);
+        }
       }
+
+      rafRef.current = requestAnimationFrame(animate);
     };
 
     const handleScroll = () => {
-      if (rafRef.current) {
-        cancelAnimationFrame(rafRef.current);
-      }
-      rafRef.current = requestAnimationFrame(calculateProgress);
+      calculateTargetProgress();
     };
 
     window.addEventListener('scroll', handleScroll, { passive: true });
-    calculateProgress();
+    calculateTargetProgress();
+    rafRef.current = requestAnimationFrame(animate);
 
     return () => {
       window.removeEventListener('scroll', handleScroll);
@@ -278,18 +298,18 @@ function useStickyScrollProgress() {
 export function FloatingCards() {
   const { containerRef, progress } = useStickyScrollProgress();
 
-  // Headline starts LARGE and SHRINKS (like Jeton) - but doesn't disappear
-  // At progress 0: scale 1.0, at progress 1: scale 0.6
-  const headlineScale = 1 - (progress * 0.4);
-  // Headline fades slightly but stays visible
-  const headlineOpacity = 1 - (progress * 0.3);
+  // Headline starts LARGE and SHRINKS, then DISAPPEARS (like Jeton)
+  // At progress 0: scale 1.0, at progress 1: scale 0.4
+  const headlineScale = 1 - (progress * 0.6);
+  // Headline fades out completely - goes from 1 to 0
+  const headlineOpacity = 1 - progress;
 
   return (
     <section
       ref={containerRef}
       className="relative"
       style={{
-        height: '300vh', // More scroll distance for smoother animation
+        height: '400vh', // More scroll distance for smoother/longer animation
         background: '#ffffff',
       }}
     >
@@ -314,7 +334,7 @@ export function FloatingCards() {
               color: '#1e293b',
             }}
           >
-            Unify your
+            Unifying your
             <br />
             <span style={{ color: '#e85d4c' }}>opportunities</span>
           </h2>

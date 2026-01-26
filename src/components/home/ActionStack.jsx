@@ -65,16 +65,21 @@ function ActionItem({ action, style }) {
   );
 }
 
-// Hook for scroll progress within the section
+// Hook for scroll progress within the section - with momentum/lerp effect
 function useStackScrollProgress() {
   const containerRef = useRef(null);
   const [progress, setProgress] = useState(0);
+  const targetProgressRef = useRef(0);
+  const currentProgressRef = useRef(0);
   const rafRef = useRef(null);
 
   useEffect(() => {
     const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
-    const calculateProgress = () => {
+    // Lerp factor - lower = more momentum/smoothing (0.08 = smooth glide)
+    const lerpFactor = 0.08;
+
+    const calculateTargetProgress = () => {
       if (!containerRef.current) return;
 
       const rect = containerRef.current.getBoundingClientRect();
@@ -82,24 +87,35 @@ function useStackScrollProgress() {
       const viewportHeight = window.innerHeight;
       const scrollRange = sectionHeight - viewportHeight;
       const scrolled = Math.max(0, -rect.top);
-      const newProgress = Math.max(0, Math.min(1, scrolled / scrollRange));
+      targetProgressRef.current = Math.max(0, Math.min(1, scrolled / scrollRange));
+    };
 
-      if (prefersReducedMotion) {
-        setProgress(newProgress > 0.1 ? 1 : 0);
-      } else {
-        setProgress(newProgress);
+    // Animation loop that runs continuously for smooth momentum
+    const animate = () => {
+      // Lerp current progress towards target
+      const diff = targetProgressRef.current - currentProgressRef.current;
+
+      // Only update if there's a meaningful difference
+      if (Math.abs(diff) > 0.0001) {
+        currentProgressRef.current += diff * lerpFactor;
+
+        if (prefersReducedMotion) {
+          setProgress(targetProgressRef.current > 0.1 ? 1 : 0);
+        } else {
+          setProgress(currentProgressRef.current);
+        }
       }
+
+      rafRef.current = requestAnimationFrame(animate);
     };
 
     const handleScroll = () => {
-      if (rafRef.current) {
-        cancelAnimationFrame(rafRef.current);
-      }
-      rafRef.current = requestAnimationFrame(calculateProgress);
+      calculateTargetProgress();
     };
 
     window.addEventListener('scroll', handleScroll, { passive: true });
-    calculateProgress();
+    calculateTargetProgress();
+    rafRef.current = requestAnimationFrame(animate);
 
     return () => {
       window.removeEventListener('scroll', handleScroll);
@@ -126,17 +142,17 @@ export function ActionStack() {
       ref={containerRef}
       className="relative"
       style={{
-        height: '250vh',
+        height: '220vh',
         background: '#ffffff',
       }}
     >
       <div className="sticky top-0 h-screen flex items-center justify-center overflow-hidden">
         <div className="flex flex-col items-center gap-6 md:gap-10 px-6">
           {ACTIONS.map((action, index) => {
-            // Each item has a range where it animates
-            // Spread the animations more evenly across the scroll
+            // Each item slides up from below in sequence
+            // Staggered start points for sequential reveal - spread across full scroll
             const itemStart = index * 0.25; // Start points: 0, 0.25, 0.5
-            const itemEnd = itemStart + 0.4; // Each item takes 40% of scroll to fully appear
+            const itemEnd = itemStart + 0.45; // Each item takes 45% of scroll to fully arrive
 
             // Calculate item-specific progress
             let itemProgress = 0;
@@ -147,9 +163,10 @@ export function ActionStack() {
             // Apply smooth easing
             const easedProgress = easeOutQuart(itemProgress);
 
-            // Smooth opacity and transform
-            const opacity = easedProgress;
-            const translateY = 40 * (1 - easedProgress);
+            // Items slide up from far below the viewport - Jeton style
+            // Items are hidden until they start animating, then visible while sliding
+            const opacity = itemProgress > 0 ? 1 : 0;
+            const translateY = 400 * (1 - easedProgress); // Very large slide-up from bottom
 
             return (
               <ActionItem

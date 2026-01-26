@@ -1,14 +1,24 @@
 import { useState, useEffect } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useLocation } from 'react-router-dom';
 import { useTranslation } from '../../hooks/useTranslation';
 import { Logo } from '../ui/Logo';
 import { LanguageSelector } from './LanguageSelector';
 import { MobileMenu } from './MobileMenu';
 
+// Routes with dark backgrounds at the top
+const DARK_ROUTES = ['/contact'];
+
 export function Header() {
   const { t } = useTranslation();
+  const location = useLocation();
   const [menuOpen, setMenuOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
+
+  // Check if current route has dark background
+  const isDarkPage = DARK_ROUTES.includes(location.pathname);
+
+  // Use light colors when on dark page (always, since header stays dark-themed)
+  const useLightColors = isDarkPage;
 
   useEffect(() => {
     const handleScroll = () => {
@@ -18,6 +28,10 @@ export function Header() {
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
+  // Dynamic colors based on background
+  const textColor = useLightColors ? '#ffffff' : '#1e293b';
+  const textColorMuted = useLightColors ? 'rgba(255,255,255,0.7)' : '#64748b';
+
   return (
     <>
       <header
@@ -25,31 +39,37 @@ export function Header() {
         style={{
           padding: scrolled ? '1rem 1.5rem' : '1.5rem 1.5rem',
           background: scrolled
-            ? 'rgba(255, 255, 255, 0.9)'
+            ? isDarkPage
+              ? 'rgba(17, 24, 39, 0.95)'
+              : 'rgba(255, 255, 255, 0.9)'
             : 'transparent',
           backdropFilter: scrolled ? 'blur(20px)' : 'none',
           WebkitBackdropFilter: scrolled ? 'blur(20px)' : 'none',
-          borderBottom: scrolled ? '1px solid rgba(0,0,0,0.05)' : 'none',
+          borderBottom: scrolled
+            ? isDarkPage
+              ? '1px solid rgba(255,255,255,0.1)'
+              : '1px solid rgba(0,0,0,0.05)'
+            : 'none',
         }}
       >
         <div className="max-w-7xl mx-auto flex items-center justify-between">
-          <Logo />
+          <Logo light={useLightColors} />
 
           <div className="flex items-center gap-6">
-            <LanguageSelector />
+            <LanguageSelector variant={useLightColors ? 'light' : 'dark'} />
 
             <Link
               to="/contact"
               className="hidden md:flex items-center gap-2 text-sm font-medium transition-all duration-300"
               style={{
-                color: '#1e293b',
+                color: textColor,
                 letterSpacing: '0.1em',
               }}
               onMouseEnter={(e) => {
                 e.currentTarget.style.color = '#e85d4c';
               }}
               onMouseLeave={(e) => {
-                e.currentTarget.style.color = '#1e293b';
+                e.currentTarget.style.color = textColor;
               }}
             >
               <span>{t('nav.contact')}</span>
@@ -61,7 +81,7 @@ export function Header() {
             <button
               onClick={() => setMenuOpen(true)}
               className="md:hidden p-2 rounded-lg transition-colors"
-              style={{ color: '#1e293b' }}
+              style={{ color: textColor }}
               aria-label="Open menu"
             >
               <svg className="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>

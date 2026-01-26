@@ -1,12 +1,12 @@
 {
   "meta": {
-    "title": "MAEMO | Conseil d'Affaires Exclusif",
+    "title": "maemo | Conseil d'Affaires Exclusif",
     "description": "Nous choisissons nos clients."
   },
   "nav": {
     "home": "Accueil",
     "approach": "Approche",
-    "contact": "Contact"
+    "contact": "Pitchez-nous"
   },
   "language": {
     "en": "EN",
@@ -17,8 +17,8 @@
   "home": {
     "hero": {
       "tagline": "Nous choisissons nos clients.",
-      "subtitle": "MAEMO est un cabinet de conseil exclusif qui identifie proactivement les entreprises a haut potentiel et fournit des outils strategiques pour realiser leur potentiel de croissance.",
-      "cta": "Nous Contacter"
+      "subtitle": "maemo est un cabinet de conseil exclusif qui identifie proactivement les entreprises à haut potentiel et fournit des outils stratégiques pour réaliser leur potentiel de croissance.",
+      "cta": "Pitchez-nous"
     }
   },
   "approach": {
@@ -44,17 +44,86 @@
     }
   },
   "contact": {
-    "title": "Contact",
-    "subtitle": "MAEMO travaille exclusivement avec des entreprises selectionnees. Nous identifions et approchons proactivement les entreprises qui demontrent un potentiel de croissance exceptionnel.",
-    "invitation": "Sur Invitation Uniquement",
-    "message": "MAEMO travaille exclusivement avec des entreprises selectionnees. Nous identifions et approchons proactivement les entreprises qui demontrent un potentiel de croissance exceptionnel.",
-    "disclaimer": "Les demandes entrantes sont soigneusement examinees mais l'acceptation n'est pas garantie.",
-    "email": "inquiries@maemo.be",
-    "emailLabel": "Pour les demandes",
-    "location": "Gand, Belgique"
+    "badge": "PITCHEZ-NOUS",
+    "title": "Convainquez-nous",
+    "subtitle": "Comment ça fonctionne",
+    "pathways": {
+      "invited": {
+        "number": "01",
+        "title": "Invité",
+        "description": "Si nous vous avons contacté, nous avons déjà fait nos recherches. Nous voyons du potentiel et voulons explorer s'il y a une adéquation."
+      },
+      "signal": {
+        "number": "02",
+        "title": "Tentez votre chance",
+        "description": "Pas contacté par nous? Pitchez-nous quand même. Nous répondrons peut-être si nous voyons du potentiel."
+      }
+    },
+    "disclaimer": "Nous ne répondons pas toujours. Si vous n'avez pas de nouvelles, nous sommes probablement à pleine capacité ou pas le bon match. Pas de réponse est aussi une réponse.",
+    "form": {
+      "badge": "ENVOYEZ VOTRE PITCH",
+      "title": "Parlez-nous de votre entreprise",
+      "titleSuffix": "— aucune garantie de réponse",
+      "companyName": "Nom de l'entreprise",
+      "companyNamePlaceholder": "Votre Entreprise SARL",
+      "website": "Site web",
+      "websitePlaceholder": "https://votreentreprise.com",
+      "sector": "Secteur",
+      "sectorPlaceholder": "Sélectionnez un secteur",
+      "sectors": {
+        "saas": "SaaS",
+        "ecommerce": "E-commerce",
+        "services": "Services",
+        "manufacturing": "Production",
+        "healthcare": "Santé",
+        "finance": "Finance",
+        "other": "Autre"
+      },
+      "region": "Région / Marché",
+      "regionOptional": "(optionnel)",
+      "regionPlaceholder": "France, Benelux, Europe...",
+      "teamSize": "Taille de l'équipe",
+      "teamSizePlaceholder": "Sélectionnez la taille",
+      "teamSizes": {
+        "1-10": "1-10",
+        "11-50": "11-50",
+        "51-200": "51-200",
+        "200+": "200+"
+      },
+      "revenue": "Chiffre d'affaires",
+      "revenuePlaceholder": "Sélectionnez la fourchette",
+      "revenues": {
+        "0-500k": "€0 - €500K",
+        "500k-2m": "€500K - €2M",
+        "2m-10m": "€2M - €10M",
+        "10m+": "€10M+"
+      },
+      "goal": "Objectif",
+      "goals": {
+        "leads": "Génération de leads",
+        "repositioning": "Repositionnement",
+        "tools": "Outils digitaux / Stack",
+        "website": "Site web / Conversion"
+      },
+      "timing": "Délai",
+      "timings": {
+        "0-30": "0-30 jours",
+        "30-90": "30-90 jours",
+        "90+": "90+ jours"
+      },
+      "name": "Nom",
+      "namePlaceholder": "Votre nom",
+      "email": "Email",
+      "emailPlaceholder": "vous@email.com",
+      "invitationCode": "Code d'invitation",
+      "invitationCodeOptional": "(optionnel)",
+      "invitationCodePlaceholder": "Code si vous avez été invité",
+      "submit": "Envoyer",
+      "submitting": "Envoi..."
+    }
   },
   "footer": {
-    "copyright": "MAEMO. Tous droits reserves.",
+    "copyright": "maemo. Tous droits réservés.",
     "tagline": "Nous choisissons nos clients."
   }
 }

@@ -68,7 +68,12 @@ export function Hero() {
               className="text-stone text-lg md:text-xl max-w-md leading-relaxed"
               style={{ opacity: 0, animation: 'fade-in-up 1s cubic-bezier(0.16, 1, 0.3, 1) 0.6s forwards' }}
             >
-              {t('home.hero.subtitle')}
+              {t('home.hero.subtitle').split('maemo').map((part, i, arr) => (
+                <span key={i}>
+                  {part}
+                  {i < arr.length - 1 && <strong className="font-bold">maemo</strong>}
+                </span>
+              ))}
             </p>
 
             <div
