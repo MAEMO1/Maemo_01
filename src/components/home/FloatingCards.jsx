@@ -1,158 +1,234 @@
 import { useRef, useState, useEffect } from 'react';
 
-// Cards representing the 5 pillars we analyze - no mock data, just prominent titles
-const CARDS = [
-  {
-    id: 'jaarrekening',
-    title: 'Jaarrekening',
-    icon: 'document',
-    color: '#0d9488',
-    startPos: { top: '5%', left: '-20%' },
-    endOffset: { x: -15, y: -20 },
-    startRotation: -15,
-    endRotation: -8,
-    zIndex: 1,
-  },
-  {
-    id: 'profit-loss',
-    title: 'Profit & Loss',
-    icon: 'chart',
-    color: '#1e3a5f',
-    startPos: { top: '0%', right: '-25%' },
-    endOffset: { x: 25, y: -10 },
-    startRotation: 18,
-    endRotation: 6,
-    zIndex: 3,
-  },
-  {
-    id: 'digital',
-    title: 'Digital Presence',
-    icon: 'globe',
-    color: '#0d9488',
-    startPos: { bottom: '0%', left: '-25%' },
-    endOffset: { x: -25, y: 15 },
-    startRotation: 12,
-    endRotation: 4,
-    zIndex: 2,
-  },
-  {
-    id: 'market',
-    title: 'Market Position',
-    icon: 'target',
-    color: '#475569',
-    startPos: { top: '40%', right: '-25%' },
-    endOffset: { x: 20, y: 25 },
-    startRotation: -12,
-    endRotation: -5,
-    zIndex: 4,
-  },
-  {
-    id: 'admin',
-    title: 'Administration',
-    icon: 'clipboard',
-    color: '#1e3a5f',
-    startPos: { bottom: '5%', right: '-20%' },
-    endOffset: { x: 0, y: 0 },
-    startRotation: -18,
-    endRotation: -3,
-    zIndex: 5,
-  },
-];
+// Card components with MAEMO topics - diverse styles like Jeton
+const CARD_COMPONENTS = {
+  // Jaarrekening - Green financial card
+  jaarrekening: () => (
+    <div
+      className="w-[200px] h-[240px] rounded-3xl p-5 flex flex-col justify-between"
+      style={{
+        background: 'linear-gradient(145deg, #22c55e 0%, #16a34a 100%)',
+        boxShadow: '0 25px 50px rgba(34, 197, 94, 0.3)',
+      }}
+    >
+      <div className="flex items-center gap-2">
+        <div className="w-6 h-6 rounded-full bg-white/20 flex items-center justify-center">
+          <svg className="w-3.5 h-3.5 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+          </svg>
+        </div>
+        <span className="text-white/80 text-sm font-medium">Jaarrekening</span>
+      </div>
 
-// Uniform card size
-const CARD_SIZE = 'w-[260px] h-[160px]';
+      <div className="space-y-1">
+        <div className="text-white/60 text-sm">Annual Report</div>
+        <div className="text-white text-2xl font-bold">€847K</div>
+        <div className="text-white/50 text-xs">Revenue verified</div>
+      </div>
 
-// Icon components
-const ICONS = {
-  document: (
-    <path strokeLinecap="round" strokeLinejoin="round" d="M19.5 14.25v-2.625a3.375 3.375 0 00-3.375-3.375h-1.5A1.125 1.125 0 0113.5 7.125v-1.5a3.375 3.375 0 00-3.375-3.375H8.25m0 12.75h7.5m-7.5 3H12M10.5 2.25H5.625c-.621 0-1.125.504-1.125 1.125v17.25c0 .621.504 1.125 1.125 1.125h12.75c.621 0 1.125-.504 1.125-1.125V11.25a9 9 0 00-9-9z" />
+      <div
+        className="px-4 py-2 rounded-xl text-sm font-medium text-center"
+        style={{ background: 'rgba(255,255,255,0.2)', color: 'white' }}
+      >
+        Approved
+      </div>
+    </div>
   ),
-  chart: (
-    <path strokeLinecap="round" strokeLinejoin="round" d="M3 13.125C3 12.504 3.504 12 4.125 12h2.25c.621 0 1.125.504 1.125 1.125v6.75C7.5 20.496 6.996 21 6.375 21h-2.25A1.125 1.125 0 013 19.875v-6.75zM9.75 8.625c0-.621.504-1.125 1.125-1.125h2.25c.621 0 1.125.504 1.125 1.125v11.25c0 .621-.504 1.125-1.125 1.125h-2.25a1.125 1.125 0 01-1.125-1.125V8.625zM16.5 4.125c0-.621.504-1.125 1.125-1.125h2.25C20.496 3 21 3.504 21 4.125v15.75c0 .621-.504 1.125-1.125 1.125h-2.25a1.125 1.125 0 01-1.125-1.125V4.125z" />
+
+  // Profit & Loss - Blue card
+  profitLoss: () => (
+    <div
+      className="w-[180px] h-[200px] rounded-3xl p-5 flex flex-col"
+      style={{
+        background: '#ffffff',
+        border: '3px solid #3b82f6',
+        boxShadow: '0 25px 50px rgba(59, 130, 246, 0.2)',
+      }}
+    >
+      <div className="flex items-center gap-2 mb-3">
+        <div className="w-5 h-5 rounded-full bg-blue-500 flex items-center justify-center">
+          <svg className="w-3 h-3 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6" />
+          </svg>
+        </div>
+        <span className="text-blue-600 text-sm font-semibold">P&L</span>
+      </div>
+
+      <div className="text-3xl font-bold text-slate-800 mb-1">+34%</div>
+      <div className="text-sm text-slate-400 mb-3">Profit margin</div>
+
+      <div className="mt-auto flex gap-1">
+        <div className="flex-1 h-8 bg-blue-100 rounded"></div>
+        <div className="flex-1 h-12 bg-blue-200 rounded"></div>
+        <div className="flex-1 h-10 bg-blue-300 rounded"></div>
+        <div className="flex-1 h-16 bg-blue-500 rounded"></div>
+      </div>
+    </div>
   ),
-  globe: (
-    <path strokeLinecap="round" strokeLinejoin="round" d="M12 21a9.004 9.004 0 008.716-6.747M12 21a9.004 9.004 0 01-8.716-6.747M12 21c2.485 0 4.5-4.03 4.5-9S14.485 3 12 3m0 18c-2.485 0-4.5-4.03-4.5-9S9.515 3 12 3m0 0a8.997 8.997 0 017.843 4.582M12 3a8.997 8.997 0 00-7.843 4.582m15.686 0A11.953 11.953 0 0112 10.5c-2.998 0-5.74-1.1-7.843-2.918m15.686 0A8.959 8.959 0 0121 12c0 .778-.099 1.533-.284 2.253m0 0A17.919 17.919 0 0112 16.5c-3.162 0-6.133-.815-8.716-2.247m0 0A9.015 9.015 0 013 12c0-1.605.42-3.113 1.157-4.418" />
+
+  // Market Position - White dashboard card
+  marketPosition: () => (
+    <div
+      className="w-[220px] h-[180px] rounded-2xl overflow-hidden"
+      style={{
+        background: '#ffffff',
+        boxShadow: '0 25px 50px rgba(0, 0, 0, 0.12)',
+      }}
+    >
+      <div className="flex items-center gap-2 px-4 py-2.5 bg-slate-800">
+        <div className="flex gap-1">
+          <div className="w-2.5 h-2.5 rounded-full bg-red-400"></div>
+          <div className="w-2.5 h-2.5 rounded-full bg-yellow-400"></div>
+          <div className="w-2.5 h-2.5 rounded-full bg-green-400"></div>
+        </div>
+        <span className="text-white/70 text-xs ml-2">Market Position</span>
+      </div>
+
+      <div className="p-4">
+        <div className="flex items-center justify-between mb-3">
+          <span className="text-xs text-slate-400">Market Share</span>
+          <span className="text-xs font-semibold text-green-500">+12%</span>
+        </div>
+        <div className="flex items-end gap-2 h-16">
+          <div className="flex-1 rounded-t" style={{ height: '45%', background: 'rgba(232, 93, 76, 0.2)' }}></div>
+          <div className="flex-1 rounded-t" style={{ height: '65%', background: 'rgba(232, 93, 76, 0.4)' }}></div>
+          <div className="flex-1 rounded-t" style={{ height: '55%', background: 'rgba(232, 93, 76, 0.6)' }}></div>
+          <div className="flex-1 rounded-t" style={{ height: '85%', background: '#e85d4c' }}></div>
+          <div className="flex-1 rounded-t" style={{ height: '95%', background: '#e85d4c' }}></div>
+        </div>
+      </div>
+    </div>
   ),
-  target: (
-    <path strokeLinecap="round" strokeLinejoin="round" d="M7.5 14.25v2.25m3-4.5v4.5m3-6.75v6.75m3-9v9M6 20.25h12A2.25 2.25 0 0020.25 18V6A2.25 2.25 0 0018 3.75H6A2.25 2.25 0 003.75 6v12A2.25 2.25 0 006 20.25z" />
+
+  // Digital Presence - Coral/pink gradient card
+  digitalPresence: () => (
+    <div
+      className="w-[190px] h-[220px] rounded-2xl overflow-hidden"
+      style={{
+        background: '#ffffff',
+        boxShadow: '0 25px 50px rgba(232, 93, 76, 0.15)',
+      }}
+    >
+      <div className="px-4 py-3 border-b border-slate-100">
+        <div className="flex items-center gap-2">
+          <div className="w-5 h-5 rounded bg-coral/20 flex items-center justify-center">
+            <svg className="w-3 h-3" fill="#e85d4c" viewBox="0 0 24 24">
+              <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-1 17.93c-3.95-.49-7-3.85-7-7.93 0-.62.08-1.21.21-1.79L9 15v1c0 1.1.9 2 2 2v1.93zm6.9-2.54c-.26-.81-1-1.39-1.9-1.39h-1v-3c0-.55-.45-1-1-1H8v-2h2c.55 0 1-.45 1-1V7h2c1.1 0 2-.9 2-2v-.41c2.93 1.19 5 4.06 5 7.41 0 2.08-.8 3.97-2.1 5.39z"/>
+            </svg>
+          </div>
+          <span className="text-sm font-medium text-slate-700">Digital Presence</span>
+        </div>
+      </div>
+
+      <div
+        className="h-[160px] flex items-center justify-center"
+        style={{ background: 'linear-gradient(145deg, #fef2f1 0%, #fee2e2 100%)' }}
+      >
+        <div className="text-center">
+          <div className="text-4xl font-bold" style={{ color: '#e85d4c' }}>89%</div>
+          <div className="text-sm text-slate-500 mt-1">Online Score</div>
+          <div className="flex justify-center gap-1 mt-3">
+            <div className="w-2 h-2 rounded-full bg-green-400"></div>
+            <div className="w-2 h-2 rounded-full bg-green-400"></div>
+            <div className="w-2 h-2 rounded-full bg-green-400"></div>
+            <div className="w-2 h-2 rounded-full bg-slate-200"></div>
+          </div>
+        </div>
+      </div>
+    </div>
   ),
-  clipboard: (
-    <path strokeLinecap="round" strokeLinejoin="round" d="M9 12h3.75M9 15h3.75M9 18h3.75m3 .75H18a2.25 2.25 0 002.25-2.25V6.108c0-1.135-.845-2.098-1.976-2.192a48.424 48.424 0 00-1.123-.08m-5.801 0c-.065.21-.1.433-.1.664 0 .414.336.75.75.75h4.5a.75.75 0 00.75-.75 2.25 2.25 0 00-.1-.664m-5.8 0A2.251 2.251 0 0113.5 2.25H15c1.012 0 1.867.668 2.15 1.586m-5.8 0c-.376.023-.75.05-1.124.08C9.095 4.01 8.25 4.973 8.25 6.108V8.25m0 0H4.875c-.621 0-1.125.504-1.125 1.125v11.25c0 .621.504 1.125 1.125 1.125h9.75c.621 0 1.125-.504 1.125-1.125V9.375c0-.621-.504-1.125-1.125-1.125H8.25z" />
+
+  // Administration - Pink/purple profile card
+  administration: () => (
+    <div
+      className="w-[200px] h-[180px] rounded-3xl p-5 flex flex-col items-center justify-center"
+      style={{
+        background: 'linear-gradient(145deg, #fce7f3 0%, #f5d0fe 100%)',
+        boxShadow: '0 25px 50px rgba(236, 72, 153, 0.2)',
+      }}
+    >
+      <div
+        className="w-12 h-12 rounded-xl mb-3 flex items-center justify-center"
+        style={{ background: 'linear-gradient(145deg, #ec4899 0%, #a855f7 100%)' }}
+      >
+        <svg className="w-6 h-6 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-6 9l2 2 4-4" />
+        </svg>
+      </div>
+      <div className="text-slate-700 font-semibold">Administration</div>
+      <div className="text-sm text-slate-500 mt-1">Fully organized</div>
+      <div className="flex items-center gap-1 mt-2">
+        <svg className="w-4 h-4 text-green-500" fill="currentColor" viewBox="0 0 24 24">
+          <path d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+        </svg>
+        <span className="text-xs text-green-600 font-medium">Verified</span>
+      </div>
+    </div>
   ),
 };
 
-// Single card component - prominent title with icon
-function AnalysisCard({ card }) {
-  return (
-    <div
-      className={`${CARD_SIZE} rounded-3xl shadow-elevated p-6 flex flex-col justify-between`}
-      style={{ backgroundColor: card.color }}
-    >
-      <div
-        className="w-12 h-12 rounded-xl flex items-center justify-center bg-white/20"
-      >
-        <svg className="w-6 h-6 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
-          {ICONS[card.icon]}
-        </svg>
-      </div>
-      <h3 className="text-2xl font-bold text-white leading-tight">
-        {card.title}
-      </h3>
-    </div>
-  );
-}
+// 5 cards - they will OVERLAP in the center like Jeton
+const CARDS = [
+  { id: 'jaarrekening', component: 'jaarrekening', zIndex: 5 },
+  { id: 'profitLoss', component: 'profitLoss', zIndex: 4 },
+  { id: 'marketPosition', component: 'marketPosition', zIndex: 3 },
+  { id: 'digitalPresence', component: 'digitalPresence', zIndex: 2 },
+  { id: 'administration', component: 'administration', zIndex: 1 },
+];
 
-function FloatingCard({ card, progress }) {
-  // Easing function for smooth animation
-  const easeOutCubic = (t) => 1 - Math.pow(1 - t, 3);
-  const easedProgress = easeOutCubic(progress);
+function FloatingCard({ card, index, progress, totalCards }) {
+  // Smoother easing for consistent feel with ActionStack
+  const easeOutQuart = (t) => 1 - Math.pow(1 - t, 4);
+  const easedProgress = easeOutQuart(progress);
 
-  // Rotation interpolates from startRotation to endRotation
-  const currentRotationDeg = card.startRotation + (card.endRotation - card.startRotation) * easedProgress;
+  // Each card has a unique starting position (far from center, at edges)
+  // All cards converge to center and OVERLAP
+  const startPositions = [
+    { x: -600, y: -300 },  // jaarrekening - top left
+    { x: 550, y: -250 },   // profitLoss - top right
+    { x: -550, y: 200 },   // marketPosition - bottom left
+    { x: 500, y: 250 },    // digitalPresence - bottom right
+    { x: 0, y: 400 },      // administration - bottom center
+  ];
 
-  // Scale: starts smaller, ends at full size
+  // End positions - cards overlap in CENTER (like Jeton)
+  // Slightly offset from each other to create stack effect
+  const endPositions = [
+    { x: -80, y: -60 },    // jaarrekening
+    { x: 100, y: -40 },    // profitLoss
+    { x: -60, y: 80 },     // marketPosition
+    { x: 120, y: 60 },     // digitalPresence
+    { x: 20, y: 120 },     // administration
+  ];
+
+  const start = startPositions[index];
+  const end = endPositions[index];
+
+  const currentX = start.x + (end.x - start.x) * easedProgress;
+  const currentY = start.y + (end.y - start.y) * easedProgress;
+
+  // Scale increases as cards come to center
   const scale = 0.85 + (0.15 * easedProgress);
+  // Opacity increases as cards come into view
+  const opacity = 0.5 + (0.5 * easedProgress);
 
-  // Opacity: fade in during first 20% of progress
-  const opacity = Math.min(1, progress * 5);
-
-  // At progress=1, all cards stack in CENTER with slight offsets
-  const endX = card.endOffset.x;
-  const endY = card.endOffset.y;
-
-  // Card dimensions for centering: 260x160
-  const cardHalfWidth = 130;
-  const cardHalfHeight = 80;
+  const CardComponent = CARD_COMPONENTS[card.component];
 
   return (
     <div
-      className="absolute"
+      className="absolute left-1/2 top-1/2"
       style={{
         zIndex: card.zIndex,
         opacity,
-        transform: `rotate(${currentRotationDeg}deg) scale(${scale})`,
+        transform: `translate(calc(-50% + ${currentX}px), calc(-50% + ${currentY}px)) scale(${scale})`,
         willChange: 'transform, opacity',
-        // Transition from edge to center
-        top: 'top' in card.startPos
-          ? `calc(${parseFloat(card.startPos.top)}% + ${(50 - parseFloat(card.startPos.top)) * easedProgress}% + ${endY * easedProgress}px - ${cardHalfHeight}px)`
-          : undefined,
-        bottom: 'bottom' in card.startPos
-          ? `calc(${parseFloat(card.startPos.bottom)}% + ${(50 - parseFloat(card.startPos.bottom)) * easedProgress}% + ${-endY * easedProgress}px - ${cardHalfHeight}px)`
-          : undefined,
-        left: 'left' in card.startPos
-          ? `calc(${parseFloat(card.startPos.left)}% + ${(50 - parseFloat(card.startPos.left)) * easedProgress}% + ${endX * easedProgress}px - ${cardHalfWidth}px)`
-          : undefined,
-        right: 'right' in card.startPos
-          ? `calc(${parseFloat(card.startPos.right)}% + ${(50 - parseFloat(card.startPos.right)) * easedProgress}% + ${-endX * easedProgress}px - ${cardHalfWidth}px)`
-          : undefined,
       }}
     >
-      <AnalysisCard card={card} />
+      <CardComponent />
     </div>
   );
 }
 
-// Hook for sticky scroll progress
 function useStickyScrollProgress() {
   const containerRef = useRef(null);
   const [progress, setProgress] = useState(0);
@@ -167,16 +243,8 @@ function useStickyScrollProgress() {
       const rect = containerRef.current.getBoundingClientRect();
       const sectionHeight = containerRef.current.offsetHeight;
       const viewportHeight = window.innerHeight;
-
-      // Scroll range = section height minus one viewport (the sticky portion)
       const scrollRange = sectionHeight - viewportHeight;
-
-      // How much we've scrolled into the section
-      // When rect.top = 0, we're at the start of sticky
-      // When rect.top = -(scrollRange), we're at the end
       const scrolled = Math.max(0, -rect.top);
-
-      // Progress from 0 to 1 over the scroll range
       const newProgress = Math.max(0, Math.min(1, scrolled / scrollRange));
 
       if (prefersReducedMotion) {
@@ -194,7 +262,7 @@ function useStickyScrollProgress() {
     };
 
     window.addEventListener('scroll', handleScroll, { passive: true });
-    calculateProgress(); // Initial check
+    calculateProgress();
 
     return () => {
       window.removeEventListener('scroll', handleScroll);
@@ -210,52 +278,65 @@ function useStickyScrollProgress() {
 export function FloatingCards() {
   const { containerRef, progress } = useStickyScrollProgress();
 
-  // Headline fades out as cards converge (inverse of progress)
-  const headlineOpacity = Math.max(0, 1 - progress * 1.5);
-  const headlineScale = 1 - (progress * 0.1);
+  // Headline starts LARGE and SHRINKS (like Jeton) - but doesn't disappear
+  // At progress 0: scale 1.0, at progress 1: scale 0.6
+  const headlineScale = 1 - (progress * 0.4);
+  // Headline fades slightly but stays visible
+  const headlineOpacity = 1 - (progress * 0.3);
 
   return (
-    // Outer container - tall to create scroll room (2.5x viewport)
     <section
       ref={containerRef}
-      className="relative bg-cream"
-      style={{ height: '250vh' }}
+      className="relative"
+      style={{
+        height: '300vh', // More scroll distance for smoother animation
+        background: '#ffffff',
+      }}
     >
-      {/* Sticky container - stays in view while scrolling */}
-      <div
-        className="sticky top-0 h-screen flex items-center justify-center overflow-hidden"
-      >
-        {/* Floating cards - positioned absolutely within sticky container */}
-        {CARDS.map((card) => (
-          <FloatingCard
-            key={card.id}
-            card={card}
-            progress={progress}
-          />
-        ))}
-
-        {/* Central headline - fades as cards converge */}
+      <div className="sticky top-0 h-screen flex items-center justify-center overflow-hidden">
+        {/* Headline - starts fullscreen, shrinks as you scroll */}
         <div
-          className="text-center relative z-0 px-8 pointer-events-none"
+          className="absolute inset-0 flex items-center justify-center pointer-events-none"
           style={{
+            zIndex: 0,
             opacity: headlineOpacity,
             transform: `scale(${headlineScale})`,
             willChange: 'transform, opacity',
           }}
         >
-          <h2 className="text-[clamp(3rem,10vw,8rem)] font-semibold leading-[0.95] tracking-tight text-text-dark">
+          <h2
+            className="text-center px-4"
+            style={{
+              fontSize: 'clamp(4rem, 15vw, 12rem)',
+              fontWeight: 600,
+              lineHeight: 0.95,
+              letterSpacing: '-0.02em',
+              color: '#1e293b',
+            }}
+          >
             Unify your
             <br />
-            <span className="text-primary">opportunities</span>
+            <span style={{ color: '#e85d4c' }}>opportunities</span>
           </h2>
         </div>
 
-        {/* Background gradient */}
-        <div className="absolute inset-0 pointer-events-none -z-10">
+        {/* Cards - come from edges and OVERLAP in center */}
+        {CARDS.map((card, index) => (
+          <FloatingCard
+            key={card.id}
+            card={card}
+            index={index}
+            progress={progress}
+            totalCards={CARDS.length}
+          />
+        ))}
+
+        {/* Subtle radial gradient */}
+        <div className="absolute inset-0 pointer-events-none" style={{ zIndex: -1 }}>
           <div
-            className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[800px] rounded-full"
+            className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[1000px] h-[1000px] rounded-full"
             style={{
-              background: 'radial-gradient(circle, rgba(13, 148, 136, 0.04) 0%, transparent 60%)',
+              background: 'radial-gradient(circle, rgba(232, 93, 76, 0.03) 0%, transparent 60%)',
             }}
           />
         </div>

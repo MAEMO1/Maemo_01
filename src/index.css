@@ -1,24 +1,29 @@
 @import "tailwindcss";
 
-/* MAEMO Design System - Professional Business */
+/* MAEMO Design System - Warm Modern Professional */
 @theme {
-  /* Primary - Corporate Teal */
-  --color-primary: #0d9488;
-  --color-primary-dark: #0f766e;
-  --color-primary-light: #14b8a6;
+  /* Primary - Deep Slate */
+  --color-primary: #1e293b;
+  --color-primary-dark: #0f172a;
+  --color-primary-light: #334155;
 
-  /* Accent Colors - Business Palette */
-  --color-navy: #1e3a5f;
-  --color-slate: #475569;
-  --color-steel: #64748b;
+  /* Accent - Warm Coral (inspired by Jeton warmth) */
+  --color-accent: #e85d4c;
+  --color-accent-light: #f47564;
+  --color-accent-dark: #d94a39;
 
-  /* Neutrals - Clean, Professional */
+  /* Business Palette */
+  --color-navy: #0f172a;
+  --color-slate: #334155;
+  --color-steel: #475569;
+
+  /* Neutrals - Clean & Modern */
   --color-ink: #1e293b;
   --color-charcoal: #334155;
   --color-stone: #64748b;
   --color-sand: #94a3b8;
-  --color-cream: #f8fafc;
-  --color-ivory: #ffffff;
+  --color-cream: #ffffff;
+  --color-ivory: #f8fafc;
 
   /* Text */
   --color-text-dark: #1e293b;
@@ -111,8 +116,8 @@
   body {
     font-family: 'Outfit', system-ui, sans-serif;
     font-weight: 400;
-    color: #0f0f0f;
-    background: #fffcf7;
+    color: #0f172a;
+    background: #ffffff;
     margin: 0;
     min-height: 100vh;
     -webkit-font-smoothing: antialiased;
@@ -120,8 +125,8 @@
   }
 
   ::selection {
-    background-color: #0d9488;
-    color: white;
+    background-color: #0f172a;
+    color: #ffffff;
   }
 
   @media (prefers-reduced-motion: reduce) {
@@ -134,11 +139,11 @@
 
 /* Utilities */
 @layer utilities {
-  /* Hero gradient - Professional cool tones */
+  /* Hero gradient - Warm modern */
   .bg-hero-gradient {
     background:
-      radial-gradient(ellipse 80% 50% at 50% 120%, rgba(13, 148, 136, 0.12) 0%, transparent 50%),
-      linear-gradient(180deg, #f8fafc 0%, #f1f5f9 50%, #e2e8f0 100%);
+      radial-gradient(ellipse 80% 50% at 50% 120%, rgba(232, 93, 76, 0.05) 0%, transparent 50%),
+      linear-gradient(180deg, #ffffff 0%, #fafafa 100%);
   }
 
   /* Noise texture overlay */
@@ -231,15 +236,32 @@
 
   .shadow-nav {
     box-shadow:
-      0 4px 12px rgba(13, 148, 136, 0.15),
-      0 12px 32px rgba(13, 148, 136, 0.1);
+      0 4px 12px rgba(12, 24, 41, 0.15),
+      0 12px 32px rgba(12, 24, 41, 0.1);
   }
 
   /* Glass nav with backdrop blur */
   .glass-nav {
     backdrop-filter: blur(12px);
     -webkit-backdrop-filter: blur(12px);
-    background: rgba(13, 148, 136, 0.9);
+    background: rgba(12, 24, 41, 0.95);
+  }
+
+  /* Premium card glass effect */
+  .glass-card {
+    background: linear-gradient(135deg, rgba(255, 255, 255, 0.9) 0%, rgba(255, 255, 255, 0.7) 100%);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    border: 1px solid rgba(255, 255, 255, 0.5);
+  }
+
+  /* Premium shadow for cards */
+  .shadow-premium {
+    box-shadow:
+      0 4px 6px rgba(12, 24, 41, 0.03),
+      0 10px 20px rgba(12, 24, 41, 0.04),
+      0 25px 50px rgba(12, 24, 41, 0.06),
+      inset 0 1px 0 rgba(255, 255, 255, 0.5);
   }
 
   /* Parallax container */
@@ -257,8 +279,8 @@
     content: '';
     display: block;
     width: 48px;
-    height: 3px;
-    background: #0d9488;
+    height: 2px;
+    background: linear-gradient(90deg, #e85d4c 0%, #f47564 100%);
     margin-bottom: 1.5rem;
     border-radius: 2px;
   }

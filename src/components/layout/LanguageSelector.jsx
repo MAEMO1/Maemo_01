@@ -3,7 +3,7 @@ import { useLanguage } from '../../hooks/useLanguage';
 import { useTranslation } from '../../hooks/useTranslation';
 import { cn } from '../../utils/cn';
 
-export function LanguageSelector({ className = '', variant = 'light' }) {
+export function LanguageSelector({ className = '', variant = 'dark' }) {
   const { language, switchLanguage, languages } = useLanguage();
   const { t } = useTranslation();
   const [isOpen, setIsOpen] = useState(false);
@@ -38,38 +38,42 @@ export function LanguageSelector({ className = '', variant = 'light' }) {
       <button
         onClick={() => setIsOpen(!isOpen)}
         className={cn(
-          'flex items-center gap-1.5 px-3 py-2 rounded-full',
-          'text-sm font-medium',
-          'transition-all duration-200',
+          'flex items-center gap-1.5 px-2 py-1.5',
+          'text-sm',
+          'transition-all duration-300',
           variant === 'light'
-            ? 'text-white/80 hover:text-white hover:bg-white/10'
-            : 'text-text-medium hover:text-text-dark hover:bg-gray-100'
+            ? 'text-white/80 hover:text-white'
+            : 'text-slate-500 hover:text-slate-800'
         )}
+        style={{ letterSpacing: '0.05em' }}
         aria-expanded={isOpen}
         aria-haspopup="listbox"
       >
-        {t(`language.${language}`)}
+        {language.toUpperCase()}
         <svg
           className={cn(
-            'w-3.5 h-3.5 transition-transform duration-200',
+            'w-3 h-3 transition-transform duration-200',
             isOpen && 'rotate-180'
           )}
           fill="none"
           viewBox="0 0 24 24"
           stroke="currentColor"
+          strokeWidth={2}
         >
-          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+          <path strokeLinecap="round" strokeLinejoin="round" d="M19 9l-7 7-7-7" />
         </svg>
       </button>
 
       {isOpen && (
         <div
           className={cn(
-            'absolute right-0 top-full mt-2 py-2',
-            'bg-white rounded-xl shadow-lg border border-gray-100',
-            'min-w-[100px] z-50',
-            'animate-fade-in'
+            'absolute right-0 top-full mt-2 py-1.5',
+            'bg-white rounded-lg',
+            'min-w-[80px] z-50'
           )}
+          style={{
+            boxShadow: '0 4px 20px rgba(0,0,0,0.08)',
+          }}
           role="listbox"
         >
           {languages.map((lang) => (
@@ -81,16 +85,17 @@ export function LanguageSelector({ className = '', variant = 'light' }) {
               }}
               className={cn(
                 'w-full px-4 py-2 text-left',
-                'text-sm font-medium',
+                'text-sm',
                 'transition-colors duration-200',
                 lang === language
-                  ? 'text-coral bg-coral/5'
-                  : 'text-text-medium hover:text-text-dark hover:bg-gray-50'
+                  ? 'text-slate-800'
+                  : 'text-slate-400 hover:text-slate-800'
               )}
+              style={{ letterSpacing: '0.05em' }}
               role="option"
               aria-selected={lang === language}
             >
-              {t(`language.${lang}`)}
+              {lang.toUpperCase()}
             </button>
           ))}
         </div>
