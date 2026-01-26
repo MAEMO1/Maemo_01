@@ -13,7 +13,6 @@ export function BottomNav() {
 
   const items = [
     { path: '/', label: t('nav.home'), icon: <HomeIcon /> },
-    { path: '/approach', label: t('nav.approach') },
     { path: '/contact', label: t('nav.contact') },
   ];
 

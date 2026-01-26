@@ -76,7 +76,7 @@ export function Hero() {
               style={{ opacity: 0, animation: 'fade-in-up 1s cubic-bezier(0.16, 1, 0.3, 1) 0.8s forwards' }}
             >
               <Link
-                to="/approach"
+                to="/contact"
                 className="group inline-flex items-center gap-3 px-8 py-4 rounded-full bg-ink text-white font-medium hover:bg-charcoal transition-all duration-300"
               >
                 {t('home.hero.cta')}

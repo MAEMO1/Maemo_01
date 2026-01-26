@@ -27,7 +27,6 @@ export function MobileMenu({ isOpen, onClose }) {
 
   const navItems = [
     { path: '/', label: t('nav.home') },
-    { path: '/approach', label: t('nav.approach') },
     { path: '/contact', label: t('nav.contact') },
   ];
 

@@ -20,16 +20,9 @@ export function Header() {
 
             <Link
               to="/contact"
-              className="hidden md:flex px-4 py-2 text-sm font-medium text-white/80 hover:text-white transition-colors"
-            >
-              {t('nav.contact')}
-            </Link>
-
-            <Link
-              to="/approach"
               className="hidden md:flex px-5 py-2.5 rounded-full text-sm font-semibold bg-white text-primary hover:bg-white/90 transition-colors"
             >
-              {t('nav.approach')}
+              {t('nav.contact')}
             </Link>
 
             <button

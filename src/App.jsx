@@ -5,7 +5,6 @@ import { Layout } from './components/layout/Layout';
 
 // Lazy load pages for better performance
 const HomePage = lazy(() => import('./pages/HomePage'));
-const ApproachPage = lazy(() => import('./pages/ApproachPage'));
 const ContactPage = lazy(() => import('./pages/ContactPage'));
 
 // Loading component
@@ -27,7 +26,6 @@ function App() {
           <Routes>
             <Route path="/" element={<Layout />}>
               <Route index element={<HomePage />} />
-              <Route path="approach" element={<ApproachPage />} />
               <Route path="contact" element={<ContactPage />} />
             </Route>
           </Routes>
