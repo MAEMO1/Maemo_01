@@ -3,6 +3,11 @@
     "title": "maemo | Exclusive Business Consultancy",
     "description": "We choose our clients."
   },
+  "common": {
+    "scroll": "Scroll",
+    "openMenu": "Open menu",
+    "closeMenu": "Close menu"
+  },
   "nav": {
     "home": "Home",
     "approach": "Approach",
@@ -16,6 +21,7 @@
   },
   "home": {
     "hero": {
+      "eyebrow": "Exclusive Business Consultancy",
       "tagline": "We choose our clients.",
       "subtitle": "maemo is an exclusive business consultancy that proactively identifies high-potential enterprises and provides strategic tools to realize their growth potential.",
       "cta": "Pitch us"

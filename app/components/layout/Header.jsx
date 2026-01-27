@@ -84,7 +84,7 @@ export function Header() {
               onClick={() => setMenuOpen(true)}
               className="md:hidden p-2 rounded-lg transition-colors"
               style={{ color: textColor }}
-              aria-label="Open menu"
+              aria-label={t('common.openMenu')}
             >
               <svg className="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
                 <path strokeLinecap="round" strokeLinejoin="round" d="M4 6h16M4 12h16M4 18h16" />

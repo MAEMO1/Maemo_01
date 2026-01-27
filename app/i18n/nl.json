@@ -3,6 +3,11 @@
     "title": "maemo | Exclusief Bedrijfsadvies",
     "description": "Wij kiezen onze klanten."
   },
+  "common": {
+    "scroll": "Scroll",
+    "openMenu": "Open menu",
+    "closeMenu": "Sluit menu"
+  },
   "nav": {
     "home": "Home",
     "approach": "Aanpak",
@@ -16,6 +21,7 @@
   },
   "home": {
     "hero": {
+      "eyebrow": "Exclusief Bedrijfsadvies",
       "tagline": "Wij kiezen onze klanten.",
       "subtitle": "maemo is een exclusieve business consultancy die proactief hoogpotentiële ondernemingen identificeert en strategische tools biedt om hun groeipotentieel te realiseren.",
       "cta": "Pitch ons"

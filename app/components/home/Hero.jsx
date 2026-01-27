@@ -22,9 +22,9 @@ export function Hero() {
               animation: 'fade-in-up 1s cubic-bezier(0.16, 1, 0.3, 1) 0.2s forwards'
             }}
           >
-            We choose
+            {t('home.hero.tagline').split(' ').slice(0, 2).join(' ')}
             <br />
-            our clients.
+            {t('home.hero.tagline').split(' ').slice(2).join(' ')}
           </h1>
 
           <p
@@ -69,7 +69,7 @@ export function Hero() {
         <div className="w-5 h-8 rounded-full border border-stone/30 flex items-start justify-center p-1">
           <div className="w-1 h-2 bg-stone/50 rounded-full animate-float" />
         </div>
-        <span className="text-xs text-stone/40 uppercase tracking-widest">Scroll</span>
+        <span className="text-xs text-stone/40 uppercase tracking-widest">{t('common.scroll')}</span>
       </div>
     </section>
   );

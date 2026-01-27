@@ -3,6 +3,11 @@
     "title": "maemo | Conseil d'Affaires Exclusif",
     "description": "Nous choisissons nos clients."
   },
+  "common": {
+    "scroll": "Défiler",
+    "openMenu": "Ouvrir le menu",
+    "closeMenu": "Fermer le menu"
+  },
   "nav": {
     "home": "Accueil",
     "approach": "Approche",
@@ -16,6 +21,7 @@
   },
   "home": {
     "hero": {
+      "eyebrow": "Conseil d'Affaires Exclusif",
       "tagline": "Nous choisissons nos clients.",
       "subtitle": "maemo est un cabinet de conseil exclusif qui identifie proactivement les entreprises à haut potentiel et fournit des outils stratégiques pour réaliser leur potentiel de croissance.",
       "cta": "Pitchez-nous"
