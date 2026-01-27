@@ -11,11 +11,10 @@ export function AnimatedNumber({
   const [displayValue, setDisplayValue] = useState('0');
   const [hasAnimated, setHasAnimated] = useState(false);
   const ref = useRef(null);
+  const checkIntervalRef = useRef(null);
 
-  // Parse the value to extract number and format
   const parseValue = useCallback((val) => {
     const str = String(val);
-    // Match patterns like: €847K, +34%, 92%, $1.2M, etc.
     const match = str.match(/^([^\d]*)([\d.,]+)([^\d]*)$/);
     if (match) {
       const prefix = match[1] || '';
@@ -32,7 +31,6 @@ export function AnimatedNumber({
   const animateValue = useCallback(() => {
     const { prefix, num, suffix, decimalPlaces, original } = parseValue(value);
 
-    // If no valid number found, just show the original
     if (num === 0 && !original.includes('0')) {
       setDisplayValue(original);
       return;
@@ -43,10 +41,7 @@ export function AnimatedNumber({
     function update(currentTime) {
       const elapsed = currentTime - startTime;
       const progress = Math.min(elapsed / duration, 1);
-
-      // easeOutExpo
       const easeProgress = progress === 1 ? 1 : 1 - Math.pow(2, -10 * progress);
-
       const currentNum = num * easeProgress;
       const formatted = decimalPlaces > 0
         ? currentNum.toFixed(decimalPlaces)
@@ -62,23 +57,47 @@ export function AnimatedNumber({
     requestAnimationFrame(update);
   }, [parseValue, value, duration]);
 
-  useEffect(() => {
-    const observer = new IntersectionObserver(
-      ([entry]) => {
-        if (entry.isIntersecting && !hasAnimated) {
-          setHasAnimated(true);
-          animateValue();
-        }
-      },
-      { threshold: 0.3 }
-    );
+  // Check if element is truly visible (including parent opacity from GSAP)
+  const isElementVisible = useCallback(() => {
+    if (!ref.current) return false;
 
-    if (ref.current) {
-      observer.observe(ref.current);
+    const rect = ref.current.getBoundingClientRect();
+    const inViewport = rect.top < window.innerHeight && rect.bottom > 0;
+
+    if (!inViewport) return false;
+
+    // Check computed opacity of element and ancestors
+    let el = ref.current;
+    while (el) {
+      const style = window.getComputedStyle(el);
+      const opacity = parseFloat(style.opacity);
+      if (opacity < 0.5) return false;
+      el = el.parentElement;
     }
 
-    return () => observer.disconnect();
-  }, [hasAnimated, animateValue]);
+    return true;
+  }, []);
+
+  useEffect(() => {
+    if (hasAnimated) return;
+
+    // Poll for visibility (handles GSAP animations)
+    checkIntervalRef.current = setInterval(() => {
+      if (isElementVisible() && !hasAnimated) {
+        setHasAnimated(true);
+        animateValue();
+        if (checkIntervalRef.current) {
+          clearInterval(checkIntervalRef.current);
+        }
+      }
+    }, 100);
+
+    return () => {
+      if (checkIntervalRef.current) {
+        clearInterval(checkIntervalRef.current);
+      }
+    };
+  }, [hasAnimated, isElementVisible, animateValue]);
 
   return (
     <span ref={ref} className={className} style={style}>
