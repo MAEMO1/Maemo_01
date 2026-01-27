@@ -184,12 +184,10 @@ const CARDS = [
 function FloatingCard({ card, index, progress, totalCards, t }) {
   // Smoother easing for consistent feel with ActionStack
   const easeOutQuart = (x) => 1 - Math.pow(1 - x, 4);
-  const easeInOutQuart = (x) => x < 0.5 ? 8 * x * x * x * x : 1 - Math.pow(-2 * x + 2, 4) / 2;
 
   // Each card has its own animation timing - they appear ONE BY ONE
-  // More spread out for the 3-phase animation (fly in → zoom → settle)
   const cardStart = index * 0.12;
-  const cardEnd = cardStart + 0.40; // Longer duration for 3 phases
+  const cardEnd = cardStart + 0.35;
 
   // Calculate card-specific progress (0 to 1 for this card's animation)
   let cardProgress = 0;
@@ -197,10 +195,12 @@ function FloatingCard({ card, index, progress, totalCards, t }) {
     cardProgress = Math.min(1, (progress - cardStart) / (cardEnd - cardStart));
   }
 
-  // 3 PHASES of animation:
-  // Phase 1 (0-0.4): Fly in from edge, small → growing
-  // Phase 2 (0.4-0.7): Zoom IN to larger than final (readable moment)
-  // Phase 3 (0.7-1.0): Settle to final position and scale
+  // Final scale - cards stay BIG when stacked (1.3x)
+  const FINAL_SCALE = 1.3;
+
+  // 2 PHASES of animation:
+  // Phase 1 (0-0.6): Fly in from edge, small → grow to FINAL big size
+  // Phase 2 (0.6-1.0): Settle into stacked position (stay at big size)
 
   // Each card has a unique starting position (off-screen)
   const startPositions = [
@@ -211,12 +211,12 @@ function FloatingCard({ card, index, progress, totalCards, t }) {
     { x: 0, y: 600 },      // administration - from far bottom center
   ];
 
-  // End positions - cards STACK in center with slight offsets
+  // End positions - cards STACK in center with slight offsets (all at same big size)
   const endPositions = [
-    { x: -25, y: -15 },    // jaarrekening - bottom of stack
-    { x: 20, y: -20 },     // profitLoss
-    { x: -15, y: 10 },     // marketPosition
-    { x: 25, y: 5 },       // digitalPresence
+    { x: -20, y: -12 },    // jaarrekening - bottom of stack
+    { x: 15, y: -15 },     // profitLoss
+    { x: -12, y: 8 },      // marketPosition
+    { x: 18, y: 4 },       // digitalPresence
     { x: 0, y: 0 },        // administration - top of stack (center)
   ];
 
@@ -226,39 +226,28 @@ function FloatingCard({ card, index, progress, totalCards, t }) {
   // Calculate position and scale based on phase
   let currentX, currentY, scale;
 
-  if (cardProgress <= 0.4) {
-    // Phase 1: Fly in (0 → 0.4)
-    const phase1Progress = cardProgress / 0.4;
+  if (cardProgress <= 0.6) {
+    // Phase 1: Fly in and grow to final size (0 → 0.6)
+    const phase1Progress = cardProgress / 0.6;
     const eased = easeOutQuart(phase1Progress);
 
-    // Move from start towards center (overshoot slightly)
+    // Move from start towards center
     currentX = start.x + (0 - start.x) * eased;
     currentY = start.y + (0 - start.y) * eased;
 
-    // Scale: start very small (0.3), grow to medium (0.9)
-    scale = 0.3 + (0.6 * eased);
-  } else if (cardProgress <= 0.7) {
-    // Phase 2: Zoom IN - card gets bigger for readability (0.4 → 0.7)
-    const phase2Progress = (cardProgress - 0.4) / 0.3;
-    const eased = easeInOutQuart(phase2Progress);
-
-    // Stay near center during zoom
-    currentX = 0;
-    currentY = 0;
-
-    // Scale: grow from 0.9 to 1.4 (bigger than final for readability)
-    scale = 0.9 + (0.5 * eased);
+    // Scale: start small (0.3), grow to FINAL big size (1.3)
+    scale = 0.3 + ((FINAL_SCALE - 0.3) * eased);
   } else {
-    // Phase 3: Settle to final position (0.7 → 1.0)
-    const phase3Progress = (cardProgress - 0.7) / 0.3;
-    const eased = easeOutQuart(phase3Progress);
+    // Phase 2: Settle into stacked position (0.6 → 1.0)
+    const phase2Progress = (cardProgress - 0.6) / 0.4;
+    const eased = easeOutQuart(phase2Progress);
 
     // Move from center to final stacked position
-    currentX = 0 + (end.x - 0) * eased;
-    currentY = 0 + (end.y - 0) * eased;
+    currentX = end.x * eased;
+    currentY = end.y * eased;
 
-    // Scale: shrink from 1.4 back to final size (1.0)
-    scale = 1.4 - (0.4 * eased);
+    // Scale: STAY at final big size
+    scale = FINAL_SCALE;
   }
 
   // Opacity: hidden until animation starts, then visible
