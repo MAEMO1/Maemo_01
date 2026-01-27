@@ -172,60 +172,94 @@ const CARD_COMPONENTS = {
   ),
 };
 
-// 5 cards - they will appear ONE BY ONE and OVERLAP in the center
+// 5 cards - they will appear ONE BY ONE and STACK (last card on top)
 const CARDS = [
-  { id: 'jaarrekening', component: 'jaarrekening', zIndex: 5 },
-  { id: 'profitLoss', component: 'profitLoss', zIndex: 4 },
+  { id: 'jaarrekening', component: 'jaarrekening', zIndex: 1 },
+  { id: 'profitLoss', component: 'profitLoss', zIndex: 2 },
   { id: 'marketPosition', component: 'marketPosition', zIndex: 3 },
-  { id: 'digitalPresence', component: 'digitalPresence', zIndex: 2 },
-  { id: 'administration', component: 'administration', zIndex: 1 },
+  { id: 'digitalPresence', component: 'digitalPresence', zIndex: 4 },
+  { id: 'administration', component: 'administration', zIndex: 5 },
 ];
 
 function FloatingCard({ card, index, progress, totalCards, t }) {
   // Smoother easing for consistent feel with ActionStack
   const easeOutQuart = (x) => 1 - Math.pow(1 - x, 4);
+  const easeInOutQuart = (x) => x < 0.5 ? 8 * x * x * x * x : 1 - Math.pow(-2 * x + 2, 4) / 2;
 
   // Each card has its own animation timing - they appear ONE BY ONE
-  // Card 0: 0.0 - 0.3, Card 1: 0.15 - 0.45, Card 2: 0.30 - 0.60, etc.
-  const cardStart = index * 0.15;
-  const cardEnd = cardStart + 0.35;
+  // More spread out for the 3-phase animation (fly in → zoom → settle)
+  const cardStart = index * 0.12;
+  const cardEnd = cardStart + 0.40; // Longer duration for 3 phases
 
-  // Calculate card-specific progress
+  // Calculate card-specific progress (0 to 1 for this card's animation)
   let cardProgress = 0;
   if (progress >= cardStart) {
     cardProgress = Math.min(1, (progress - cardStart) / (cardEnd - cardStart));
   }
 
-  const easedProgress = easeOutQuart(cardProgress);
+  // 3 PHASES of animation:
+  // Phase 1 (0-0.4): Fly in from edge, small → growing
+  // Phase 2 (0.4-0.7): Zoom IN to larger than final (readable moment)
+  // Phase 3 (0.7-1.0): Settle to final position and scale
 
   // Each card has a unique starting position (off-screen)
-  // Cards fly in from edges like Jeton
   const startPositions = [
-    { x: -800, y: -400 },  // jaarrekening - from far top left
-    { x: 800, y: -350 },   // profitLoss - from far top right
-    { x: -750, y: 400 },   // marketPosition - from far bottom left
-    { x: 750, y: 350 },    // digitalPresence - from far bottom right
-    { x: 0, y: 500 },      // administration - from far bottom center
+    { x: -900, y: -500 },  // jaarrekening - from far top left
+    { x: 900, y: -450 },   // profitLoss - from far top right
+    { x: -850, y: 500 },   // marketPosition - from far bottom left
+    { x: 850, y: 450 },    // digitalPresence - from far bottom right
+    { x: 0, y: 600 },      // administration - from far bottom center
   ];
 
-  // End positions - cards CONVERGE to CENTER and OVERLAP tightly (like Jeton)
-  // Very small offsets for a tight stacked deck effect
+  // End positions - cards STACK in center with slight offsets
   const endPositions = [
-    { x: -30, y: -20 },    // jaarrekening - slightly left and up
-    { x: 25, y: -25 },     // profitLoss - slightly right and up
-    { x: -20, y: 15 },     // marketPosition - slightly left and down
-    { x: 30, y: 10 },      // digitalPresence - slightly right and down
-    { x: 0, y: 0 },        // administration - center (front card)
+    { x: -25, y: -15 },    // jaarrekening - bottom of stack
+    { x: 20, y: -20 },     // profitLoss
+    { x: -15, y: 10 },     // marketPosition
+    { x: 25, y: 5 },       // digitalPresence
+    { x: 0, y: 0 },        // administration - top of stack (center)
   ];
 
   const start = startPositions[index];
   const end = endPositions[index];
 
-  const currentX = start.x + (end.x - start.x) * easedProgress;
-  const currentY = start.y + (end.y - start.y) * easedProgress;
+  // Calculate position and scale based on phase
+  let currentX, currentY, scale;
 
-  // Scale: cards start small (0.7) and grow to full size (1.0)
-  const scale = 0.7 + (0.3 * easedProgress);
+  if (cardProgress <= 0.4) {
+    // Phase 1: Fly in (0 → 0.4)
+    const phase1Progress = cardProgress / 0.4;
+    const eased = easeOutQuart(phase1Progress);
+
+    // Move from start towards center (overshoot slightly)
+    currentX = start.x + (0 - start.x) * eased;
+    currentY = start.y + (0 - start.y) * eased;
+
+    // Scale: start very small (0.3), grow to medium (0.9)
+    scale = 0.3 + (0.6 * eased);
+  } else if (cardProgress <= 0.7) {
+    // Phase 2: Zoom IN - card gets bigger for readability (0.4 → 0.7)
+    const phase2Progress = (cardProgress - 0.4) / 0.3;
+    const eased = easeInOutQuart(phase2Progress);
+
+    // Stay near center during zoom
+    currentX = 0;
+    currentY = 0;
+
+    // Scale: grow from 0.9 to 1.4 (bigger than final for readability)
+    scale = 0.9 + (0.5 * eased);
+  } else {
+    // Phase 3: Settle to final position (0.7 → 1.0)
+    const phase3Progress = (cardProgress - 0.7) / 0.3;
+    const eased = easeOutQuart(phase3Progress);
+
+    // Move from center to final stacked position
+    currentX = 0 + (end.x - 0) * eased;
+    currentY = 0 + (end.y - 0) * eased;
+
+    // Scale: shrink from 1.4 back to final size (1.0)
+    scale = 1.4 - (0.4 * eased);
+  }
 
   // Opacity: hidden until animation starts, then visible
   const opacity = cardProgress > 0 ? 1 : 0;
@@ -240,6 +274,7 @@ function FloatingCard({ card, index, progress, totalCards, t }) {
         opacity,
         transform: `translate(calc(-50% + ${currentX}px), calc(-50% + ${currentY}px)) scale(${scale})`,
         willChange: 'transform, opacity',
+        transition: 'none',
       }}
     >
       <CardComponent t={t} />
@@ -324,7 +359,7 @@ export function FloatingCards() {
       ref={containerRef}
       className="relative"
       style={{
-        height: '450vh', // More scroll distance for sequential card animation
+        height: '500vh', // Extra scroll for 3-phase animation (fly → zoom → settle)
         background: '#ffffff',
       }}
     >
