@@ -4,13 +4,14 @@ import { useRef, useLayoutEffect, useState, useEffect } from 'react';
 import { useTranslation } from '../../hooks/useTranslation';
 import { gsap, ScrollTrigger } from '../../lib/gsap';
 
-// Elite Monochrome palette for exclusive consultancy brand
-// Staggered layout inspired by jeton.com, colors adapted for boardroom aesthetics
+// "Serious Capital" palette - Private Equity / Boardroom aesthetics
+// Deep, institutional colors that evoke trust, stability and old money
 const ACTIONS = [
   {
     id: 'analyze',
     translationKey: 'home.actionStack.analyze',
-    color: '#1e293b', // Deep charcoal/onyx
+    color: '#064E3B', // Deep Forest (emerald-900) - old money, stability
+    bgOpacity: 0.08,
     offset: 'translateX(15%)',
     icon: (
       <svg className="w-8 h-8 md:w-10 md:h-10" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
@@ -21,7 +22,8 @@ const ACTIONS = [
   {
     id: 'strategize',
     translationKey: 'home.actionStack.strategize',
-    color: '#64748b', // Cool steel grey
+    color: '#1E3A8A', // Oxford Navy (blue-900) - institutional trust
+    bgOpacity: 0.08,
     offset: 'translateX(0)',
     icon: (
       <svg className="w-8 h-8 md:w-10 md:h-10" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
@@ -32,7 +34,8 @@ const ACTIONS = [
   {
     id: 'transform',
     translationKey: 'home.actionStack.transform',
-    color: '#e85d4c', // Maemo coral - brand accent (the only pop of color)
+    color: '#9A3412', // Burnished Copper (orange-800) - industry, transformation
+    bgOpacity: 0.08,
     offset: 'translateX(-12%)',
     icon: (
       <svg className="w-8 h-8 md:w-10 md:h-10" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
@@ -42,6 +45,14 @@ const ACTIONS = [
   },
 ];
 
+// Convert hex to rgba for subtle backgrounds
+function hexToRgba(hex, alpha) {
+  const r = parseInt(hex.slice(1, 3), 16);
+  const g = parseInt(hex.slice(3, 5), 16);
+  const b = parseInt(hex.slice(5, 7), 16);
+  return `rgba(${r}, ${g}, ${b}, ${alpha})`;
+}
+
 function ActionItem({ action, t, innerRef }) {
   return (
     <div
@@ -50,10 +61,9 @@ function ActionItem({ action, t, innerRef }) {
       style={{ transform: action.offset }}
     >
       <div
-        className="w-14 h-14 md:w-20 md:h-20 rounded-2xl flex items-center justify-center flex-shrink-0 border-2"
+        className="w-14 h-14 md:w-20 md:h-20 rounded-2xl flex items-center justify-center flex-shrink-0"
         style={{
-          borderColor: action.color,
-          background: 'transparent',
+          background: hexToRgba(action.color, action.bgOpacity),
         }}
       >
         <div style={{ color: action.color }}>{action.icon}</div>
