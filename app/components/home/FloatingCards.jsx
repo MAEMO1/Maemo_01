@@ -227,10 +227,10 @@ export function FloatingCards() {
         <h2
           className="text-center mb-10"
           style={{
-            fontSize: 'clamp(1.75rem, 8vw, 2.5rem)',
-            fontWeight: 600,
-            lineHeight: 1.2,
-            letterSpacing: '-0.02em',
+            fontSize: 'clamp(2.5rem, 12vw, 4rem)',
+            fontWeight: 700,
+            lineHeight: 1.0,
+            letterSpacing: '-0.03em',
             color: '#1e293b',
           }}
         >
@@ -261,10 +261,10 @@ export function FloatingCards() {
             <h2
               className="text-center px-4"
               style={{
-                fontSize: 'clamp(2rem, 8vw, 8rem)',
-                fontWeight: 600,
-                lineHeight: 1.1,
-                letterSpacing: '-0.02em',
+                fontSize: 'clamp(3rem, 14vw, 14rem)',
+                fontWeight: 700,
+                lineHeight: 1.0,
+                letterSpacing: '-0.03em',
                 color: '#1e293b',
               }}
             >
