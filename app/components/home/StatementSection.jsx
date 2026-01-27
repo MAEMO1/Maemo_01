@@ -1,56 +1,86 @@
 'use client';
 
-import { useRef, useLayoutEffect } from 'react';
+import { useRef, useLayoutEffect, useState, useEffect } from 'react';
 import { useTranslation } from '../../hooks/useTranslation';
 import { useBreakpoint } from '../../hooks/useMediaQuery';
-import { gsap, ScrollTrigger } from '../../lib/gsap';
+import { gsap } from '../../lib/gsap';
 
 export function StatementSection() {
   const { t } = useTranslation();
   const containerRef = useRef(null);
   const textRef = useRef(null);
+  const eyebrowRef = useRef(null);
+  const headingRef = useRef(null);
+  const bodyRef = useRef(null);
+  const accentRef = useRef(null);
   const isDesktop = useBreakpoint('md');
+  const [mounted, setMounted] = useState(false);
+
+  useEffect(() => {
+    setMounted(true);
+  }, []);
 
   useLayoutEffect(() => {
-    // Only run parallax on desktop for performance
-    if (!isDesktop) return;
+    if (!mounted) return;
 
     const ctx = gsap.context(() => {
-      // Parallax and fade-in effect for the text
-      gsap.fromTo(
-        textRef.current,
-        {
-          y: 60,
-          opacity: 0,
-        },
-        {
-          y: 0,
-          opacity: 1,
-          duration: 1,
-          ease: 'power3.out',
+      if (isDesktop) {
+        // Desktop: Parallax and fade-in effect for the text
+        gsap.fromTo(
+          textRef.current,
+          { y: 60, opacity: 0 },
+          {
+            y: 0,
+            opacity: 1,
+            duration: 1,
+            ease: 'power3.out',
+            scrollTrigger: {
+              trigger: containerRef.current,
+              start: 'top 85%',
+              end: 'top 50%',
+              scrub: 1,
+            },
+          }
+        );
+
+        // Subtle parallax on scroll
+        gsap.to(textRef.current, {
+          y: -40,
           scrollTrigger: {
             trigger: containerRef.current,
-            start: 'top 85%',
-            end: 'top 50%',
-            scrub: 1,
+            start: 'top top',
+            end: 'bottom top',
+            scrub: true,
           },
-        }
-      );
+        });
+      } else {
+        // Mobile: Staggered scroll-reveal animations for each element
+        const elements = [eyebrowRef.current, headingRef.current, bodyRef.current, accentRef.current];
 
-      // Subtle parallax on scroll
-      gsap.to(textRef.current, {
-        y: -40,
-        scrollTrigger: {
-          trigger: containerRef.current,
-          start: 'top top',
-          end: 'bottom top',
-          scrub: true,
-        },
-      });
+        elements.forEach((el, index) => {
+          if (!el) return;
+
+          gsap.fromTo(
+            el,
+            { opacity: 0, y: 30 + index * 5 },
+            {
+              opacity: 1,
+              y: 0,
+              duration: 0.6,
+              ease: 'power2.out',
+              scrollTrigger: {
+                trigger: el,
+                start: 'top 85%',
+                toggleActions: 'play none none none',
+              },
+            }
+          );
+        });
+      }
     }, containerRef);
 
     return () => ctx.revert();
-  }, [isDesktop]);
+  }, [mounted, isDesktop]);
 
   return (
     <section
@@ -69,18 +99,21 @@ export function StatementSection() {
       <div ref={textRef} className="max-w-6xl mx-auto px-4 sm:px-6 md:px-12">
         {/* Eyebrow */}
         <span
-          className="block uppercase tracking-[0.15em] sm:tracking-[0.2em] text-[10px] sm:text-xs font-semibold mb-6 sm:mb-8"
-          style={{ color: '#94a3b8' }}
+          ref={eyebrowRef}
+          className="block uppercase tracking-[0.15em] sm:tracking-[0.2em] text-[10px] sm:text-xs font-semibold mb-6 sm:mb-8 will-change-transform"
+          style={{ color: '#94a3b8', opacity: isDesktop ? undefined : 0 }}
         >
           {t('home.statement.eyebrow') || 'The Insight'}
         </span>
 
         {/* Main Statement - Large, confident typography */}
         <h2
-          className="font-semibold leading-[0.95] tracking-tight mb-8 sm:mb-10"
+          ref={headingRef}
+          className="font-semibold leading-[0.95] tracking-tight mb-8 sm:mb-10 will-change-transform"
           style={{
             fontSize: 'clamp(2rem, 5vw, 4.5rem)',
             color: '#0f172a',
+            opacity: isDesktop ? undefined : 0,
           }}
         >
           {t('home.statement.title1')}
@@ -91,7 +124,7 @@ export function StatementSection() {
         </h2>
 
         {/* Body text - Clean column */}
-        <div className="max-w-2xl">
+        <div ref={bodyRef} className="max-w-2xl will-change-transform" style={{ opacity: isDesktop ? undefined : 0 }}>
           <p
             className="text-base sm:text-lg md:text-xl leading-relaxed"
             style={{ color: '#64748b' }}
@@ -117,8 +150,9 @@ export function StatementSection() {
 
         {/* Subtle accent line */}
         <div
-          className="mt-12 sm:mt-16 h-px w-16 sm:w-24"
-          style={{ background: 'linear-gradient(90deg, #e85d4c, transparent)' }}
+          ref={accentRef}
+          className="mt-12 sm:mt-16 h-px w-16 sm:w-24 will-change-transform"
+          style={{ background: 'linear-gradient(90deg, #e85d4c, transparent)', opacity: isDesktop ? undefined : 0 }}
         />
       </div>
     </section>

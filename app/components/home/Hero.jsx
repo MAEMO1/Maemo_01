@@ -1,25 +1,70 @@
 'use client';
 
+import { useRef, useLayoutEffect, useState, useEffect } from 'react';
 import Link from 'next/link';
 import { useTranslation } from '../../hooks/useTranslation';
+import { gsap } from '../../lib/gsap';
 
 export function Hero() {
   const { t } = useTranslation();
+  const containerRef = useRef(null);
+  const headlineRef = useRef(null);
+  const subtitleRef = useRef(null);
+  const ctaRef = useRef(null);
+  const [mounted, setMounted] = useState(false);
+
+  useEffect(() => {
+    setMounted(true);
+  }, []);
+
+  useLayoutEffect(() => {
+    if (!mounted) return;
+
+    const ctx = gsap.context(() => {
+      // Premium staggered entrance animation
+      const tl = gsap.timeline({ defaults: { ease: 'power3.out' } });
+
+      // Headline - dramatic entrance with slight scale
+      tl.fromTo(
+        headlineRef.current,
+        { opacity: 0, y: 60, scale: 0.95 },
+        { opacity: 1, y: 0, scale: 1, duration: 1.2 }
+      );
+
+      // Subtitle - smooth fade in
+      tl.fromTo(
+        subtitleRef.current,
+        { opacity: 0, y: 40 },
+        { opacity: 1, y: 0, duration: 0.8 },
+        '-=0.6'
+      );
+
+      // CTA button - pop in with slight bounce
+      tl.fromTo(
+        ctaRef.current,
+        { opacity: 0, y: 30, scale: 0.9 },
+        { opacity: 1, y: 0, scale: 1, duration: 0.6, ease: 'back.out(1.7)' },
+        '-=0.4'
+      );
+    }, containerRef);
+
+    return () => ctx.revert();
+  }, [mounted]);
 
   return (
-    <section className="relative min-h-screen overflow-hidden bg-white">
+    <section ref={containerRef} className="relative min-h-screen overflow-hidden bg-white">
       {/* Content */}
       <div className="relative z-10 min-h-screen flex flex-col justify-center px-4 sm:px-6 md:px-12 lg:px-20 xl:px-24">
         <div className="max-w-5xl mx-auto w-full text-center">
           <h1
-            className="text-ink mb-6 sm:mb-8 md:mb-12"
+            ref={headlineRef}
+            className="text-ink mb-6 sm:mb-8 md:mb-12 will-change-transform"
             style={{
               fontSize: 'clamp(2.5rem, 8vw, 8rem)',
               fontWeight: 600,
               lineHeight: 1,
               letterSpacing: '-0.03em',
               opacity: 0,
-              animation: 'fade-in-up 1s cubic-bezier(0.16, 1, 0.3, 1) 0.2s forwards'
             }}
           >
             {t('home.hero.tagline').split(' ').slice(0, 2).join(' ')}
@@ -28,8 +73,9 @@ export function Hero() {
           </h1>
 
           <p
-            className="text-stone text-base sm:text-lg md:text-xl max-w-2xl mx-auto leading-relaxed mb-8 sm:mb-10 md:mb-12"
-            style={{ opacity: 0, animation: 'fade-in-up 1s cubic-bezier(0.16, 1, 0.3, 1) 0.4s forwards' }}
+            ref={subtitleRef}
+            className="text-stone text-base sm:text-lg md:text-xl max-w-2xl mx-auto leading-relaxed mb-8 sm:mb-10 md:mb-12 will-change-transform"
+            style={{ opacity: 0 }}
           >
             {t('home.hero.subtitle').split('maemo').map((part, i, arr) => (
               <span key={i}>
@@ -39,9 +85,7 @@ export function Hero() {
             ))}
           </p>
 
-          <div
-            style={{ opacity: 0, animation: 'fade-in-up 1s cubic-bezier(0.16, 1, 0.3, 1) 0.6s forwards' }}
-          >
+          <div ref={ctaRef} className="will-change-transform" style={{ opacity: 0 }}>
             <Link
               href="/contact"
               className="group inline-flex items-center gap-2 sm:gap-3 px-6 sm:px-8 py-3 sm:py-4 rounded-full bg-ink text-white font-medium hover:bg-charcoal transition-all duration-300 text-sm sm:text-base"

@@ -22,7 +22,7 @@ const PALETTE = {
 const CARD_COMPONENTS = {
   jaarrekening: ({ t }) => (
     <div
-      className={`${CARD_BASE} rounded-2xl sm:rounded-3xl p-3 sm:p-4 md:p-5 flex flex-col justify-between`}
+      className={`${CARD_BASE} rounded-2xl sm:rounded-3xl p-3 sm:p-4 md:p-5 flex flex-col justify-between will-change-transform`}
       style={{
         background: `linear-gradient(145deg, ${PALETTE.deepEmerald} 0%, #065F46 100%)`,
         boxShadow: '0 25px 50px rgba(6, 78, 59, 0.25)',
@@ -51,7 +51,7 @@ const CARD_COMPONENTS = {
   ),
   profitLoss: ({ t }) => (
     <div
-      className={`${CARD_BASE} rounded-2xl sm:rounded-3xl p-3 sm:p-4 md:p-5 flex flex-col`}
+      className={`${CARD_BASE} rounded-2xl sm:rounded-3xl p-3 sm:p-4 md:p-5 flex flex-col will-change-transform`}
       style={{
         background: '#ffffff',
         border: `2px solid ${PALETTE.oxfordNavy}`,
@@ -78,7 +78,7 @@ const CARD_COMPONENTS = {
   ),
   administration: ({ t }) => (
     <div
-      className={`${CARD_BASE} rounded-2xl sm:rounded-3xl p-3 sm:p-4 md:p-5 flex flex-col items-center justify-center`}
+      className={`${CARD_BASE} rounded-2xl sm:rounded-3xl p-3 sm:p-4 md:p-5 flex flex-col items-center justify-center will-change-transform`}
       style={{
         background: `linear-gradient(145deg, ${PALETTE.ivory} 0%, #f1f5f9 100%)`,
         border: '1px solid rgba(55, 65, 81, 0.1)',
@@ -105,7 +105,7 @@ const CARD_COMPONENTS = {
   ),
   marketPosition: ({ t }) => (
     <div
-      className={`${CARD_BASE} rounded-2xl sm:rounded-3xl p-3 sm:p-4 md:p-5 flex flex-col`}
+      className={`${CARD_BASE} rounded-2xl sm:rounded-3xl p-3 sm:p-4 md:p-5 flex flex-col will-change-transform`}
       style={{
         background: `linear-gradient(145deg, ${PALETTE.burnishedCopper} 0%, #B45309 100%)`,
         boxShadow: '0 25px 50px rgba(154, 52, 18, 0.2)',
@@ -132,7 +132,7 @@ const CARD_COMPONENTS = {
   ),
   digitalPresence: ({ t }) => (
     <div
-      className={`${CARD_BASE} rounded-2xl sm:rounded-3xl p-3 sm:p-4 md:p-5 flex flex-col items-center justify-center`}
+      className={`${CARD_BASE} rounded-2xl sm:rounded-3xl p-3 sm:p-4 md:p-5 flex flex-col items-center justify-center will-change-transform`}
       style={{
         background: `linear-gradient(145deg, ${PALETTE.slate} 0%, #0f172a 100%)`,
         boxShadow: '0 25px 50px rgba(15, 23, 42, 0.3)',
@@ -162,10 +162,20 @@ const CARD_POSITIONS = [
 // Cards to show (all 5)
 const ALL_CARDS = ['jaarrekening', 'profitLoss', 'administration', 'marketPosition', 'digitalPresence'];
 
+// Mobile card entrance directions for variety
+const MOBILE_ENTRANCES = [
+  { x: -40, y: 60, rotation: -4, scale: 0.85 },  // From left
+  { x: 40, y: 50, rotation: 3, scale: 0.9 },    // From right
+  { x: -30, y: 70, rotation: -2, scale: 0.88 }, // From left
+  { x: 35, y: 55, rotation: 4, scale: 0.87 },   // From right
+  { x: 0, y: 80, rotation: 0, scale: 0.85 },    // From bottom center
+];
+
 export function FloatingCards() {
   const containerRef = useRef(null);
   const headlineRef = useRef(null);
   const cardsContainerRef = useRef(null);
+  const mobileCardsRef = useRef([]);
   const cardRefs = useRef([]);
   const { t } = useTranslation();
   const [mounted, setMounted] = useState(false);
@@ -175,6 +185,7 @@ export function FloatingCards() {
     setMounted(true);
   }, []);
 
+  // Desktop animations
   useLayoutEffect(() => {
     if (!mounted || !isDesktop) return;
 
@@ -232,7 +243,67 @@ export function FloatingCards() {
     return () => ctx.revert();
   }, [mounted, isDesktop]);
 
-  // Progressive enhancement: render same structure, animate only on desktop
+  // Mobile animations - scroll-triggered entrance for each card
+  useLayoutEffect(() => {
+    if (!mounted || isDesktop) return;
+
+    const ctx = gsap.context(() => {
+      // Animate headline
+      if (headlineRef.current) {
+        gsap.fromTo(
+          headlineRef.current,
+          { opacity: 0, y: 40, scale: 0.95 },
+          {
+            opacity: 1,
+            y: 0,
+            scale: 1,
+            duration: 0.8,
+            ease: 'power3.out',
+            scrollTrigger: {
+              trigger: headlineRef.current,
+              start: 'top 85%',
+              toggleActions: 'play none none none',
+            },
+          }
+        );
+      }
+
+      // Animate each card with staggered, directional entrance
+      mobileCardsRef.current.forEach((card, index) => {
+        if (!card) return;
+
+        const entrance = MOBILE_ENTRANCES[index];
+
+        gsap.fromTo(
+          card,
+          {
+            opacity: 0,
+            x: entrance.x,
+            y: entrance.y,
+            rotation: entrance.rotation,
+            scale: entrance.scale,
+          },
+          {
+            opacity: 1,
+            x: 0,
+            y: 0,
+            rotation: 0,
+            scale: 1,
+            duration: 0.8,
+            ease: 'power3.out',
+            scrollTrigger: {
+              trigger: card,
+              start: 'top 90%',
+              toggleActions: 'play none none none',
+            },
+          }
+        );
+      });
+    }, containerRef);
+
+    return () => ctx.revert();
+  }, [mounted, isDesktop]);
+
   return (
     <section ref={containerRef} className="relative bg-white">
       {/* Single unified layout - works on all screens */}
@@ -265,7 +336,7 @@ export function FloatingCards() {
           {/* Cards container */}
           <div
             ref={cardsContainerRef}
-            className={isDesktop ? 'relative' : 'grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6 max-w-4xl'}
+            className={isDesktop ? 'relative' : 'grid grid-cols-1 sm:grid-cols-2 gap-4 sm:gap-6 max-w-2xl'}
             style={isDesktop ? { zIndex: 1 } : {}}
           >
             {isDesktop ? (
@@ -284,14 +355,14 @@ export function FloatingCards() {
                 );
               })
             ) : (
-              // Mobile/Tablet: CSS grid layout with staggered fade-in
+              // Mobile/Tablet: grid layout with GSAP scroll-triggered animations
               ALL_CARDS.map((cardId, index) => {
                 const CardComponent = CARD_COMPONENTS[cardId];
                 return (
                   <div
                     key={cardId}
-                    className="flex justify-center animate-[fade-in-up_0.6s_ease-out_forwards] opacity-0"
-                    style={{ animationDelay: `${index * 0.1}s` }}
+                    ref={(el) => (mobileCardsRef.current[index] = el)}
+                    className="flex justify-center will-change-transform"
                   >
                     <CardComponent t={t} />
                   </div>
