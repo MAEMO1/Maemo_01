@@ -71,7 +71,7 @@ export function StatementSection() {
   return (
     <section
       ref={ref}
-      className="relative min-h-screen flex items-center justify-center px-6 overflow-hidden"
+      className="relative py-24 md:py-32 flex items-center justify-center px-6 overflow-hidden"
       style={{ background: '#0f172a' }}
     >
       {/* Animated gradient background */}

@@ -352,7 +352,7 @@ export function FloatingCards() {
       ref={containerRef}
       className="relative"
       style={{
-        height: '300vh', // 2 scrolls for all cards to stack
+        height: '200vh', // Compact scroll for all cards to stack
         background: '#ffffff',
       }}
     >

@@ -143,7 +143,7 @@ export function ActionStack() {
       ref={containerRef}
       className="relative"
       style={{
-        height: '220vh',
+        height: '150vh',
         background: '#ffffff',
       }}
     >
