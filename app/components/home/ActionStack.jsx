@@ -2,7 +2,7 @@
 
 import { useRef, useLayoutEffect } from 'react';
 import { useTranslation } from '../../hooks/useTranslation';
-import { gsap } from '../../lib/gsap';
+import { gsap, ScrollTrigger } from '../../lib/gsap';
 
 const ACTIONS = [
   {
@@ -58,6 +58,7 @@ function ActionItem({ action, t, innerRef }) {
 
 export function ActionStack() {
   const containerRef = useRef(null);
+  const contentRef = useRef(null);
   const itemRefs = useRef([]);
   const { t } = useTranslation();
 
@@ -69,18 +70,19 @@ export function ActionStack() {
           start: 'top top',
           end: 'bottom bottom',
           scrub: 1.5,
-          pin: '.action-stack-content',
+          pin: contentRef.current,
         },
       });
 
+      // Animate items in
       ACTIONS.forEach((action, index) => {
         const itemEl = itemRefs.current[index];
         if (!itemEl) return;
 
-        const startTime = index * 0.25;
-        const duration = 0.4;
+        const startTime = index * 0.2;
+        const duration = 0.3;
 
-        gsap.set(itemEl, { y: 300, opacity: 0 });
+        gsap.set(itemEl, { y: 200, opacity: 0 });
 
         tl.to(itemEl, {
           y: 0,
@@ -88,6 +90,17 @@ export function ActionStack() {
           duration: duration,
           ease: 'power3.out',
         }, startTime);
+      });
+
+      // Hold for a moment at full visibility
+      tl.to({}, { duration: 0.2 });
+
+      // Fade out and move up - creating the "reveal" effect
+      tl.to(contentRef.current, {
+        opacity: 0,
+        y: -100,
+        duration: 0.3,
+        ease: 'power2.in',
       });
 
     }, containerRef);
@@ -99,9 +112,13 @@ export function ActionStack() {
     <section
       ref={containerRef}
       className="relative"
-      style={{ height: '150vh', background: '#ffffff' }}
+      style={{ height: '200vh', background: '#ffffff' }}
     >
-      <div className="action-stack-content sticky top-0 h-screen flex items-center justify-center overflow-hidden">
+      <div
+        ref={contentRef}
+        className="sticky top-0 h-screen flex items-center justify-center overflow-hidden"
+        style={{ background: '#ffffff' }}
+      >
         <div className="flex flex-col items-center gap-6 md:gap-10 px-6">
           {ACTIONS.map((action, index) => (
             <ActionItem
