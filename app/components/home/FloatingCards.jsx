@@ -2,7 +2,7 @@
 
 import { useRef, useLayoutEffect } from 'react';
 import { useTranslation } from '../../hooks/useTranslation';
-import { gsap } from '../../lib/gsap';
+import { gsap, ScrollTrigger } from '../../lib/gsap';
 
 const CARD_SIZE = 'w-[260px] h-[280px]';
 
@@ -158,11 +158,11 @@ const CARD_COMPONENTS = {
 };
 
 const CARDS = [
-  { id: 'jaarrekening', component: 'jaarrekening', zIndex: 1, startX: -600, startY: -400, endX: -20, endY: -12 },
-  { id: 'profitLoss', component: 'profitLoss', zIndex: 2, startX: 600, startY: -350, endX: 15, endY: -15 },
-  { id: 'marketPosition', component: 'marketPosition', zIndex: 3, startX: -550, startY: 400, endX: -12, endY: 8 },
-  { id: 'digitalPresence', component: 'digitalPresence', zIndex: 4, startX: 550, startY: 350, endX: 18, endY: 4 },
-  { id: 'administration', component: 'administration', zIndex: 5, startX: 0, startY: 500, endX: 0, endY: 0 },
+  { id: 'jaarrekening', component: 'jaarrekening', zIndex: 1, startX: -900, startY: -600, endX: -20, endY: -12 },
+  { id: 'profitLoss', component: 'profitLoss', zIndex: 2, startX: 900, startY: -550, endX: 15, endY: -15 },
+  { id: 'marketPosition', component: 'marketPosition', zIndex: 3, startX: -850, startY: 600, endX: -12, endY: 8 },
+  { id: 'digitalPresence', component: 'digitalPresence', zIndex: 4, startX: 850, startY: 550, endX: 18, endY: 4 },
+  { id: 'administration', component: 'administration', zIndex: 5, startX: 0, startY: 700, endX: 0, endY: 0 },
 ];
 
 export function FloatingCards() {
@@ -178,15 +178,15 @@ export function FloatingCards() {
           trigger: containerRef.current,
           start: 'top top',
           end: 'bottom bottom',
-          scrub: 1.5,
+          scrub: 0.8,
           pin: '.floating-cards-content',
         },
       });
 
       tl.to(headlineRef.current, {
-        scale: 0.4,
+        scale: 0.5,
         opacity: 0,
-        duration: 0.3,
+        duration: 0.15,
         ease: 'power2.out',
       }, 0);
 
@@ -194,8 +194,8 @@ export function FloatingCards() {
         const cardEl = cardRefs.current[index];
         if (!cardEl) return;
 
-        const startTime = index * 0.12;
-        const duration = 0.35;
+        const startTime = 0.15 + index * 0.15;
+        const duration = 0.25;
 
         gsap.set(cardEl, {
           x: card.startX,
@@ -223,9 +223,9 @@ export function FloatingCards() {
     <section
       ref={containerRef}
       className="relative"
-      style={{ height: '200vh', background: '#ffffff' }}
+      style={{ height: '350vh', background: '#ffffff' }}
     >
-      <div className="floating-cards-content sticky top-0 h-screen flex items-center justify-center overflow-hidden">
+      <div className="floating-cards-content h-screen flex items-center justify-center overflow-hidden">
         <div
           ref={headlineRef}
           className="absolute inset-0 flex items-center justify-center pointer-events-none"

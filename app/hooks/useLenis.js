@@ -22,6 +22,24 @@ export function useLenis() {
       touchMultiplier: 2,
     });
 
+    // Set up ScrollTrigger to use Lenis scroll position
+    ScrollTrigger.scrollerProxy(document.documentElement, {
+      scrollTop(value) {
+        if (arguments.length) {
+          lenisInstance.scrollTo(value, { immediate: true });
+        }
+        return lenisInstance.scroll;
+      },
+      getBoundingClientRect() {
+        return {
+          top: 0,
+          left: 0,
+          width: window.innerWidth,
+          height: window.innerHeight,
+        };
+      },
+    });
+
     // Connect Lenis to GSAP ScrollTrigger
     lenisInstance.on('scroll', ScrollTrigger.update);
 
@@ -32,6 +50,9 @@ export function useLenis() {
 
     // Disable GSAP's lag smoothing for better scroll sync
     gsap.ticker.lagSmoothing(0);
+
+    // Refresh ScrollTrigger after setup
+    ScrollTrigger.refresh();
 
     return () => {
       if (lenisInstance) {

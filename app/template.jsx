@@ -26,8 +26,7 @@ export default function Template({ children }) {
     <div
       style={{
         opacity: isVisible ? 1 : 0,
-        transform: isVisible ? 'translateY(0)' : 'translateY(20px)',
-        transition: 'opacity 0.4s ease-out, transform 0.4s ease-out',
+        transition: 'opacity 0.4s ease-out',
       }}
     >
       {children}
