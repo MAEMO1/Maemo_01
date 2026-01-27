@@ -151,17 +151,17 @@ export function FloatingCards() {
   const cardsContainerRef = useRef(null);
   const cardRefs = useRef([]);
   const { t } = useTranslation();
-  const [isMobile, setIsMobile] = useState(false);
+  const [mounted, setMounted] = useState(false);
 
   useEffect(() => {
-    const checkMobile = () => setIsMobile(window.innerWidth < 768);
-    checkMobile();
-    window.addEventListener('resize', checkMobile);
-    return () => window.removeEventListener('resize', checkMobile);
+    setMounted(true);
   }, []);
 
   useLayoutEffect(() => {
-    if (isMobile) return; // No scroll animations on mobile
+    if (!mounted) return;
+    // Only run animations on desktop
+    const isDesktop = window.innerWidth >= 768;
+    if (!isDesktop) return;
 
     const ctx = gsap.context(() => {
       const tl = gsap.timeline({
@@ -175,18 +175,19 @@ export function FloatingCards() {
       });
 
       // Headline fades out
-      tl.to(headlineRef.current, {
-        scale: 0.8,
-        opacity: 0,
-        duration: 0.3,
-      }, 0);
+      if (headlineRef.current) {
+        tl.to(headlineRef.current, {
+          scale: 0.8,
+          opacity: 0,
+          duration: 0.3,
+        }, 0);
+      }
 
       // Cards fly in from their start positions
       CARDS.forEach((card, index) => {
         const cardEl = cardRefs.current[index];
         if (!cardEl) return;
 
-        // Set initial position (off-screen)
         gsap.set(cardEl, {
           x: `${card.startX}%`,
           y: `${card.startY}%`,
@@ -194,7 +195,6 @@ export function FloatingCards() {
           scale: 0.8,
         });
 
-        // Animate to final position
         tl.to(cardEl, {
           x: `${card.endX}%`,
           y: `${card.endY}%`,
@@ -205,69 +205,91 @@ export function FloatingCards() {
         }, 0.1 + index * 0.1);
       });
 
-      // After cards are in place, scale up slightly
-      tl.to(cardsContainerRef.current, {
-        scale: 1.05,
-        duration: 0.3,
-      }, 0.6);
-
+      // Scale up slightly at end
+      if (cardsContainerRef.current) {
+        tl.to(cardsContainerRef.current, {
+          scale: 1.05,
+          duration: 0.3,
+        }, 0.6);
+      }
     }, containerRef);
 
     return () => ctx.revert();
-  }, [isMobile]);
+  }, [mounted]);
+
+  // Mobile cards subset
+  const mobileCardIds = ['jaarrekening', 'profitLoss', 'administration'];
 
   return (
-    <section
-      ref={containerRef}
-      className={`relative ${isMobile ? 'min-h-screen' : 'h-[250vh]'}`}
-      style={{ background: '#ffffff' }}
-    >
-      <div className={`floating-cards-content ${isMobile ? '' : 'h-screen'} flex items-center justify-center overflow-hidden py-16 md:py-0`}>
-        {/* Headline */}
-        <div
-          ref={headlineRef}
-          className="absolute inset-0 flex items-center justify-center pointer-events-none"
-          style={{ zIndex: 0 }}
+    <section ref={containerRef} className="relative bg-white">
+      {/* MOBILE LAYOUT - visible on small screens only */}
+      <div className="md:hidden py-16 px-6">
+        <h2
+          className="text-center mb-10"
+          style={{
+            fontSize: 'clamp(1.75rem, 8vw, 2.5rem)',
+            fontWeight: 600,
+            lineHeight: 1.2,
+            letterSpacing: '-0.02em',
+            color: '#1e293b',
+          }}
         >
-          <h2
-            className="text-center px-4"
-            style={{
-              fontSize: 'clamp(2rem, 8vw, 8rem)',
-              fontWeight: 600,
-              lineHeight: 1.1,
-              letterSpacing: '-0.02em',
-              color: 'rgba(30, 41, 59, 0.08)',
-            }}
-          >
-            {t('home.floatingCards.headline')}
-            <br />
-            <span style={{ color: 'rgba(232, 93, 76, 0.12)' }}>{t('home.floatingCards.headlineAccent')}</span>
-          </h2>
-        </div>
-
-        {/* Cards - fly in on desktop, static on mobile */}
-        <div
-          ref={cardsContainerRef}
-          className="relative flex flex-col md:block items-center gap-4 md:gap-0"
-          style={{ zIndex: 1 }}
-        >
-          {CARDS.map((card, index) => {
-            const CardComponent = CARD_COMPONENTS[card.component];
+          {t('home.floatingCards.headline')}
+          <br />
+          <span style={{ color: '#e85d4c' }}>{t('home.floatingCards.headlineAccent')}</span>
+        </h2>
+        <div className="flex flex-col items-center gap-4">
+          {mobileCardIds.map((cardId) => {
+            const CardComponent = CARD_COMPONENTS[cardId];
             return (
-              <div
-                key={card.id}
-                ref={(el) => (cardRefs.current[index] = el)}
-                className="relative md:absolute md:left-1/2 md:top-1/2"
-                style={{
-                  transform: isMobile
-                    ? 'none'
-                    : 'translate(-50%, -50%)',
-                }}
-              >
+              <div key={cardId} style={{ transform: 'scale(0.9)' }}>
                 <CardComponent t={t} />
               </div>
             );
           })}
+        </div>
+      </div>
+
+      {/* DESKTOP LAYOUT - visible on md+ screens only */}
+      <div className="hidden md:block h-[250vh]">
+        <div className="floating-cards-content h-screen flex items-center justify-center overflow-hidden">
+          <div
+            ref={headlineRef}
+            className="absolute inset-0 flex items-center justify-center pointer-events-none"
+            style={{ zIndex: 0 }}
+          >
+            <h2
+              className="text-center px-4"
+              style={{
+                fontSize: 'clamp(2rem, 8vw, 8rem)',
+                fontWeight: 600,
+                lineHeight: 1.1,
+                letterSpacing: '-0.02em',
+                color: 'rgba(30, 41, 59, 0.25)',
+              }}
+            >
+              {t('home.floatingCards.headline')}
+              <br />
+              <span style={{ color: 'rgba(232, 93, 76, 0.35)' }}>
+                {t('home.floatingCards.headlineAccent')}
+              </span>
+            </h2>
+          </div>
+          <div ref={cardsContainerRef} className="relative" style={{ zIndex: 1 }}>
+            {CARDS.map((card, index) => {
+              const CardComponent = CARD_COMPONENTS[card.component];
+              return (
+                <div
+                  key={card.id}
+                  ref={(el) => (cardRefs.current[index] = el)}
+                  className="absolute left-1/2 top-1/2"
+                  style={{ transform: 'translate(-50%, -50%)' }}
+                >
+                  <CardComponent t={t} />
+                </div>
+              );
+            })}
+          </div>
         </div>
       </div>
     </section>
