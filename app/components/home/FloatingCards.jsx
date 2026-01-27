@@ -3,6 +3,7 @@
 import { useRef, useLayoutEffect } from 'react';
 import { useTranslation } from '../../hooks/useTranslation';
 import { gsap } from '../../lib/gsap';
+import { AnimatedNumber } from '../ui/AnimatedNumber';
 
 const CARD_SIZE = 'w-[260px] h-[280px]';
 
@@ -25,7 +26,9 @@ const CARD_COMPONENTS = {
       </div>
       <div className="space-y-1">
         <div className="text-white/60 text-sm">{t('home.floatingCards.cards.jaarrekening.subtitle')}</div>
-        <div className="text-white text-2xl font-bold">{t('home.floatingCards.cards.jaarrekening.value')}</div>
+        <div className="text-white text-2xl font-bold">
+          <AnimatedNumber value={t('home.floatingCards.cards.jaarrekening.value')} duration={1500} />
+        </div>
         <div className="text-white/50 text-xs">{t('home.floatingCards.cards.jaarrekening.label')}</div>
       </div>
       <div
@@ -53,7 +56,9 @@ const CARD_COMPONENTS = {
         </div>
         <span className="text-blue-600 text-base font-bold">{t('home.floatingCards.cards.profitLoss.title')}</span>
       </div>
-      <div className="text-3xl font-bold text-slate-800 mb-1">{t('home.floatingCards.cards.profitLoss.value')}</div>
+      <div className="text-3xl font-bold text-slate-800 mb-1">
+          <AnimatedNumber value={t('home.floatingCards.cards.profitLoss.value')} duration={1500} />
+        </div>
       <div className="text-sm text-slate-400 mb-3">{t('home.floatingCards.cards.profitLoss.label')}</div>
       <div className="mt-auto flex gap-1">
         <div className="flex-1 h-8 bg-blue-100 rounded"></div>
@@ -82,7 +87,11 @@ const CARD_COMPONENTS = {
       <div className="p-4">
         <div className="flex items-center justify-between mb-3">
           <span className="text-xs text-slate-400">{t('home.floatingCards.cards.marketPosition.label')}</span>
-          <span className="text-xs font-semibold text-green-500">{t('home.floatingCards.cards.marketPosition.growth')}</span>
+          <AnimatedNumber
+            value={t('home.floatingCards.cards.marketPosition.growth')}
+            duration={1500}
+            className="text-xs font-semibold text-green-500"
+          />
         </div>
         <div className="flex items-end gap-2 h-28">
           <div className="flex-1 rounded-t" style={{ height: '45%', background: 'rgba(232, 93, 76, 0.2)' }}></div>
@@ -117,7 +126,9 @@ const CARD_COMPONENTS = {
         style={{ background: 'linear-gradient(145deg, #fef2f1 0%, #fee2e2 100%)' }}
       >
         <div className="text-center">
-          <div className="text-4xl font-bold" style={{ color: '#e85d4c' }}>{t('home.floatingCards.cards.digitalPresence.value')}</div>
+          <div className="text-4xl font-bold" style={{ color: '#e85d4c' }}>
+            <AnimatedNumber value={t('home.floatingCards.cards.digitalPresence.value')} duration={1500} />
+          </div>
           <div className="text-sm text-slate-500 mt-1">{t('home.floatingCards.cards.digitalPresence.label')}</div>
           <div className="flex justify-center gap-1 mt-3">
             <div className="w-2 h-2 rounded-full bg-green-400"></div>
