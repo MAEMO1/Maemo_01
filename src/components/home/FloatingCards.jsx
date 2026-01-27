@@ -282,8 +282,8 @@ function useStickyScrollProgress() {
   useEffect(() => {
     const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
-    // Lerp factor - lower = more momentum/smoothing (0.04 = longer glide)
-    const lerpFactor = 0.04;
+    // Lerp factor - lower = more momentum/smoothing (0.025 = very smooth glide)
+    const lerpFactor = 0.025;
 
     const calculateTargetProgress = () => {
       if (!containerRef.current) return;
