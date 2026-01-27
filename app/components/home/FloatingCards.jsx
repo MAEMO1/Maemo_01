@@ -2,10 +2,7 @@
 
 import { useRef, useLayoutEffect } from 'react';
 import { useTranslation } from '../../hooks/useTranslation';
-import { gsap } from 'gsap';
-import { ScrollTrigger } from 'gsap/ScrollTrigger';
-
-gsap.registerPlugin(ScrollTrigger);
+import { gsap } from '../../lib/gsap';
 
 const CARD_SIZE = 'w-[260px] h-[280px]';
 

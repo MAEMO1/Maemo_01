@@ -1,7 +1,7 @@
 'use client';
 
-import { useRef, useState, useEffect } from 'react';
 import { useTranslation } from '../../hooks/useTranslation';
+import { useScrollAnimation } from '../../hooks/useScrollAnimation';
 
 function FloatingShape({ delay, duration, size, color, startX, startY }) {
   return (
@@ -34,33 +34,9 @@ function AnimatedWord({ word, delay, isVisible }) {
   );
 }
 
-function useInView(threshold = 0.3) {
-  const ref = useRef(null);
-  const [isInView, setIsInView] = useState(false);
-
-  useEffect(() => {
-    const observer = new IntersectionObserver(
-      ([entry]) => {
-        if (entry.isIntersecting) {
-          setIsInView(true);
-        }
-      },
-      { threshold }
-    );
-
-    if (ref.current) {
-      observer.observe(ref.current);
-    }
-
-    return () => observer.disconnect();
-  }, [threshold]);
-
-  return { ref, isInView };
-}
-
 export function StatementSection() {
   const { t } = useTranslation();
-  const { ref, isInView } = useInView(0.2);
+  const { ref, isVisible: isInView } = useScrollAnimation({ threshold: 0.2 });
 
   const title1Words = t('home.statement.title1').split(' ');
   const title2Words = t('home.statement.title2').split(' ');
