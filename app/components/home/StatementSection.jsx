@@ -24,28 +24,31 @@ export function StatementSection() {
     if (!mounted) return;
 
     const ctx = gsap.context(() => {
+      // Premium easing for all animations
+      const premiumEase = 'power3.out';
+
       if (isDesktop) {
-        // Desktop: Parallax and fade-in effect for the text
+        // Desktop: Premium parallax and fade-in effect
         gsap.fromTo(
           textRef.current,
-          { y: 60, opacity: 0 },
+          { y: 80, opacity: 0 },
           {
             y: 0,
             opacity: 1,
-            duration: 1,
-            ease: 'power3.out',
+            duration: 1.2,
+            ease: premiumEase,
             scrollTrigger: {
               trigger: containerRef.current,
-              start: 'top 85%',
-              end: 'top 50%',
-              scrub: 1,
+              start: 'top 80%',
+              end: 'top 45%',
+              scrub: 0.8,
             },
           }
         );
 
-        // Subtle parallax on scroll
+        // Subtle parallax on scroll - differential for depth
         gsap.to(textRef.current, {
-          y: -40,
+          y: -60,
           scrollTrigger: {
             trigger: containerRef.current,
             start: 'top top',
@@ -53,24 +56,43 @@ export function StatementSection() {
             scrub: true,
           },
         });
+
+        // Accent line reveal
+        gsap.fromTo(
+          accentRef.current,
+          { scaleX: 0, transformOrigin: 'left center' },
+          {
+            scaleX: 1,
+            duration: 1,
+            ease: premiumEase,
+            scrollTrigger: {
+              trigger: accentRef.current,
+              start: 'top 85%',
+              toggleActions: 'play none none none',
+            },
+          }
+        );
       } else {
-        // Mobile: Staggered scroll-reveal animations for each element
+        // Mobile: Staggered scroll-reveal animations with premium easing
         const elements = [eyebrowRef.current, headingRef.current, bodyRef.current, accentRef.current];
+        const delays = [0, 0.1, 0.2, 0.3];
 
         elements.forEach((el, index) => {
           if (!el) return;
 
           gsap.fromTo(
             el,
-            { opacity: 0, y: 30 + index * 5 },
+            { opacity: 0, y: 40, scale: 0.98 },
             {
               opacity: 1,
               y: 0,
-              duration: 0.6,
-              ease: 'power2.out',
+              scale: 1,
+              duration: 0.8,
+              delay: delays[index],
+              ease: premiumEase,
               scrollTrigger: {
                 trigger: el,
-                start: 'top 85%',
+                start: 'top 88%',
                 toggleActions: 'play none none none',
               },
             }
