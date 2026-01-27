@@ -5,6 +5,7 @@ import { useState, useEffect, useRef, useCallback } from 'react';
 export function AnimatedNumber({
   value,
   duration = 2000,
+  delay = 300,
   className = '',
   style = {},
 }) {
@@ -57,7 +58,7 @@ export function AnimatedNumber({
     requestAnimationFrame(update);
   }, [parseValue, value, duration]);
 
-  // Check if element is truly visible (including parent opacity from GSAP)
+  // Check if element is truly visible (opacity must be nearly 1)
   const isElementVisible = useCallback(() => {
     if (!ref.current) return false;
 
@@ -66,12 +67,12 @@ export function AnimatedNumber({
 
     if (!inViewport) return false;
 
-    // Check computed opacity of element and ancestors
+    // Check computed opacity - wait until fully visible (> 0.9)
     let el = ref.current;
     while (el) {
-      const style = window.getComputedStyle(el);
-      const opacity = parseFloat(style.opacity);
-      if (opacity < 0.5) return false;
+      const computedStyle = window.getComputedStyle(el);
+      const opacity = parseFloat(computedStyle.opacity);
+      if (opacity < 0.9) return false;
       el = el.parentElement;
     }
 
@@ -81,23 +82,29 @@ export function AnimatedNumber({
   useEffect(() => {
     if (hasAnimated) return;
 
-    // Poll for visibility (handles GSAP animations)
+    // Poll for visibility
     checkIntervalRef.current = setInterval(() => {
       if (isElementVisible() && !hasAnimated) {
         setHasAnimated(true);
-        animateValue();
+
+        // Clear interval first
         if (checkIntervalRef.current) {
           clearInterval(checkIntervalRef.current);
         }
+
+        // Add delay before starting animation for better visual effect
+        setTimeout(() => {
+          animateValue();
+        }, delay);
       }
-    }, 100);
+    }, 50);
 
     return () => {
       if (checkIntervalRef.current) {
         clearInterval(checkIntervalRef.current);
       }
     };
-  }, [hasAnimated, isElementVisible, animateValue]);
+  }, [hasAnimated, isElementVisible, animateValue, delay]);
 
   return (
     <span ref={ref} className={className} style={style}>
