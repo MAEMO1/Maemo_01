@@ -37,9 +37,12 @@ export function Header() {
   return (
     <>
       <header
-        className="fixed top-0 left-0 right-0 z-40 transition-all duration-500"
+        className={`fixed top-0 left-0 right-0 z-40 transition-all duration-500 ${
+          scrolled
+            ? 'px-4 sm:px-6 py-3 sm:py-4'
+            : 'px-4 sm:px-6 py-4 sm:py-6'
+        }`}
         style={{
-          padding: scrolled ? '1rem 1.5rem' : '1.5rem 1.5rem',
           background: scrolled
             ? isDarkPage
               ? 'rgba(17, 24, 39, 0.95)'
@@ -57,7 +60,7 @@ export function Header() {
         <div className="max-w-7xl mx-auto flex items-center justify-between">
           <Logo light={useLightColors} />
 
-          <div className="flex items-center gap-6">
+          <div className="flex items-center gap-4 sm:gap-6">
             <LanguageSelector variant={useLightColors ? 'light' : 'dark'} />
 
             <Link
@@ -80,9 +83,10 @@ export function Header() {
               </svg>
             </Link>
 
+            {/* Mobile menu button - minimum 44x44px touch target */}
             <button
               onClick={() => setMenuOpen(true)}
-              className="md:hidden p-2 rounded-lg transition-colors"
+              className="md:hidden p-2.5 -m-2.5 rounded-lg transition-colors min-w-[44px] min-h-[44px] flex items-center justify-center"
               style={{ color: textColor }}
               aria-label={t('common.openMenu')}
             >

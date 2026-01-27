@@ -43,18 +43,19 @@ export function MobileMenu({ isOpen, onClose }) {
         onClick={onClose}
       />
 
-      {/* Panel */}
+      {/* Panel - responsive width */}
       <div
-        className={`fixed top-0 right-0 h-full w-full max-w-sm z-50 bg-white transform transition-transform duration-300 ${
+        className={`fixed top-0 right-0 h-full w-full sm:w-[400px] sm:max-w-[85vw] z-50 bg-white transform transition-transform duration-300 ${
           isOpen ? 'translate-x-0' : 'translate-x-full'
         }`}
       >
         {/* Header */}
-        <div className="flex items-center justify-between p-6 border-b border-gray-100">
+        <div className="flex items-center justify-between p-4 sm:p-6 border-b border-gray-100">
           <Logo linkTo={null} />
+          {/* Close button - minimum 44x44px touch target */}
           <button
             onClick={onClose}
-            className="p-2 rounded-full text-text-medium hover:text-text-dark hover:bg-gray-100 transition-colors"
+            className="p-2.5 -m-2.5 rounded-full text-text-medium hover:text-text-dark hover:bg-gray-100 transition-colors min-w-[44px] min-h-[44px] flex items-center justify-center"
             aria-label={t('common.closeMenu')}
           >
             <svg className="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
@@ -64,13 +65,14 @@ export function MobileMenu({ isOpen, onClose }) {
         </div>
 
         {/* Navigation */}
-        <nav className="p-6">
-          <ul className="space-y-2">
+        <nav className="p-4 sm:p-6">
+          <ul className="space-y-1 sm:space-y-2">
             {navItems.map(({ path, label }) => (
               <li key={path}>
+                {/* Navigation items - minimum 44px height for touch */}
                 <Link
                   href={path}
-                  className={`block py-4 text-2xl font-medium transition-colors ${
+                  className={`block py-4 px-2 text-xl sm:text-2xl font-medium transition-colors min-h-[44px] flex items-center ${
                     pathname === path ? 'text-coral' : 'text-text-dark hover:text-coral'
                   }`}
                 >
@@ -81,17 +83,21 @@ export function MobileMenu({ isOpen, onClose }) {
           </ul>
         </nav>
 
-        {/* Language */}
-        <div className="absolute bottom-0 left-0 right-0 p-6 border-t border-gray-100">
+        {/* Language - with safe area padding for bottom */}
+        <div
+          className="absolute bottom-0 left-0 right-0 p-4 sm:p-6 border-t border-gray-100"
+          style={{ paddingBottom: 'max(env(safe-area-inset-bottom), 1rem)' }}
+        >
           <p className="text-xs uppercase tracking-wide text-text-light mb-3 font-medium">
             {t('language.select')}
           </p>
           <div className="flex gap-4">
             {languages.map((lang) => (
+              // Language buttons - minimum 44px touch target
               <button
                 key={lang}
                 onClick={() => switchLanguage(lang)}
-                className={`text-sm font-semibold uppercase transition-colors ${
+                className={`text-sm font-semibold uppercase transition-colors min-h-[44px] min-w-[44px] flex items-center justify-center ${
                   lang === language ? 'text-coral' : 'text-text-medium hover:text-text-dark'
                 }`}
               >

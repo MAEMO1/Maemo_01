@@ -53,51 +53,51 @@ export function ContactContent() {
       {/* Floating background elements */}
       <div className="fixed inset-0 pointer-events-none overflow-hidden">
         <div
-          className="absolute w-[600px] h-[600px] rounded-full opacity-[0.03]"
+          className="absolute w-[400px] sm:w-[600px] h-[400px] sm:h-[600px] rounded-full opacity-[0.03]"
           style={{
             background: 'radial-gradient(circle, #e85d4c 0%, transparent 70%)',
             top: '10%',
-            right: '-200px',
+            right: '-100px',
             filter: 'blur(60px)',
           }}
         />
         <div
-          className="absolute w-[400px] h-[400px] rounded-full opacity-[0.02]"
+          className="absolute w-[300px] sm:w-[400px] h-[300px] sm:h-[400px] rounded-full opacity-[0.02]"
           style={{
             background: 'radial-gradient(circle, #ffffff 0%, transparent 70%)',
             bottom: '20%',
-            left: '-100px',
+            left: '-50px',
             filter: 'blur(40px)',
           }}
         />
       </div>
 
       {/* Hero Section */}
-      <section className="relative min-h-[60vh] flex items-center justify-center px-6 pt-32 pb-16">
+      <section className="relative min-h-[50vh] sm:min-h-[60vh] flex items-center justify-center px-4 sm:px-6 pt-24 sm:pt-32 pb-12 sm:pb-16">
         <div className="max-w-5xl mx-auto text-center relative z-10">
           <AnimatedSection animation="fade-in-scale">
             <div
-              className="inline-flex items-center gap-2 px-5 py-2.5 rounded-full mb-10"
+              className="inline-flex items-center gap-2 px-4 sm:px-5 py-2 sm:py-2.5 rounded-full mb-8 sm:mb-10"
               style={{
                 background: 'rgba(232, 93, 76, 0.12)',
                 border: '1px solid rgba(232, 93, 76, 0.25)',
                 backdropFilter: 'blur(10px)',
               }}
             >
-              <span className="w-2 h-2 rounded-full animate-pulse" style={{ background: '#e85d4c' }} />
-              <span className="text-xs font-semibold tracking-[0.2em] uppercase" style={{ color: '#e85d4c' }}>
+              <span className="w-1.5 h-1.5 sm:w-2 sm:h-2 rounded-full animate-pulse" style={{ background: '#e85d4c' }} />
+              <span className="text-[10px] sm:text-xs font-semibold tracking-[0.15em] sm:tracking-[0.2em] uppercase" style={{ color: '#e85d4c' }}>
                 {t('contact.badge')}
               </span>
             </div>
 
-            <h1 className="text-headline mb-8" style={{ color: '#ffffff', lineHeight: 1.1 }}>
+            <h1 className="text-headline mb-6 sm:mb-8" style={{ color: '#ffffff', lineHeight: 1.1 }}>
               {t('contact.title').split(' ')[0]}{' '}
               <span style={{ color: '#e85d4c' }}>
                 {t('contact.title').split(' ').slice(1).join(' ')}
               </span>
             </h1>
 
-            <p className="text-xl md:text-2xl leading-relaxed max-w-2xl mx-auto" style={{ color: 'rgba(255,255,255,0.5)' }}>
+            <p className="text-lg sm:text-xl md:text-2xl leading-relaxed max-w-2xl mx-auto" style={{ color: 'rgba(255,255,255,0.5)' }}>
               {t('contact.subtitle')}
             </p>
           </AnimatedSection>
@@ -105,13 +105,13 @@ export function ContactContent() {
       </section>
 
       {/* Pathways Section */}
-      <section className="relative px-6 pb-16">
+      <section className="relative px-4 sm:px-6 pb-12 sm:pb-16">
         <div className="max-w-4xl mx-auto">
           <AnimatedSection>
-            <div className="grid md:grid-cols-2 gap-5">
+            <div className="grid sm:grid-cols-2 gap-4 sm:gap-5">
               {/* Card 1 - Uitgenodigd */}
               <div
-                className="group relative rounded-3xl p-8 transition-all duration-500 hover:scale-[1.02]"
+                className="group relative rounded-2xl sm:rounded-3xl p-6 sm:p-8 transition-all duration-500 hover:scale-[1.02]"
                 style={{
                   background: 'linear-gradient(135deg, rgba(255,255,255,0.08) 0%, rgba(255,255,255,0.03) 100%)',
                   border: '1px solid rgba(255,255,255,0.1)',
@@ -119,13 +119,13 @@ export function ContactContent() {
                 }}
               >
                 <div
-                  className="absolute inset-0 rounded-3xl opacity-0 group-hover:opacity-100 transition-opacity duration-500"
+                  className="absolute inset-0 rounded-2xl sm:rounded-3xl opacity-0 group-hover:opacity-100 transition-opacity duration-500"
                   style={{ background: 'radial-gradient(circle at 30% 30%, rgba(232, 93, 76, 0.15) 0%, transparent 60%)' }}
                 />
                 <div className="relative z-10">
-                  <div className="flex items-start gap-5">
+                  <div className="flex items-start gap-4 sm:gap-5">
                     <div
-                      className="flex items-center justify-center w-14 h-14 rounded-2xl text-white font-bold text-lg flex-shrink-0"
+                      className="flex items-center justify-center w-12 h-12 sm:w-14 sm:h-14 rounded-xl sm:rounded-2xl text-white font-bold text-base sm:text-lg flex-shrink-0"
                       style={{
                         background: 'linear-gradient(135deg, #e85d4c 0%, #d44a3a 100%)',
                         boxShadow: '0 8px 24px rgba(232, 93, 76, 0.3)',
@@ -134,10 +134,10 @@ export function ContactContent() {
                       {t('contact.pathways.invited.number')}
                     </div>
                     <div>
-                      <h3 className="font-semibold text-xl mb-3" style={{ color: '#ffffff' }}>
+                      <h3 className="font-semibold text-lg sm:text-xl mb-2 sm:mb-3" style={{ color: '#ffffff' }}>
                         {t('contact.pathways.invited.title')}
                       </h3>
-                      <p className="text-sm leading-relaxed" style={{ color: 'rgba(255,255,255,0.5)' }}>
+                      <p className="text-xs sm:text-sm leading-relaxed" style={{ color: 'rgba(255,255,255,0.5)' }}>
                         {t('contact.pathways.invited.description')}
                       </p>
                     </div>
@@ -147,7 +147,7 @@ export function ContactContent() {
 
               {/* Card 2 - Waag je kans */}
               <div
-                className="group relative rounded-3xl p-8 transition-all duration-500 hover:scale-[1.02]"
+                className="group relative rounded-2xl sm:rounded-3xl p-6 sm:p-8 transition-all duration-500 hover:scale-[1.02]"
                 style={{
                   background: 'linear-gradient(135deg, rgba(255,255,255,0.05) 0%, rgba(255,255,255,0.02) 100%)',
                   border: '1px solid rgba(255,255,255,0.08)',
@@ -155,13 +155,13 @@ export function ContactContent() {
                 }}
               >
                 <div
-                  className="absolute inset-0 rounded-3xl opacity-0 group-hover:opacity-100 transition-opacity duration-500"
+                  className="absolute inset-0 rounded-2xl sm:rounded-3xl opacity-0 group-hover:opacity-100 transition-opacity duration-500"
                   style={{ background: 'radial-gradient(circle at 70% 30%, rgba(255, 255, 255, 0.05) 0%, transparent 60%)' }}
                 />
                 <div className="relative z-10">
-                  <div className="flex items-start gap-5">
+                  <div className="flex items-start gap-4 sm:gap-5">
                     <div
-                      className="flex items-center justify-center w-14 h-14 rounded-2xl font-bold text-lg flex-shrink-0"
+                      className="flex items-center justify-center w-12 h-12 sm:w-14 sm:h-14 rounded-xl sm:rounded-2xl font-bold text-base sm:text-lg flex-shrink-0"
                       style={{
                         background: 'rgba(255,255,255,0.05)',
                         border: '2px solid rgba(255,255,255,0.15)',
@@ -171,10 +171,10 @@ export function ContactContent() {
                       {t('contact.pathways.signal.number')}
                     </div>
                     <div>
-                      <h3 className="font-semibold text-xl mb-3" style={{ color: '#ffffff' }}>
+                      <h3 className="font-semibold text-lg sm:text-xl mb-2 sm:mb-3" style={{ color: '#ffffff' }}>
                         {t('contact.pathways.signal.title')}
                       </h3>
-                      <p className="text-sm leading-relaxed" style={{ color: 'rgba(255,255,255,0.5)' }}>
+                      <p className="text-xs sm:text-sm leading-relaxed" style={{ color: 'rgba(255,255,255,0.5)' }}>
                         {t('contact.pathways.signal.description')}
                       </p>
                     </div>
@@ -184,13 +184,13 @@ export function ContactContent() {
             </div>
 
             <div
-              className="mt-8 rounded-2xl px-8 py-5 text-center"
+              className="mt-6 sm:mt-8 rounded-xl sm:rounded-2xl px-6 sm:px-8 py-4 sm:py-5 text-center"
               style={{
                 background: 'linear-gradient(135deg, rgba(232, 93, 76, 0.08) 0%, rgba(232, 93, 76, 0.04) 100%)',
                 border: '1px solid rgba(232, 93, 76, 0.15)',
               }}
             >
-              <p className="text-sm" style={{ color: 'rgba(232, 93, 76, 0.9)' }}>
+              <p className="text-xs sm:text-sm" style={{ color: 'rgba(232, 93, 76, 0.9)' }}>
                 {t('contact.disclaimer')}
               </p>
             </div>
@@ -199,13 +199,13 @@ export function ContactContent() {
       </section>
 
       {/* Big Text Divider */}
-      <section className="py-24 px-6">
+      <section className="py-16 sm:py-24 px-4 sm:px-6">
         <AnimatedSection animation="fade-in-scale">
           <h2
             className="text-center max-w-4xl mx-auto"
             style={{
               fontFamily: "'Outfit', system-ui, sans-serif",
-              fontSize: 'clamp(2.5rem, 6vw, 4.5rem)',
+              fontSize: 'clamp(2rem, 5vw, 4.5rem)',
               fontWeight: 700,
               letterSpacing: '-0.03em',
               lineHeight: 1.1,
@@ -218,20 +218,20 @@ export function ContactContent() {
       </section>
 
       {/* Form Section */}
-      <section className="bg-white py-24 px-6">
+      <section className="bg-white py-16 sm:py-24 px-4 sm:px-6">
         <div className="max-w-2xl mx-auto">
           <AnimatedSection>
-            <div className="text-center mb-14">
-              <h2 className="text-headline mb-4" style={{ color: '#1e293b' }}>
+            <div className="text-center mb-10 sm:mb-14">
+              <h2 className="text-headline mb-3 sm:mb-4" style={{ color: '#1e293b' }}>
                 {t('contact.form.title')}
               </h2>
-              <p className="text-xl" style={{ color: '#94a3b8' }}>
+              <p className="text-lg sm:text-xl" style={{ color: '#94a3b8' }}>
                 {t('contact.form.titleSuffix')}
               </p>
             </div>
 
-            <form onSubmit={handleSubmit} className="space-y-8">
-              <div className="grid md:grid-cols-2 gap-5">
+            <form onSubmit={handleSubmit} className="space-y-6 sm:space-y-8">
+              <div className="grid sm:grid-cols-2 gap-4 sm:gap-5">
                 <InputField
                   label={t('contact.form.companyName')}
                   value={formData.companyName}
@@ -247,7 +247,7 @@ export function ContactContent() {
                 />
               </div>
 
-              <div className="grid md:grid-cols-2 gap-5">
+              <div className="grid sm:grid-cols-2 gap-4 sm:gap-5">
                 <SelectField
                   label={t('contact.form.sector')}
                   value={formData.sector}
@@ -264,7 +264,7 @@ export function ContactContent() {
                 />
               </div>
 
-              <div className="grid md:grid-cols-2 gap-5">
+              <div className="grid sm:grid-cols-2 gap-4 sm:gap-5">
                 <SelectField
                   label={t('contact.form.teamSize')}
                   labelSuffix={t('contact.form.regionOptional')}
@@ -284,10 +284,10 @@ export function ContactContent() {
               </div>
 
               <div>
-                <label className="block text-sm font-medium mb-4" style={{ color: '#1e293b' }}>
+                <label className="block text-sm font-medium mb-3 sm:mb-4" style={{ color: '#1e293b' }}>
                   {t('contact.form.goal')}
                 </label>
-                <div className="flex flex-wrap gap-3">
+                <div className="flex flex-wrap gap-2 sm:gap-3">
                   {goals.map(goal => (
                     <ChipButton
                       key={goal}
@@ -301,10 +301,10 @@ export function ContactContent() {
               </div>
 
               <div>
-                <label className="block text-sm font-medium mb-4" style={{ color: '#1e293b' }}>
+                <label className="block text-sm font-medium mb-3 sm:mb-4" style={{ color: '#1e293b' }}>
                   {t('contact.form.timing')}
                 </label>
-                <div className="flex flex-wrap gap-3">
+                <div className="flex flex-wrap gap-2 sm:gap-3">
                   {timings.map(time => (
                     <ChipButton
                       key={time}
@@ -319,7 +319,7 @@ export function ContactContent() {
 
               <div className="h-px" style={{ background: 'linear-gradient(90deg, transparent, #e2e8f0, transparent)' }} />
 
-              <div className="grid md:grid-cols-2 gap-5">
+              <div className="grid sm:grid-cols-2 gap-4 sm:gap-5">
                 <InputField
                   label={t('contact.form.name')}
                   value={formData.name}
@@ -343,10 +343,11 @@ export function ContactContent() {
                 placeholder={t('contact.form.invitationCodePlaceholder')}
               />
 
+              {/* Submit button - minimum 44px height for touch */}
               <button
                 type="submit"
                 disabled={isSubmitting}
-                className="w-full py-5 rounded-full font-semibold text-lg text-white transition-all duration-300 flex items-center justify-center gap-3 group"
+                className="w-full py-4 sm:py-5 rounded-full font-semibold text-base sm:text-lg text-white transition-all duration-300 flex items-center justify-center gap-3 group min-h-[48px]"
                 style={{ background: '#1e293b', opacity: isSubmitting ? 0.7 : 1 }}
                 onMouseEnter={(e) => { if (!isSubmitting) e.currentTarget.style.background = '#334155'; }}
                 onMouseLeave={(e) => { e.currentTarget.style.background = '#1e293b'; }}
@@ -354,7 +355,7 @@ export function ContactContent() {
                 {isSubmitting ? t('contact.form.submitting') : t('contact.form.submit')}
                 {!isSubmitting && (
                   <svg
-                    className="w-5 h-5 transition-transform duration-300 group-hover:translate-x-1"
+                    className="w-4 h-4 sm:w-5 sm:h-5 transition-transform duration-300 group-hover:translate-x-1"
                     fill="none"
                     viewBox="0 0 24 24"
                     stroke="currentColor"
@@ -383,6 +384,7 @@ function InputField({ label, labelSuffix, value, onChange, placeholder, type = '
           <span className="ml-1" style={{ color: '#94a3b8', fontWeight: 400 }}>{labelSuffix}</span>
         )}
       </label>
+      {/* Input with minimum 44px height for touch */}
       <input
         type={type}
         value={value}
@@ -390,7 +392,7 @@ function InputField({ label, labelSuffix, value, onChange, placeholder, type = '
         onFocus={() => setFocused(true)}
         onBlur={() => setFocused(false)}
         placeholder={placeholder}
-        className="w-full px-5 py-4 rounded-2xl transition-all duration-300 focus:outline-none"
+        className="w-full px-4 sm:px-5 py-3 sm:py-4 rounded-xl sm:rounded-2xl transition-all duration-300 focus:outline-none min-h-[48px]"
         style={{
           background: '#f8fafc',
           border: `2px solid ${focused ? '#e85d4c' : '#e2e8f0'}`,
@@ -413,12 +415,13 @@ function SelectField({ label, labelSuffix, value, onChange, placeholder, options
         )}
       </label>
       <div className="relative">
+        {/* Select with minimum 44px height for touch */}
         <select
           value={value}
           onChange={(e) => onChange(e.target.value)}
           onFocus={() => setFocused(true)}
           onBlur={() => setFocused(false)}
-          className="w-full px-5 py-4 rounded-2xl transition-all duration-300 focus:outline-none appearance-none cursor-pointer"
+          className="w-full px-4 sm:px-5 py-3 sm:py-4 rounded-xl sm:rounded-2xl transition-all duration-300 focus:outline-none appearance-none cursor-pointer min-h-[48px]"
           style={{
             background: '#f8fafc',
             border: `2px solid ${focused ? '#e85d4c' : '#e2e8f0'}`,
@@ -432,7 +435,7 @@ function SelectField({ label, labelSuffix, value, onChange, placeholder, options
           ))}
         </select>
         <svg
-          className="absolute right-5 top-1/2 -translate-y-1/2 w-5 h-5 pointer-events-none"
+          className="absolute right-4 sm:right-5 top-1/2 -translate-y-1/2 w-5 h-5 pointer-events-none"
           style={{ color: '#94a3b8' }}
           fill="none"
           viewBox="0 0 24 24"
@@ -448,10 +451,11 @@ function SelectField({ label, labelSuffix, value, onChange, placeholder, options
 
 function ChipButton({ children, selected, onClick }) {
   return (
+    // Chip buttons with minimum 44px height for touch
     <button
       type="button"
       onClick={onClick}
-      className="px-5 py-3 rounded-full text-sm font-medium transition-all duration-300"
+      className="px-4 sm:px-5 py-2.5 sm:py-3 rounded-full text-xs sm:text-sm font-medium transition-all duration-300 min-h-[44px]"
       style={{
         background: selected ? '#1e293b' : '#ffffff',
         color: selected ? '#ffffff' : '#64748b',

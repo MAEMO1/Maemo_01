@@ -9,12 +9,12 @@ export function Hero() {
   return (
     <section className="relative min-h-screen overflow-hidden bg-white">
       {/* Content */}
-      <div className="relative z-10 min-h-screen flex flex-col justify-center px-6 md:px-12 lg:px-20">
+      <div className="relative z-10 min-h-screen flex flex-col justify-center px-4 sm:px-6 md:px-12 lg:px-20 xl:px-24">
         <div className="max-w-5xl mx-auto w-full text-center">
           <h1
-            className="text-ink mb-8 md:mb-12"
+            className="text-ink mb-6 sm:mb-8 md:mb-12"
             style={{
-              fontSize: 'clamp(3rem, 10vw, 8rem)',
+              fontSize: 'clamp(2.5rem, 8vw, 8rem)',
               fontWeight: 600,
               lineHeight: 1,
               letterSpacing: '-0.03em',
@@ -28,7 +28,7 @@ export function Hero() {
           </h1>
 
           <p
-            className="text-stone text-lg md:text-xl max-w-2xl mx-auto leading-relaxed mb-12"
+            className="text-stone text-base sm:text-lg md:text-xl max-w-2xl mx-auto leading-relaxed mb-8 sm:mb-10 md:mb-12"
             style={{ opacity: 0, animation: 'fade-in-up 1s cubic-bezier(0.16, 1, 0.3, 1) 0.4s forwards' }}
           >
             {t('home.hero.subtitle').split('maemo').map((part, i, arr) => (
@@ -44,11 +44,11 @@ export function Hero() {
           >
             <Link
               href="/contact"
-              className="group inline-flex items-center gap-3 px-8 py-4 rounded-full bg-ink text-white font-medium hover:bg-charcoal transition-all duration-300"
+              className="group inline-flex items-center gap-2 sm:gap-3 px-6 sm:px-8 py-3 sm:py-4 rounded-full bg-ink text-white font-medium hover:bg-charcoal transition-all duration-300 text-sm sm:text-base"
             >
               {t('home.hero.cta')}
               <svg
-                className="w-5 h-5 transition-transform duration-300 group-hover:translate-x-1"
+                className="w-4 h-4 sm:w-5 sm:h-5 transition-transform duration-300 group-hover:translate-x-1"
                 fill="none"
                 viewBox="0 0 24 24"
                 stroke="currentColor"
@@ -61,10 +61,14 @@ export function Hero() {
         </div>
       </div>
 
-      {/* Scroll indicator */}
+      {/* Scroll indicator - with iOS safe area support */}
       <div
-        className="absolute bottom-8 left-1/2 -translate-x-1/2 flex flex-col items-center gap-2"
-        style={{ opacity: 0, animation: 'fade-in 1s ease-out 1s forwards' }}
+        className="absolute bottom-6 sm:bottom-8 left-1/2 -translate-x-1/2 flex flex-col items-center gap-2 pb-safe"
+        style={{
+          opacity: 0,
+          animation: 'fade-in 1s ease-out 1s forwards',
+          paddingBottom: 'max(env(safe-area-inset-bottom), 0.5rem)'
+        }}
       >
         <div className="w-5 h-8 rounded-full border border-stone/30 flex items-start justify-center p-1">
           <div className="w-1 h-2 bg-stone/50 rounded-full animate-float" />
