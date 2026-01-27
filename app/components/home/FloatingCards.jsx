@@ -89,13 +89,60 @@ const CARD_COMPONENTS = {
       </div>
     </div>
   ),
+  marketPosition: ({ t }) => (
+    <div
+      className={`${CARD_SIZE} rounded-3xl p-4 md:p-5 flex flex-col`}
+      style={{
+        background: 'linear-gradient(145deg, #fef3c7 0%, #fde68a 100%)',
+        boxShadow: '0 25px 50px rgba(245, 158, 11, 0.2)',
+      }}
+    >
+      <div className="flex items-center gap-2 mb-3">
+        <div className="w-5 h-5 rounded-full bg-amber-500 flex items-center justify-center">
+          <svg className="w-3 h-3 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6" />
+          </svg>
+        </div>
+        <span className="text-amber-700 text-sm md:text-base font-bold">{t('home.floatingCards.cards.marketPosition.title')}</span>
+      </div>
+      <div className="text-xs md:text-sm text-amber-600 mb-2">{t('home.floatingCards.cards.marketPosition.label')}</div>
+      <div className="mt-auto">
+        <div className="flex items-center gap-2">
+          <div className="flex-1 h-2 bg-amber-200 rounded-full overflow-hidden">
+            <div className="h-full w-3/4 bg-amber-500 rounded-full"></div>
+          </div>
+          <span className="text-amber-700 text-sm font-bold">{t('home.floatingCards.cards.marketPosition.growth')}</span>
+        </div>
+      </div>
+    </div>
+  ),
+  digitalPresence: ({ t }) => (
+    <div
+      className={`${CARD_SIZE} rounded-3xl p-4 md:p-5 flex flex-col items-center justify-center`}
+      style={{
+        background: 'linear-gradient(145deg, #1e293b 0%, #334155 100%)',
+        boxShadow: '0 25px 50px rgba(30, 41, 59, 0.3)',
+      }}
+    >
+      <div className="w-10 h-10 md:w-12 md:h-12 rounded-xl mb-3 bg-white/10 flex items-center justify-center">
+        <svg className="w-5 h-5 md:w-6 md:h-6 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M21 12a9 9 0 01-9 9m9-9a9 9 0 00-9-9m9 9H3m9 9a9 9 0 01-9-9m9 9c1.657 0 3-4.03 3-9s-1.343-9-3-9m0 18c-1.657 0-3-4.03-3-9s1.343-9 3-9m-9 9a9 9 0 019-9" />
+        </svg>
+      </div>
+      <div className="text-white text-base md:text-lg font-bold">{t('home.floatingCards.cards.digitalPresence.title')}</div>
+      <div className="text-2xl md:text-3xl font-bold text-white mt-1">{t('home.floatingCards.cards.digitalPresence.value')}</div>
+      <div className="text-xs md:text-sm text-white/60 mt-1">{t('home.floatingCards.cards.digitalPresence.label')}</div>
+    </div>
+  ),
 };
 
 // Card positions - fly in from edges on desktop
 const CARDS = [
-  { id: 'jaarrekening', component: 'jaarrekening', startX: -150, startY: -100, endX: -15, endY: -8 },
-  { id: 'profitLoss', component: 'profitLoss', startX: 150, startY: -80, endX: 12, endY: -5 },
-  { id: 'administration', component: 'administration', startX: 0, startY: 120, endX: 0, endY: 10 },
+  { id: 'jaarrekening', component: 'jaarrekening', startX: -150, startY: -100, endX: -25, endY: -15 },
+  { id: 'profitLoss', component: 'profitLoss', startX: 150, startY: -80, endX: 20, endY: -10 },
+  { id: 'marketPosition', component: 'marketPosition', startX: -120, startY: 100, endX: -18, endY: 12 },
+  { id: 'digitalPresence', component: 'digitalPresence', startX: 120, startY: 80, endX: 15, endY: 8 },
+  { id: 'administration', component: 'administration', startX: 0, startY: 150, endX: 0, endY: 18 },
 ];
 
 export function FloatingCards() {
