@@ -34,10 +34,15 @@
   --font-display: 'Fraunces', Georgia, serif;
   --font-body: 'Outfit', system-ui, sans-serif;
 
-  /* Animations */
-  --animate-fade-in: fade-in 0.8s cubic-bezier(0.16, 1, 0.3, 1) forwards;
-  --animate-fade-in-up: fade-in-up 0.8s cubic-bezier(0.16, 1, 0.3, 1) forwards;
-  --animate-slide-in: slide-in 1s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+  /* Base Animations - Premium Easing */
+  --ease-premium: cubic-bezier(0.16, 1, 0.3, 1);
+  --ease-bounce: cubic-bezier(0.34, 1.56, 0.64, 1);
+  --ease-smooth: cubic-bezier(0.4, 0, 0.2, 1);
+
+  /* Animation Definitions */
+  --animate-fade-in: fade-in 0.8s var(--ease-premium) forwards;
+  --animate-fade-in-up: fade-in-up 0.8s var(--ease-premium) forwards;
+  --animate-slide-in: slide-in 1s var(--ease-premium) forwards;
   --animate-float: float 8s ease-in-out infinite;
 
   @keyframes fade-in {
@@ -51,14 +56,19 @@
   }
 
   @keyframes fade-in-scale {
-    from { opacity: 0; transform: scale(0.95); }
+    from { opacity: 0; transform: scale(0.92); }
     to { opacity: 1; transform: scale(1); }
   }
 
-  --animate-fade-in-scale: fade-in-scale 0.8s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+  --animate-fade-in-scale: fade-in-scale 0.8s var(--ease-premium) forwards;
 
   @keyframes slide-in {
     from { opacity: 0; transform: translateX(-30px); }
+    to { opacity: 1; transform: translateX(0); }
+  }
+
+  @keyframes slide-in-right {
+    from { opacity: 0; transform: translateX(30px); }
     to { opacity: 1; transform: translateX(0); }
   }
 
@@ -67,23 +77,41 @@
     50% { transform: translateY(-15px) rotate(1deg); }
   }
 
-  @keyframes grain {
-    0%, 100% { transform: translate(0, 0); }
-    10% { transform: translate(-5%, -10%); }
-    30% { transform: translate(3%, -15%); }
-    50% { transform: translate(12%, 9%); }
-    70% { transform: translate(9%, 4%); }
-    90% { transform: translate(-1%, 7%); }
-  }
-
-  @keyframes float-card {
+  /* Premium card entrance - used on mobile */
+  @keyframes card-entrance {
     from {
       opacity: 0;
-      transform: translateY(30px) scale(0.95);
+      transform: translateY(50px) scale(0.9) rotateX(10deg);
     }
     to {
       opacity: 1;
-      transform: translateY(0) scale(1);
+      transform: translateY(0) scale(1) rotateX(0deg);
+    }
+  }
+
+  /* Staggered reveal animation */
+  @keyframes reveal-up {
+    from {
+      opacity: 0;
+      transform: translateY(60px);
+      filter: blur(4px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+      filter: blur(0);
+    }
+  }
+
+  /* Smooth scale entrance */
+  @keyframes scale-in {
+    from {
+      opacity: 0;
+      transform: scale(0.8);
+    }
+    to {
+      opacity: 1;
+      transform: scale(1);
     }
   }
 
@@ -103,8 +131,23 @@
     }
   }
 
-  --animate-float-card: float-card 1s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+  /* Subtle pulse for CTAs */
+  @keyframes pulse-soft {
+    0%, 100% {
+      transform: scale(1);
+      box-shadow: 0 4px 20px rgba(232, 93, 76, 0.3);
+    }
+    50% {
+      transform: scale(1.02);
+      box-shadow: 0 8px 30px rgba(232, 93, 76, 0.4);
+    }
+  }
+
+  --animate-card-entrance: card-entrance 0.8s var(--ease-premium) forwards;
+  --animate-reveal-up: reveal-up 0.9s var(--ease-premium) forwards;
+  --animate-scale-in: scale-in 0.6s var(--ease-bounce) forwards;
   --animate-float-gentle: float-gentle 6s ease-in-out infinite;
+  --animate-pulse-soft: pulse-soft 3s ease-in-out infinite;
 }
 
 /* Base */
@@ -150,6 +193,61 @@
 
 /* Utilities */
 @layer utilities {
+  /* GPU-accelerated animation helpers */
+  .will-change-transform {
+    will-change: transform;
+  }
+
+  .will-change-opacity {
+    will-change: opacity;
+  }
+
+  .gpu-accelerated {
+    transform: translateZ(0);
+    backface-visibility: hidden;
+  }
+
+  /* Scroll-triggered animation states */
+  .animate-on-scroll {
+    opacity: 0;
+    transform: translateY(40px);
+    transition: opacity 0.8s cubic-bezier(0.16, 1, 0.3, 1),
+                transform 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+  }
+
+  .animate-on-scroll.is-visible {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  /* Staggered children animation */
+  .stagger-children > * {
+    opacity: 0;
+    transform: translateY(30px);
+    transition: opacity 0.6s cubic-bezier(0.16, 1, 0.3, 1),
+                transform 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+  }
+
+  .stagger-children.is-visible > *:nth-child(1) { transition-delay: 0ms; opacity: 1; transform: translateY(0); }
+  .stagger-children.is-visible > *:nth-child(2) { transition-delay: 100ms; opacity: 1; transform: translateY(0); }
+  .stagger-children.is-visible > *:nth-child(3) { transition-delay: 200ms; opacity: 1; transform: translateY(0); }
+  .stagger-children.is-visible > *:nth-child(4) { transition-delay: 300ms; opacity: 1; transform: translateY(0); }
+  .stagger-children.is-visible > *:nth-child(5) { transition-delay: 400ms; opacity: 1; transform: translateY(0); }
+  .stagger-children.is-visible > *:nth-child(6) { transition-delay: 500ms; opacity: 1; transform: translateY(0); }
+
+  /* Mobile card animations */
+  .mobile-card-animate {
+    opacity: 0;
+    transform: translateY(50px) scale(0.95);
+    transition: opacity 0.7s cubic-bezier(0.16, 1, 0.3, 1),
+                transform 0.7s cubic-bezier(0.16, 1, 0.3, 1);
+  }
+
+  .mobile-card-animate.is-visible {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+
   /* Hero gradient - Warm modern */
   .bg-hero-gradient {
     background:
@@ -314,5 +412,12 @@
 
   .link-underline:hover::after {
     width: 100%;
+  }
+
+  /* Touch-friendly tap highlight */
+  @media (hover: none) {
+    .tap-highlight {
+      -webkit-tap-highlight-color: rgba(232, 93, 76, 0.1);
+    }
   }
 }
