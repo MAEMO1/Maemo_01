@@ -1,6 +1,7 @@
 import { Hero } from '../components/home/Hero';
 import { FloatingCards } from '../components/home/FloatingCards';
 import { ActionStack } from '../components/home/ActionStack';
+import { StatementSection } from '../components/home/StatementSection';
 import { AnimatedSection } from '../components/ui/AnimatedSection';
 import { Link } from 'react-router-dom';
 import { useTranslation } from '../hooks/useTranslation';
@@ -29,24 +30,8 @@ export default function HomePage() {
       {/* Action Stack - Jeton Add/Send/Exchange style */}
       <ActionStack />
 
-      {/* Full-bleed Statement Section - Large and impactful */}
-      <section className="min-h-screen flex items-center justify-center px-6 bg-ink">
-        <div className="max-w-5xl mx-auto text-center">
-          <AnimatedSection animation="fade-in-scale">
-            <h2
-              className="text-[clamp(2.5rem,8vw,5rem)] font-semibold leading-[1.1] tracking-tight mb-8"
-              style={{ color: '#ffffff' }}
-            >
-              {t('home.statement.title1')}
-              <br />
-              <span style={{ color: '#e85d4c' }}>{t('home.statement.title2')}</span>
-            </h2>
-            <p className="text-xl md:text-2xl leading-relaxed max-w-3xl mx-auto" style={{ color: 'rgba(255,255,255,0.7)' }}>
-              <strong className="font-bold" style={{ color: '#ffffff' }}>maemo</strong> {t('home.statement.description')}
-            </p>
-          </AnimatedSection>
-        </div>
-      </section>
+      {/* Full-bleed Statement Section - Dynamic with animations */}
+      <StatementSection />
 
       {/* CTA Section */}
       <section className="py-32 px-6 bg-white">
