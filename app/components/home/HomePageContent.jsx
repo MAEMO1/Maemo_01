@@ -10,7 +10,7 @@ export function HomePageContent() {
   return (
     <>
       {/* Big Text Section */}
-      <section className="py-24 md:py-32 flex items-center justify-center px-6 bg-white">
+      <section className="py-12 md:py-32 flex items-center justify-center px-6 bg-white">
         <AnimatedSection className="text-center max-w-5xl" animation="fade-in-scale">
           <h2 className="text-headline text-primary">
             {t('home.bigText.line1')}

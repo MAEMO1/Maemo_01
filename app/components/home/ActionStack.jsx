@@ -1,6 +1,6 @@
 'use client';
 
-import { useRef, useLayoutEffect } from 'react';
+import { useRef, useLayoutEffect, useState, useEffect } from 'react';
 import { useTranslation } from '../../hooks/useTranslation';
 import { gsap, ScrollTrigger } from '../../lib/gsap';
 
@@ -61,8 +61,18 @@ export function ActionStack() {
   const contentRef = useRef(null);
   const itemRefs = useRef([]);
   const { t } = useTranslation();
+  const [isMobile, setIsMobile] = useState(false);
+
+  useEffect(() => {
+    const checkMobile = () => setIsMobile(window.innerWidth < 768);
+    checkMobile();
+    window.addEventListener('resize', checkMobile);
+    return () => window.removeEventListener('resize', checkMobile);
+  }, []);
 
   useLayoutEffect(() => {
+    if (isMobile) return; // No scroll animations on mobile
+
     const ctx = gsap.context(() => {
       const tl = gsap.timeline({
         scrollTrigger: {
@@ -106,17 +116,17 @@ export function ActionStack() {
     }, containerRef);
 
     return () => ctx.revert();
-  }, []);
+  }, [isMobile]);
 
   return (
     <section
       ref={containerRef}
-      className="relative"
-      style={{ height: '200vh', background: '#ffffff' }}
+      className={`relative ${isMobile ? 'py-16' : 'h-[200vh]'}`}
+      style={{ background: '#ffffff' }}
     >
       <div
         ref={contentRef}
-        className="sticky top-0 h-screen flex items-center justify-center overflow-hidden"
+        className={`${isMobile ? '' : 'sticky top-0 h-screen'} flex items-center justify-center overflow-hidden`}
         style={{ background: '#ffffff' }}
       >
         <div className="flex flex-col items-center gap-6 md:gap-10 px-6">
