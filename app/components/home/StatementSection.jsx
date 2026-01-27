@@ -20,7 +20,7 @@ export function StatementSection() {
       gsap.fromTo(
         textRef.current,
         {
-          y: 80,
+          y: 60,
           opacity: 0,
         },
         {
@@ -30,8 +30,8 @@ export function StatementSection() {
           ease: 'power3.out',
           scrollTrigger: {
             trigger: containerRef.current,
-            start: 'top 80%',
-            end: 'top 30%',
+            start: 'top 85%',
+            end: 'top 50%',
             scrub: 1,
           },
         }
@@ -39,7 +39,7 @@ export function StatementSection() {
 
       // Subtle parallax on scroll
       gsap.to(textRef.current, {
-        y: -60,
+        y: -40,
         scrollTrigger: {
           trigger: containerRef.current,
           start: 'top top',
@@ -55,9 +55,17 @@ export function StatementSection() {
   return (
     <section
       ref={containerRef}
-      className="relative py-20 sm:py-24 md:py-32 lg:py-40 overflow-hidden"
+      className="relative pt-24 sm:pt-28 md:pt-36 lg:pt-44 pb-20 sm:pb-24 md:pb-32 lg:pb-40 overflow-hidden"
       style={{ background: '#f8fafc' }}
     >
+      {/* Gradient overlay for smooth transition from ActionStack */}
+      <div
+        className="absolute inset-x-0 top-0 h-32 sm:h-40 md:h-48 pointer-events-none"
+        style={{
+          background: 'linear-gradient(to bottom, #ffffff 0%, #f8fafc 100%)',
+        }}
+        aria-hidden="true"
+      />
       <div ref={textRef} className="max-w-6xl mx-auto px-4 sm:px-6 md:px-12">
         {/* Eyebrow */}
         <span

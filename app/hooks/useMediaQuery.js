@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect, useCallback } from 'react';
+import { useState, useEffect } from 'react';
 
 // Tailwind default breakpoints
 export const BREAKPOINTS = {
@@ -49,12 +49,9 @@ export function useMediaQuery(query) {
  * @returns {boolean}
  */
 export function useBreakpoint(breakpoint) {
-  const px = BREAKPOINTS[breakpoint];
-  if (!px) {
-    console.warn(`Unknown breakpoint: ${breakpoint}`);
-    return false;
-  }
-  return useMediaQuery(`(min-width: ${px}px)`);
+  const px = BREAKPOINTS[breakpoint] || BREAKPOINTS.md;
+  const query = `(min-width: ${px}px)`;
+  return useMediaQuery(query);
 }
 
 /**

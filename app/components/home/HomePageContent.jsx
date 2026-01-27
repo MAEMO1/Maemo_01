@@ -27,8 +27,17 @@ export function CTASection() {
   const { t } = useTranslation();
 
   return (
-    <section className="py-32 px-6 bg-white">
-      <div className="max-w-4xl mx-auto text-center">
+    <section className="relative pt-20 sm:pt-24 md:pt-32 pb-24 sm:pb-28 md:pb-36 px-6 bg-white overflow-hidden">
+      {/* Gradient overlay from StatementSection */}
+      <div
+        className="absolute inset-x-0 top-0 h-24 sm:h-32 md:h-40 pointer-events-none"
+        style={{
+          background: 'linear-gradient(to bottom, #f8fafc 0%, #ffffff 100%)',
+        }}
+        aria-hidden="true"
+      />
+
+      <div className="relative max-w-4xl mx-auto text-center">
         <AnimatedSection>
           <h2 className="text-headline mb-6" style={{ color: '#1e293b' }}>
             {t('home.cta.title')} <span style={{ color: '#e85d4c' }}>{t('home.cta.titleAccent')}</span>
@@ -38,7 +47,7 @@ export function CTASection() {
           </p>
           <Link
             href="/contact"
-            className="inline-flex items-center gap-3 px-10 py-5 rounded-full font-semibold text-lg transition-all duration-300"
+            className="inline-flex items-center gap-3 px-10 py-5 rounded-full font-semibold text-lg transition-all duration-300 hover:scale-[1.02] active:scale-[0.98]"
             style={{ background: '#1e293b', color: '#ffffff' }}
             onMouseEnter={(e) => { e.currentTarget.style.background = '#334155'; }}
             onMouseLeave={(e) => { e.currentTarget.style.background = '#1e293b'; }}

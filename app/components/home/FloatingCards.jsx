@@ -8,17 +8,28 @@ import { gsap, ScrollTrigger } from '../../lib/gsap';
 // Responsive card sizing via Tailwind classes
 const CARD_BASE = 'w-[200px] h-[220px] sm:w-[220px] sm:h-[240px] md:w-[240px] md:h-[260px] lg:w-[260px] lg:h-[280px]';
 
+// "Serious Capital" palette - institutional, boardroom aesthetics
+const PALETTE = {
+  deepEmerald: '#064E3B',
+  oxfordNavy: '#1E3A8A',
+  burnishedCopper: '#9A3412',
+  graphite: '#374151',
+  slate: '#1e293b',
+  ivory: '#f8fafc',
+  coral: '#e85d4c',
+};
+
 const CARD_COMPONENTS = {
   jaarrekening: ({ t }) => (
     <div
       className={`${CARD_BASE} rounded-2xl sm:rounded-3xl p-3 sm:p-4 md:p-5 flex flex-col justify-between`}
       style={{
-        background: 'linear-gradient(145deg, #22c55e 0%, #16a34a 100%)',
-        boxShadow: '0 25px 50px rgba(34, 197, 94, 0.3)',
+        background: `linear-gradient(145deg, ${PALETTE.deepEmerald} 0%, #065F46 100%)`,
+        boxShadow: '0 25px 50px rgba(6, 78, 59, 0.25)',
       }}
     >
       <div className="flex items-center gap-2">
-        <div className="w-5 h-5 sm:w-6 sm:h-6 rounded-full bg-white/20 flex items-center justify-center">
+        <div className="w-5 h-5 sm:w-6 sm:h-6 rounded-full bg-white/15 flex items-center justify-center">
           <svg className="w-3 h-3 sm:w-3.5 sm:h-3.5 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
           </svg>
@@ -26,13 +37,13 @@ const CARD_COMPONENTS = {
         <span className="text-white text-xs sm:text-sm md:text-base font-semibold">{t('home.floatingCards.cards.jaarrekening.title')}</span>
       </div>
       <div className="space-y-0.5 sm:space-y-1">
-        <div className="text-white/60 text-[10px] sm:text-xs md:text-sm">{t('home.floatingCards.cards.jaarrekening.subtitle')}</div>
+        <div className="text-white/50 text-[10px] sm:text-xs md:text-sm">{t('home.floatingCards.cards.jaarrekening.subtitle')}</div>
         <div className="text-white text-lg sm:text-xl md:text-2xl font-bold">{t('home.floatingCards.cards.jaarrekening.value')}</div>
-        <div className="text-white/50 text-[10px] sm:text-xs">{t('home.floatingCards.cards.jaarrekening.label')}</div>
+        <div className="text-white/40 text-[10px] sm:text-xs">{t('home.floatingCards.cards.jaarrekening.label')}</div>
       </div>
       <div
         className="px-2 sm:px-3 md:px-4 py-1.5 sm:py-2 rounded-lg sm:rounded-xl text-[10px] sm:text-xs md:text-sm font-medium text-center"
-        style={{ background: 'rgba(255,255,255,0.2)', color: 'white' }}
+        style={{ background: 'rgba(255,255,255,0.12)', color: 'white' }}
       >
         {t('home.floatingCards.cards.jaarrekening.status')}
       </div>
@@ -43,25 +54,25 @@ const CARD_COMPONENTS = {
       className={`${CARD_BASE} rounded-2xl sm:rounded-3xl p-3 sm:p-4 md:p-5 flex flex-col`}
       style={{
         background: '#ffffff',
-        border: '3px solid #3b82f6',
-        boxShadow: '0 25px 50px rgba(59, 130, 246, 0.2)',
+        border: `2px solid ${PALETTE.oxfordNavy}`,
+        boxShadow: '0 25px 50px rgba(30, 58, 138, 0.15)',
       }}
     >
       <div className="flex items-center gap-2 mb-2 sm:mb-3">
-        <div className="w-4 h-4 sm:w-5 sm:h-5 rounded-full bg-blue-500 flex items-center justify-center">
+        <div className="w-4 h-4 sm:w-5 sm:h-5 rounded-full flex items-center justify-center" style={{ background: PALETTE.oxfordNavy }}>
           <svg className="w-2.5 h-2.5 sm:w-3 sm:h-3 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6" />
           </svg>
         </div>
-        <span className="text-blue-600 text-xs sm:text-sm md:text-base font-bold">{t('home.floatingCards.cards.profitLoss.title')}</span>
+        <span className="text-xs sm:text-sm md:text-base font-bold" style={{ color: PALETTE.oxfordNavy }}>{t('home.floatingCards.cards.profitLoss.title')}</span>
       </div>
-      <div className="text-xl sm:text-2xl md:text-3xl font-bold text-slate-800 mb-0.5 sm:mb-1">{t('home.floatingCards.cards.profitLoss.value')}</div>
-      <div className="text-[10px] sm:text-xs md:text-sm text-slate-400 mb-2 sm:mb-3">{t('home.floatingCards.cards.profitLoss.label')}</div>
+      <div className="text-xl sm:text-2xl md:text-3xl font-bold mb-0.5 sm:mb-1" style={{ color: PALETTE.slate }}>{t('home.floatingCards.cards.profitLoss.value')}</div>
+      <div className="text-[10px] sm:text-xs md:text-sm mb-2 sm:mb-3" style={{ color: PALETTE.graphite }}>{t('home.floatingCards.cards.profitLoss.label')}</div>
       <div className="mt-auto flex gap-0.5 sm:gap-1">
-        <div className="flex-1 h-5 sm:h-6 md:h-8 bg-blue-100 rounded"></div>
-        <div className="flex-1 h-8 sm:h-10 md:h-12 bg-blue-200 rounded"></div>
-        <div className="flex-1 h-6 sm:h-8 md:h-10 bg-blue-300 rounded"></div>
-        <div className="flex-1 h-12 sm:h-14 md:h-16 bg-blue-500 rounded"></div>
+        <div className="flex-1 h-5 sm:h-6 md:h-8 rounded" style={{ background: 'rgba(30, 58, 138, 0.1)' }}></div>
+        <div className="flex-1 h-8 sm:h-10 md:h-12 rounded" style={{ background: 'rgba(30, 58, 138, 0.2)' }}></div>
+        <div className="flex-1 h-6 sm:h-8 md:h-10 rounded" style={{ background: 'rgba(30, 58, 138, 0.35)' }}></div>
+        <div className="flex-1 h-12 sm:h-14 md:h-16 rounded" style={{ background: PALETTE.oxfordNavy }}></div>
       </div>
     </div>
   ),
@@ -69,25 +80,26 @@ const CARD_COMPONENTS = {
     <div
       className={`${CARD_BASE} rounded-2xl sm:rounded-3xl p-3 sm:p-4 md:p-5 flex flex-col items-center justify-center`}
       style={{
-        background: 'linear-gradient(145deg, #fce7f3 0%, #f5d0fe 100%)',
-        boxShadow: '0 25px 50px rgba(236, 72, 153, 0.2)',
+        background: `linear-gradient(145deg, ${PALETTE.ivory} 0%, #f1f5f9 100%)`,
+        border: '1px solid rgba(55, 65, 81, 0.1)',
+        boxShadow: '0 25px 50px rgba(55, 65, 81, 0.12)',
       }}
     >
       <div
         className="w-8 h-8 sm:w-10 sm:h-10 md:w-12 md:h-12 rounded-lg sm:rounded-xl mb-2 sm:mb-3 flex items-center justify-center"
-        style={{ background: 'linear-gradient(145deg, #ec4899 0%, #a855f7 100%)' }}
+        style={{ background: PALETTE.graphite }}
       >
         <svg className="w-4 h-4 sm:w-5 sm:h-5 md:w-6 md:h-6 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
           <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-6 9l2 2 4-4" />
         </svg>
       </div>
-      <div className="text-slate-800 text-sm sm:text-base md:text-lg font-bold">{t('home.floatingCards.cards.administration.title')}</div>
-      <div className="text-[10px] sm:text-xs md:text-sm text-slate-500 mt-0.5 sm:mt-1">{t('home.floatingCards.cards.administration.label')}</div>
+      <div className="text-sm sm:text-base md:text-lg font-bold" style={{ color: PALETTE.slate }}>{t('home.floatingCards.cards.administration.title')}</div>
+      <div className="text-[10px] sm:text-xs md:text-sm mt-0.5 sm:mt-1" style={{ color: PALETTE.graphite }}>{t('home.floatingCards.cards.administration.label')}</div>
       <div className="flex items-center gap-1 mt-1.5 sm:mt-2">
-        <svg className="w-3 h-3 sm:w-4 sm:h-4 text-green-500" fill="currentColor" viewBox="0 0 24 24">
+        <svg className="w-3 h-3 sm:w-4 sm:h-4" fill="currentColor" viewBox="0 0 24 24" style={{ color: PALETTE.deepEmerald }}>
           <path d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
         </svg>
-        <span className="text-[10px] sm:text-xs text-green-600 font-medium">{t('home.floatingCards.cards.administration.status')}</span>
+        <span className="text-[10px] sm:text-xs font-medium" style={{ color: PALETTE.deepEmerald }}>{t('home.floatingCards.cards.administration.status')}</span>
       </div>
     </div>
   ),
@@ -95,25 +107,25 @@ const CARD_COMPONENTS = {
     <div
       className={`${CARD_BASE} rounded-2xl sm:rounded-3xl p-3 sm:p-4 md:p-5 flex flex-col`}
       style={{
-        background: 'linear-gradient(145deg, #fef3c7 0%, #fde68a 100%)',
-        boxShadow: '0 25px 50px rgba(245, 158, 11, 0.2)',
+        background: `linear-gradient(145deg, ${PALETTE.burnishedCopper} 0%, #B45309 100%)`,
+        boxShadow: '0 25px 50px rgba(154, 52, 18, 0.2)',
       }}
     >
       <div className="flex items-center gap-2 mb-2 sm:mb-3">
-        <div className="w-4 h-4 sm:w-5 sm:h-5 rounded-full bg-amber-500 flex items-center justify-center">
+        <div className="w-4 h-4 sm:w-5 sm:h-5 rounded-full bg-white/15 flex items-center justify-center">
           <svg className="w-2.5 h-2.5 sm:w-3 sm:h-3 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6" />
           </svg>
         </div>
-        <span className="text-amber-700 text-xs sm:text-sm md:text-base font-bold">{t('home.floatingCards.cards.marketPosition.title')}</span>
+        <span className="text-white text-xs sm:text-sm md:text-base font-bold">{t('home.floatingCards.cards.marketPosition.title')}</span>
       </div>
-      <div className="text-[10px] sm:text-xs md:text-sm text-amber-600 mb-1 sm:mb-2">{t('home.floatingCards.cards.marketPosition.label')}</div>
+      <div className="text-[10px] sm:text-xs md:text-sm text-white/70 mb-1 sm:mb-2">{t('home.floatingCards.cards.marketPosition.label')}</div>
       <div className="mt-auto">
         <div className="flex items-center gap-1.5 sm:gap-2">
-          <div className="flex-1 h-1.5 sm:h-2 bg-amber-200 rounded-full overflow-hidden">
-            <div className="h-full w-3/4 bg-amber-500 rounded-full"></div>
+          <div className="flex-1 h-1.5 sm:h-2 bg-white/20 rounded-full overflow-hidden">
+            <div className="h-full w-3/4 bg-white rounded-full"></div>
           </div>
-          <span className="text-amber-700 text-xs sm:text-sm font-bold">{t('home.floatingCards.cards.marketPosition.growth')}</span>
+          <span className="text-white text-xs sm:text-sm font-bold">{t('home.floatingCards.cards.marketPosition.growth')}</span>
         </div>
       </div>
     </div>
@@ -122,8 +134,8 @@ const CARD_COMPONENTS = {
     <div
       className={`${CARD_BASE} rounded-2xl sm:rounded-3xl p-3 sm:p-4 md:p-5 flex flex-col items-center justify-center`}
       style={{
-        background: 'linear-gradient(145deg, #1e293b 0%, #334155 100%)',
-        boxShadow: '0 25px 50px rgba(30, 41, 59, 0.3)',
+        background: `linear-gradient(145deg, ${PALETTE.slate} 0%, #0f172a 100%)`,
+        boxShadow: '0 25px 50px rgba(15, 23, 42, 0.3)',
       }}
     >
       <div className="w-8 h-8 sm:w-10 sm:h-10 md:w-12 md:h-12 rounded-lg sm:rounded-xl mb-2 sm:mb-3 bg-white/10 flex items-center justify-center">
@@ -132,8 +144,8 @@ const CARD_COMPONENTS = {
         </svg>
       </div>
       <div className="text-white text-sm sm:text-base md:text-lg font-bold">{t('home.floatingCards.cards.digitalPresence.title')}</div>
-      <div className="text-xl sm:text-2xl md:text-3xl font-bold text-white mt-0.5 sm:mt-1">{t('home.floatingCards.cards.digitalPresence.value')}</div>
-      <div className="text-[10px] sm:text-xs md:text-sm text-white/60 mt-0.5 sm:mt-1">{t('home.floatingCards.cards.digitalPresence.label')}</div>
+      <div className="text-xl sm:text-2xl md:text-3xl font-bold mt-0.5 sm:mt-1" style={{ color: PALETTE.coral }}>{t('home.floatingCards.cards.digitalPresence.value')}</div>
+      <div className="text-[10px] sm:text-xs md:text-sm text-white/50 mt-0.5 sm:mt-1">{t('home.floatingCards.cards.digitalPresence.label')}</div>
     </div>
   ),
 };
@@ -272,11 +284,15 @@ export function FloatingCards() {
                 );
               })
             ) : (
-              // Mobile/Tablet: CSS grid layout, visible immediately
-              ALL_CARDS.map((cardId) => {
+              // Mobile/Tablet: CSS grid layout with staggered fade-in
+              ALL_CARDS.map((cardId, index) => {
                 const CardComponent = CARD_COMPONENTS[cardId];
                 return (
-                  <div key={cardId} className="flex justify-center">
+                  <div
+                    key={cardId}
+                    className="flex justify-center animate-[fade-in-up_0.6s_ease-out_forwards] opacity-0"
+                    style={{ animationDelay: `${index * 0.1}s` }}
+                  >
                     <CardComponent t={t} />
                   </div>
                 );
