@@ -17,16 +17,10 @@ export function LanguageProvider({ children }) {
   useEffect(() => {
     setMounted(true);
 
+    // Only use stored preference, don't auto-detect browser language
     const stored = localStorage.getItem(STORAGE_KEY);
     if (stored && LANGUAGES.includes(stored)) {
       setLanguage(stored);
-      return;
-    }
-
-    // Check browser language
-    const browserLang = navigator.language.split('-')[0];
-    if (LANGUAGES.includes(browserLang)) {
-      setLanguage(browserLang);
     }
   }, []);
 
