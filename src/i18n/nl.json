@@ -52,6 +52,25 @@
           "status": "Geverifieerd"
         }
       }
+    },
+    "actionStack": {
+      "analyze": "Analyseren",
+      "strategize": "Strategiseren",
+      "transform": "Transformeren"
+    },
+    "bigText": {
+      "line1": "Strategische excellentie",
+      "line2": "voor het uitzonderlijke."
+    },
+    "statement": {
+      "title1": "We identificeren potentieel voordat het",
+      "title2": "zichtbaar wordt.",
+      "description": "selecteert proactief hoogpotentiële ondernemingen. We wachten niet op kansen—we vinden ze."
+    },
+    "cta": {
+      "title": "Klaar om",
+      "titleAccent": "geëvalueerd te worden?",
+      "description": "selecteert partners met uitzonderlijk potentieel. Als je gelooft dat jouw onderneming kwalificeert, luisteren we."
     }
   },
   "approach": {

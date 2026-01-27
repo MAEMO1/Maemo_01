@@ -16,9 +16,9 @@ export default function HomePage() {
       <section className="min-h-screen flex items-center justify-center px-6 py-32 bg-white">
         <AnimatedSection className="text-center max-w-5xl" animation="fade-in-scale">
           <h2 className="text-headline text-primary">
-            Strategic excellence
+            {t('home.bigText.line1')}
             <br />
-            for the exceptional.
+            {t('home.bigText.line2')}
           </h2>
         </AnimatedSection>
       </section>
@@ -37,12 +37,12 @@ export default function HomePage() {
               className="text-[clamp(2.5rem,8vw,5rem)] font-semibold leading-[1.1] tracking-tight mb-8"
               style={{ color: '#ffffff' }}
             >
-              We identify potential before it
+              {t('home.statement.title1')}
               <br />
-              <span style={{ color: '#e85d4c' }}>becomes obvious.</span>
+              <span style={{ color: '#e85d4c' }}>{t('home.statement.title2')}</span>
             </h2>
             <p className="text-xl md:text-2xl leading-relaxed max-w-3xl mx-auto" style={{ color: 'rgba(255,255,255,0.7)' }}>
-              <strong className="font-bold" style={{ color: '#ffffff' }}>maemo</strong> proactively selects high-potential enterprises. We don't wait for opportunities—we find them.
+              <strong className="font-bold" style={{ color: '#ffffff' }}>maemo</strong> {t('home.statement.description')}
             </p>
           </AnimatedSection>
         </div>
@@ -53,10 +53,10 @@ export default function HomePage() {
         <div className="max-w-4xl mx-auto text-center">
           <AnimatedSection>
             <h2 className="text-headline mb-6" style={{ color: '#1e293b' }}>
-              Ready to be <span style={{ color: '#e85d4c' }}>evaluated?</span>
+              {t('home.cta.title')} <span style={{ color: '#e85d4c' }}>{t('home.cta.titleAccent')}</span>
             </h2>
             <p className="text-xl mb-10 max-w-2xl mx-auto" style={{ color: '#64748b' }}>
-              <strong className="font-bold" style={{ color: '#1e293b' }}>maemo</strong> selects partners with exceptional potential. If you believe your business qualifies, we're listening.
+              <strong className="font-bold" style={{ color: '#1e293b' }}>maemo</strong> {t('home.cta.description')}
             </p>
             <Link
               to="/contact"

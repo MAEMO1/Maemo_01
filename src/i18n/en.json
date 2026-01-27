@@ -52,6 +52,25 @@
           "status": "Verified"
         }
       }
+    },
+    "actionStack": {
+      "analyze": "Analyze",
+      "strategize": "Strategize",
+      "transform": "Transform"
+    },
+    "bigText": {
+      "line1": "Strategic excellence",
+      "line2": "for the exceptional."
+    },
+    "statement": {
+      "title1": "We identify potential before it",
+      "title2": "becomes obvious.",
+      "description": "proactively selects high-potential enterprises. We don't wait for opportunities—we find them."
+    },
+    "cta": {
+      "title": "Ready to be",
+      "titleAccent": "evaluated?",
+      "description": "selects partners with exceptional potential. If you believe your business qualifies, we're listening."
     }
   },
   "approach": {

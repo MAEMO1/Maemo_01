@@ -52,6 +52,25 @@
           "status": "Vérifié"
         }
       }
+    },
+    "actionStack": {
+      "analyze": "Analyser",
+      "strategize": "Stratégiser",
+      "transform": "Transformer"
+    },
+    "bigText": {
+      "line1": "Excellence stratégique",
+      "line2": "pour l'exceptionnel."
+    },
+    "statement": {
+      "title1": "Nous identifions le potentiel avant qu'il ne",
+      "title2": "devienne évident.",
+      "description": "sélectionne proactivement des entreprises à haut potentiel. Nous n'attendons pas les opportunités—nous les trouvons."
+    },
+    "cta": {
+      "title": "Prêt à être",
+      "titleAccent": "évalué?",
+      "description": "sélectionne des partenaires au potentiel exceptionnel. Si vous pensez que votre entreprise se qualifie, nous écoutons."
     }
   },
   "approach": {

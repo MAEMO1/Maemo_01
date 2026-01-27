@@ -1,10 +1,11 @@
 import { useRef, useState, useEffect } from 'react';
+import { useTranslation } from '../../hooks/useTranslation';
 
 // Jeton-style actions with colored icons
 const ACTIONS = [
   {
     id: 'analyze',
-    word: 'Analyze',
+    translationKey: 'home.actionStack.analyze',
     color: '#22c55e', // Green
     icon: (
       <svg className="w-8 h-8" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
@@ -14,7 +15,7 @@ const ACTIONS = [
   },
   {
     id: 'strategize',
-    word: 'Strategize',
+    translationKey: 'home.actionStack.strategize',
     color: '#3b82f6', // Blue
     icon: (
       <svg className="w-8 h-8" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
@@ -24,7 +25,7 @@ const ACTIONS = [
   },
   {
     id: 'transform',
-    word: 'Transform',
+    translationKey: 'home.actionStack.transform',
     color: '#e85d4c', // Coral
     icon: (
       <svg className="w-8 h-8" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
@@ -35,7 +36,7 @@ const ACTIONS = [
 ];
 
 // Jeton-style action item - large icon + word, same color
-function ActionItem({ action, style }) {
+function ActionItem({ action, style, t }) {
   return (
     <div
       className="flex items-center gap-5"
@@ -59,7 +60,7 @@ function ActionItem({ action, style }) {
         className="text-[clamp(3rem,12vw,7rem)] font-semibold leading-none tracking-tight"
         style={{ color: action.color }}
       >
-        {action.word}
+        {t(action.translationKey)}
       </span>
     </div>
   );
@@ -135,7 +136,7 @@ function easeOutQuart(t) {
 
 export function ActionStack() {
   const { containerRef, progress } = useStackScrollProgress();
-  const itemCount = ACTIONS.length;
+  const { t } = useTranslation();
 
   return (
     <section
@@ -172,6 +173,7 @@ export function ActionStack() {
               <ActionItem
                 key={action.id}
                 action={action}
+                t={t}
                 style={{
                   opacity,
                   transform: `translateY(${translateY}px)`,
