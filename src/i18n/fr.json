@@ -19,6 +19,39 @@
       "tagline": "Nous choisissons nos clients.",
       "subtitle": "maemo est un cabinet de conseil exclusif qui identifie proactivement les entreprises à haut potentiel et fournit des outils stratégiques pour réaliser leur potentiel de croissance.",
       "cta": "Pitchez-nous"
+    },
+    "floatingCards": {
+      "headline": "Nous analysons vos",
+      "headlineAccent": "opportunités",
+      "cards": {
+        "jaarrekening": {
+          "title": "Rapport Annuel",
+          "subtitle": "États Financiers",
+          "value": "€847K",
+          "label": "Chiffre vérifié",
+          "status": "Approuvé"
+        },
+        "profitLoss": {
+          "title": "P&L",
+          "value": "+34%",
+          "label": "Marge bénéficiaire"
+        },
+        "marketPosition": {
+          "title": "Position Marché",
+          "label": "Part de Marché",
+          "growth": "+12%"
+        },
+        "digitalPresence": {
+          "title": "Présence Digitale",
+          "value": "89%",
+          "label": "Score en Ligne"
+        },
+        "administration": {
+          "title": "Administration",
+          "label": "Entièrement organisé",
+          "status": "Vérifié"
+        }
+      }
     }
   },
   "approach": {

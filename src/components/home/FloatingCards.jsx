@@ -1,12 +1,14 @@
 import { useRef, useState, useEffect } from 'react';
+import { useTranslation } from '../../hooks/useTranslation';
 
 // Card size - all cards are the same size like Jeton (bigger)
 const CARD_SIZE = 'w-[260px] h-[280px]';
 
 // Card components with MAEMO topics - all same size like Jeton
+// Now accept translations as props
 const CARD_COMPONENTS = {
   // Jaarrekening - Green financial card
-  jaarrekening: () => (
+  jaarrekening: ({ t }) => (
     <div
       className={`${CARD_SIZE} rounded-3xl p-5 flex flex-col justify-between`}
       style={{
@@ -20,26 +22,26 @@ const CARD_COMPONENTS = {
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
           </svg>
         </div>
-        <span className="text-white text-base font-semibold">Jaarrekening</span>
+        <span className="text-white text-base font-semibold">{t('home.floatingCards.cards.jaarrekening.title')}</span>
       </div>
 
       <div className="space-y-1">
-        <div className="text-white/60 text-sm">Annual Report</div>
-        <div className="text-white text-2xl font-bold">€847K</div>
-        <div className="text-white/50 text-xs">Revenue verified</div>
+        <div className="text-white/60 text-sm">{t('home.floatingCards.cards.jaarrekening.subtitle')}</div>
+        <div className="text-white text-2xl font-bold">{t('home.floatingCards.cards.jaarrekening.value')}</div>
+        <div className="text-white/50 text-xs">{t('home.floatingCards.cards.jaarrekening.label')}</div>
       </div>
 
       <div
         className="px-4 py-2 rounded-xl text-sm font-medium text-center"
         style={{ background: 'rgba(255,255,255,0.2)', color: 'white' }}
       >
-        Approved
+        {t('home.floatingCards.cards.jaarrekening.status')}
       </div>
     </div>
   ),
 
   // Profit & Loss - Blue card
-  profitLoss: () => (
+  profitLoss: ({ t }) => (
     <div
       className={`${CARD_SIZE} rounded-3xl p-5 flex flex-col`}
       style={{
@@ -54,11 +56,11 @@ const CARD_COMPONENTS = {
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6" />
           </svg>
         </div>
-        <span className="text-blue-600 text-base font-bold">P&L</span>
+        <span className="text-blue-600 text-base font-bold">{t('home.floatingCards.cards.profitLoss.title')}</span>
       </div>
 
-      <div className="text-3xl font-bold text-slate-800 mb-1">+34%</div>
-      <div className="text-sm text-slate-400 mb-3">Profit margin</div>
+      <div className="text-3xl font-bold text-slate-800 mb-1">{t('home.floatingCards.cards.profitLoss.value')}</div>
+      <div className="text-sm text-slate-400 mb-3">{t('home.floatingCards.cards.profitLoss.label')}</div>
 
       <div className="mt-auto flex gap-1">
         <div className="flex-1 h-8 bg-blue-100 rounded"></div>
@@ -70,7 +72,7 @@ const CARD_COMPONENTS = {
   ),
 
   // Market Position - White dashboard card
-  marketPosition: () => (
+  marketPosition: ({ t }) => (
     <div
       className={`${CARD_SIZE} rounded-2xl overflow-hidden`}
       style={{
@@ -84,13 +86,13 @@ const CARD_COMPONENTS = {
           <div className="w-2.5 h-2.5 rounded-full bg-yellow-400"></div>
           <div className="w-2.5 h-2.5 rounded-full bg-green-400"></div>
         </div>
-        <span className="text-white text-sm font-medium ml-2">Market Position</span>
+        <span className="text-white text-sm font-medium ml-2">{t('home.floatingCards.cards.marketPosition.title')}</span>
       </div>
 
       <div className="p-4">
         <div className="flex items-center justify-between mb-3">
-          <span className="text-xs text-slate-400">Market Share</span>
-          <span className="text-xs font-semibold text-green-500">+12%</span>
+          <span className="text-xs text-slate-400">{t('home.floatingCards.cards.marketPosition.label')}</span>
+          <span className="text-xs font-semibold text-green-500">{t('home.floatingCards.cards.marketPosition.growth')}</span>
         </div>
         <div className="flex items-end gap-2 h-28">
           <div className="flex-1 rounded-t" style={{ height: '45%', background: 'rgba(232, 93, 76, 0.2)' }}></div>
@@ -104,7 +106,7 @@ const CARD_COMPONENTS = {
   ),
 
   // Digital Presence - Coral/pink gradient card
-  digitalPresence: () => (
+  digitalPresence: ({ t }) => (
     <div
       className={`${CARD_SIZE} rounded-2xl overflow-hidden`}
       style={{
@@ -119,7 +121,7 @@ const CARD_COMPONENTS = {
               <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-1 17.93c-3.95-.49-7-3.85-7-7.93 0-.62.08-1.21.21-1.79L9 15v1c0 1.1.9 2 2 2v1.93zm6.9-2.54c-.26-.81-1-1.39-1.9-1.39h-1v-3c0-.55-.45-1-1-1H8v-2h2c.55 0 1-.45 1-1V7h2c1.1 0 2-.9 2-2v-.41c2.93 1.19 5 4.06 5 7.41 0 2.08-.8 3.97-2.1 5.39z"/>
             </svg>
           </div>
-          <span className="text-base font-semibold text-slate-800">Digital Presence</span>
+          <span className="text-base font-semibold text-slate-800">{t('home.floatingCards.cards.digitalPresence.title')}</span>
         </div>
       </div>
 
@@ -128,8 +130,8 @@ const CARD_COMPONENTS = {
         style={{ background: 'linear-gradient(145deg, #fef2f1 0%, #fee2e2 100%)' }}
       >
         <div className="text-center">
-          <div className="text-4xl font-bold" style={{ color: '#e85d4c' }}>89%</div>
-          <div className="text-sm text-slate-500 mt-1">Online Score</div>
+          <div className="text-4xl font-bold" style={{ color: '#e85d4c' }}>{t('home.floatingCards.cards.digitalPresence.value')}</div>
+          <div className="text-sm text-slate-500 mt-1">{t('home.floatingCards.cards.digitalPresence.label')}</div>
           <div className="flex justify-center gap-1 mt-3">
             <div className="w-2 h-2 rounded-full bg-green-400"></div>
             <div className="w-2 h-2 rounded-full bg-green-400"></div>
@@ -142,7 +144,7 @@ const CARD_COMPONENTS = {
   ),
 
   // Administration - Pink/purple profile card
-  administration: () => (
+  administration: ({ t }) => (
     <div
       className={`${CARD_SIZE} rounded-3xl p-5 flex flex-col items-center justify-center`}
       style={{
@@ -158,19 +160,19 @@ const CARD_COMPONENTS = {
           <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-6 9l2 2 4-4" />
         </svg>
       </div>
-      <div className="text-slate-800 text-lg font-bold">Administration</div>
-      <div className="text-sm text-slate-500 mt-1">Fully organized</div>
+      <div className="text-slate-800 text-lg font-bold">{t('home.floatingCards.cards.administration.title')}</div>
+      <div className="text-sm text-slate-500 mt-1">{t('home.floatingCards.cards.administration.label')}</div>
       <div className="flex items-center gap-1 mt-2">
         <svg className="w-4 h-4 text-green-500" fill="currentColor" viewBox="0 0 24 24">
           <path d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
         </svg>
-        <span className="text-xs text-green-600 font-medium">Verified</span>
+        <span className="text-xs text-green-600 font-medium">{t('home.floatingCards.cards.administration.status')}</span>
       </div>
     </div>
   ),
 };
 
-// 5 cards - they will OVERLAP in the center like Jeton
+// 5 cards - they will appear ONE BY ONE and OVERLAP in the center
 const CARDS = [
   { id: 'jaarrekening', component: 'jaarrekening', zIndex: 5 },
   { id: 'profitLoss', component: 'profitLoss', zIndex: 4 },
@@ -179,10 +181,22 @@ const CARDS = [
   { id: 'administration', component: 'administration', zIndex: 1 },
 ];
 
-function FloatingCard({ card, index, progress, totalCards }) {
+function FloatingCard({ card, index, progress, totalCards, t }) {
   // Smoother easing for consistent feel with ActionStack
-  const easeOutQuart = (t) => 1 - Math.pow(1 - t, 4);
-  const easedProgress = easeOutQuart(progress);
+  const easeOutQuart = (x) => 1 - Math.pow(1 - x, 4);
+
+  // Each card has its own animation timing - they appear ONE BY ONE
+  // Card 0: 0.0 - 0.3, Card 1: 0.15 - 0.45, Card 2: 0.30 - 0.60, etc.
+  const cardStart = index * 0.15;
+  const cardEnd = cardStart + 0.35;
+
+  // Calculate card-specific progress
+  let cardProgress = 0;
+  if (progress >= cardStart) {
+    cardProgress = Math.min(1, (progress - cardStart) / (cardEnd - cardStart));
+  }
+
+  const easedProgress = easeOutQuart(cardProgress);
 
   // Each card has a unique starting position (off-screen)
   // Cards fly in from edges like Jeton
@@ -212,9 +226,9 @@ function FloatingCard({ card, index, progress, totalCards }) {
 
   // Scale: cards start small (0.7) and grow to full size (1.0)
   const scale = 0.7 + (0.3 * easedProgress);
-  // Opacity: cards snap to full opacity quickly (no gradual transparency)
-  // At 20% progress, cards are already fully opaque
-  const opacity = Math.min(1, easedProgress * 5);
+
+  // Opacity: hidden until animation starts, then visible
+  const opacity = cardProgress > 0 ? 1 : 0;
 
   const CardComponent = CARD_COMPONENTS[card.component];
 
@@ -228,7 +242,7 @@ function FloatingCard({ card, index, progress, totalCards }) {
         willChange: 'transform, opacity',
       }}
     >
-      <CardComponent />
+      <CardComponent t={t} />
     </div>
   );
 }
@@ -297,19 +311,20 @@ function useStickyScrollProgress() {
 
 export function FloatingCards() {
   const { containerRef, progress } = useStickyScrollProgress();
+  const { t } = useTranslation();
 
   // Headline starts LARGE and SHRINKS, then DISAPPEARS (like Jeton)
-  // At progress 0: scale 1.0, at progress 1: scale 0.4
+  // At progress 0: scale 1.0, at progress 0.3: scale 0.6, then fades
   const headlineScale = 1 - (progress * 0.6);
-  // Headline fades out completely - goes from 1 to 0
-  const headlineOpacity = 1 - progress;
+  // Headline fades out by the time first cards arrive
+  const headlineOpacity = Math.max(0, 1 - (progress * 3));
 
   return (
     <section
       ref={containerRef}
       className="relative"
       style={{
-        height: '400vh', // More scroll distance for smoother/longer animation
+        height: '450vh', // More scroll distance for sequential card animation
         background: '#ffffff',
       }}
     >
@@ -334,13 +349,13 @@ export function FloatingCards() {
               color: '#1e293b',
             }}
           >
-            Unifying your
+            {t('home.floatingCards.headline')}
             <br />
-            <span style={{ color: '#e85d4c' }}>opportunities</span>
+            <span style={{ color: '#e85d4c' }}>{t('home.floatingCards.headlineAccent')}</span>
           </h2>
         </div>
 
-        {/* Cards - come from edges and OVERLAP in center */}
+        {/* Cards - come ONE BY ONE from edges and OVERLAP in center */}
         {CARDS.map((card, index) => (
           <FloatingCard
             key={card.id}
@@ -348,6 +363,7 @@ export function FloatingCards() {
             index={index}
             progress={progress}
             totalCards={CARDS.length}
+            t={t}
           />
         ))}
 

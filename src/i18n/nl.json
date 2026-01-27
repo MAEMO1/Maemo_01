@@ -19,6 +19,39 @@
       "tagline": "Wij kiezen onze klanten.",
       "subtitle": "maemo is een exclusieve business consultancy die proactief hoogpotentiële ondernemingen identificeert en strategische tools biedt om hun groeipotentieel te realiseren.",
       "cta": "Pitch ons"
+    },
+    "floatingCards": {
+      "headline": "We analyseren jouw",
+      "headlineAccent": "kansen",
+      "cards": {
+        "jaarrekening": {
+          "title": "Jaarrekening",
+          "subtitle": "Jaarverslag",
+          "value": "€847K",
+          "label": "Omzet geverifieerd",
+          "status": "Goedgekeurd"
+        },
+        "profitLoss": {
+          "title": "W&V",
+          "value": "+34%",
+          "label": "Winstmarge"
+        },
+        "marketPosition": {
+          "title": "Marktpositie",
+          "label": "Marktaandeel",
+          "growth": "+12%"
+        },
+        "digitalPresence": {
+          "title": "Digitale Aanwezigheid",
+          "value": "89%",
+          "label": "Online Score"
+        },
+        "administration": {
+          "title": "Administratie",
+          "label": "Volledig georganiseerd",
+          "status": "Geverifieerd"
+        }
+      }
     }
   },
   "approach": {
