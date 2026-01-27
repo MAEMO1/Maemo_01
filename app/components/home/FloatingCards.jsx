@@ -91,17 +91,18 @@ const CARD_COMPONENTS = {
   ),
 };
 
-// Simplified card positions - visible from start, subtle animation
+// Card positions - fly in from edges on desktop
 const CARDS = [
-  { id: 'jaarrekening', component: 'jaarrekening', x: -15, y: -8 },
-  { id: 'profitLoss', component: 'profitLoss', x: 12, y: -5 },
-  { id: 'administration', component: 'administration', x: 0, y: 10 },
+  { id: 'jaarrekening', component: 'jaarrekening', startX: -150, startY: -100, endX: -15, endY: -8 },
+  { id: 'profitLoss', component: 'profitLoss', startX: 150, startY: -80, endX: 12, endY: -5 },
+  { id: 'administration', component: 'administration', startX: 0, startY: 120, endX: 0, endY: 10 },
 ];
 
 export function FloatingCards() {
   const containerRef = useRef(null);
   const headlineRef = useRef(null);
   const cardsContainerRef = useRef(null);
+  const cardRefs = useRef([]);
   const { t } = useTranslation();
   const [isMobile, setIsMobile] = useState(false);
 
@@ -116,21 +117,7 @@ export function FloatingCards() {
     if (isMobile) return; // No scroll animations on mobile
 
     const ctx = gsap.context(() => {
-      // Headline fades as cards come together
-      gsap.to(headlineRef.current, {
-        scale: 0.8,
-        opacity: 0,
-        scrollTrigger: {
-          trigger: containerRef.current,
-          start: 'top top',
-          end: '30% top',
-          scrub: 1,
-        },
-      });
-
-      // Cards scale up and come together
-      gsap.to(cardsContainerRef.current, {
-        scale: 1.1,
+      const tl = gsap.timeline({
         scrollTrigger: {
           trigger: containerRef.current,
           start: 'top top',
@@ -139,6 +126,44 @@ export function FloatingCards() {
           pin: '.floating-cards-content',
         },
       });
+
+      // Headline fades out
+      tl.to(headlineRef.current, {
+        scale: 0.8,
+        opacity: 0,
+        duration: 0.3,
+      }, 0);
+
+      // Cards fly in from their start positions
+      CARDS.forEach((card, index) => {
+        const cardEl = cardRefs.current[index];
+        if (!cardEl) return;
+
+        // Set initial position (off-screen)
+        gsap.set(cardEl, {
+          x: `${card.startX}%`,
+          y: `${card.startY}%`,
+          opacity: 0,
+          scale: 0.8,
+        });
+
+        // Animate to final position
+        tl.to(cardEl, {
+          x: `${card.endX}%`,
+          y: `${card.endY}%`,
+          opacity: 1,
+          scale: 1,
+          duration: 0.4,
+          ease: 'power2.out',
+        }, 0.1 + index * 0.1);
+      });
+
+      // After cards are in place, scale up slightly
+      tl.to(cardsContainerRef.current, {
+        scale: 1.05,
+        duration: 0.3,
+      }, 0.6);
+
     }, containerRef);
 
     return () => ctx.revert();
@@ -173,22 +198,23 @@ export function FloatingCards() {
           </h2>
         </div>
 
-        {/* Cards - visible immediately */}
+        {/* Cards - fly in on desktop, static on mobile */}
         <div
           ref={cardsContainerRef}
           className="relative flex flex-col md:block items-center gap-4 md:gap-0"
           style={{ zIndex: 1 }}
         >
-          {CARDS.map((card) => {
+          {CARDS.map((card, index) => {
             const CardComponent = CARD_COMPONENTS[card.component];
             return (
               <div
                 key={card.id}
+                ref={(el) => (cardRefs.current[index] = el)}
                 className="relative md:absolute md:left-1/2 md:top-1/2"
                 style={{
                   transform: isMobile
                     ? 'none'
-                    : `translate(-50%, -50%) translate(${card.x}%, ${card.y}%)`,
+                    : 'translate(-50%, -50%)',
                 }}
               >
                 <CardComponent t={t} />
