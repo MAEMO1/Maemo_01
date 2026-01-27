@@ -265,12 +265,12 @@ export function FloatingCards() {
                 fontWeight: 600,
                 lineHeight: 1.1,
                 letterSpacing: '-0.02em',
-                color: 'rgba(30, 41, 59, 0.25)',
+                color: '#1e293b',
               }}
             >
               {t('home.floatingCards.headline')}
               <br />
-              <span style={{ color: 'rgba(232, 93, 76, 0.35)' }}>
+              <span style={{ color: '#e85d4c' }}>
                 {t('home.floatingCards.headlineAccent')}
               </span>
             </h2>
