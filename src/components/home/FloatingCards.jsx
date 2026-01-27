@@ -186,8 +186,9 @@ function FloatingCard({ card, index, progress, totalCards, t }) {
   const easeOutQuart = (x) => 1 - Math.pow(1 - x, 4);
 
   // Each card has its own animation timing - they appear ONE BY ONE
-  const cardStart = index * 0.12;
-  const cardEnd = cardStart + 0.35;
+  // All 5 cards stack within ~80% of scroll (cards start: 0, 0.15, 0.30, 0.45, 0.60)
+  const cardStart = index * 0.15;
+  const cardEnd = cardStart + 0.30;
 
   // Calculate card-specific progress (0 to 1 for this card's animation)
   let cardProgress = 0;
@@ -281,8 +282,8 @@ function useStickyScrollProgress() {
   useEffect(() => {
     const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
-    // Lerp factor - lower = more momentum/smoothing (0.08 = smooth glide)
-    const lerpFactor = 0.08;
+    // Lerp factor - lower = more momentum/smoothing (0.04 = longer glide)
+    const lerpFactor = 0.04;
 
     const calculateTargetProgress = () => {
       if (!containerRef.current) return;
@@ -348,7 +349,7 @@ export function FloatingCards() {
       ref={containerRef}
       className="relative"
       style={{
-        height: '500vh', // Extra scroll for 3-phase animation (fly → zoom → settle)
+        height: '300vh', // 2 scrolls for all cards to stack
         background: '#ffffff',
       }}
     >
