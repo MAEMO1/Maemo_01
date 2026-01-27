@@ -41,11 +41,11 @@ const ACTIONS = [
   },
 ];
 
-function ActionItem({ action, t, innerRef, index }) {
+function ActionItem({ action, t, innerRef }) {
   return (
     <div
       ref={innerRef}
-      className="flex items-center gap-4 md:gap-6"
+      className="flex items-center gap-4 md:gap-6 action-item"
       style={{ transform: action.offset }}
     >
       <div
@@ -77,28 +77,34 @@ export function ActionStack() {
   useLayoutEffect(() => {
     if (!mounted) return;
 
+    // Only animate on desktop
+    const isDesktop = window.innerWidth >= 768;
+    if (!isDesktop) return;
+
     const ctx = gsap.context(() => {
-      // Simple staggered fade-in animation like jeton.com
       itemRefs.current.forEach((item, index) => {
         if (!item) return;
 
-        gsap.set(item, {
-          opacity: 0,
-          y: 60,
-        });
-
-        gsap.to(item, {
-          opacity: 1,
-          y: 0,
-          duration: 0.8,
-          ease: 'power3.out',
-          scrollTrigger: {
-            trigger: item,
-            start: 'top 85%',
-            toggleActions: 'play none none none',
+        // Animate from below with fade
+        gsap.fromTo(
+          item,
+          {
+            opacity: 0,
+            y: 50,
           },
-          delay: index * 0.15,
-        });
+          {
+            opacity: 1,
+            y: 0,
+            duration: 0.7,
+            ease: 'power2.out',
+            scrollTrigger: {
+              trigger: item,
+              start: 'top 88%',
+              toggleActions: 'play none none none',
+            },
+            delay: index * 0.12,
+          }
+        );
       });
     }, containerRef);
 
@@ -116,7 +122,6 @@ export function ActionStack() {
             key={action.id}
             action={action}
             t={t}
-            index={index}
             innerRef={(el) => (itemRefs.current[index] = el)}
           />
         ))}
