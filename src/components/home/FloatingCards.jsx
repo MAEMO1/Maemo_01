@@ -262,9 +262,11 @@ function FloatingCard({ card, index, progress, totalCards, t }) {
       style={{
         zIndex: card.zIndex,
         opacity,
-        transform: `translate(calc(-50% + ${currentX}px), calc(-50% + ${currentY}px)) scale(${scale})`,
+        transform: `translate3d(calc(-50% + ${currentX}px), calc(-50% + ${currentY}px), 0) scale(${scale})`,
         willChange: 'transform, opacity',
-        transition: 'none',
+        backfaceVisibility: 'hidden',
+        perspective: 1000,
+        WebkitFontSmoothing: 'antialiased',
       }}
     >
       <CardComponent t={t} />
@@ -282,8 +284,8 @@ function useStickyScrollProgress() {
   useEffect(() => {
     const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
-    // Lerp factor - lower = more momentum/smoothing (0.025 = very smooth glide)
-    const lerpFactor = 0.025;
+    // Lerp factor - lower = more momentum/smoothing (0.035 = smooth without lag)
+    const lerpFactor = 0.035;
 
     const calculateTargetProgress = () => {
       if (!containerRef.current) return;
@@ -301,14 +303,15 @@ function useStickyScrollProgress() {
       // Lerp current progress towards target
       const diff = targetProgressRef.current - currentProgressRef.current;
 
-      // Only update if there's a meaningful difference
-      if (Math.abs(diff) > 0.0001) {
+      // Only update if there's a meaningful difference (higher threshold = fewer updates = smoother)
+      if (Math.abs(diff) > 0.001) {
         currentProgressRef.current += diff * lerpFactor;
 
         if (prefersReducedMotion) {
           setProgress(targetProgressRef.current > 0.1 ? 1 : 0);
         } else {
-          setProgress(currentProgressRef.current);
+          // Round to 4 decimal places to avoid floating point jitter
+          setProgress(Math.round(currentProgressRef.current * 10000) / 10000);
         }
       }
 
