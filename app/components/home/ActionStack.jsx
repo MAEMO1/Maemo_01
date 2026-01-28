@@ -49,25 +49,30 @@ function ActionItem({ action, t, innerRef }) {
   return (
     <div
       ref={innerRef}
-      className="flex items-center justify-center gap-6 md:gap-8 will-change-transform"
-      style={{ opacity: 0 }}
+      className="flex items-center justify-center gap-5 sm:gap-6 md:gap-8 will-change-transform group"
+      style={{ opacity: 0, transformStyle: 'preserve-3d' }}
     >
-      {/* Icon box - refined sizing like jeton.com */}
+      {/* Icon box - refined sizing with depth shadow like jeton.com */}
       <div
-        className="w-16 h-16 md:w-20 md:h-20 lg:w-24 lg:h-24 rounded-2xl md:rounded-3xl flex items-center justify-center flex-shrink-0 shadow-lg"
+        className="w-14 h-14 sm:w-16 sm:h-16 md:w-20 md:h-20 lg:w-24 lg:h-24 rounded-xl sm:rounded-2xl md:rounded-3xl flex items-center justify-center flex-shrink-0 transition-transform duration-300 group-active:scale-95"
         style={{
           backgroundColor: action.color,
-          boxShadow: `0 8px 32px ${action.color}40`,
+          boxShadow: `
+            0 4px 6px ${action.color}20,
+            0 12px 24px ${action.color}30,
+            0 24px 48px ${action.color}20
+          `,
+          backdropFilter: 'blur(8px)',
         }}
       >
         <div className="text-white">{action.icon}</div>
       </div>
-      {/* Large bold text - jeton.com style sizing */}
+      {/* Large bold text - jeton.com style sizing with touch feedback */}
       <span
-        className="font-semibold leading-none tracking-tight"
+        className="font-semibold leading-none tracking-tight transition-transform duration-300 group-active:scale-[0.98]"
         style={{
           color: action.color,
-          fontSize: 'clamp(3rem, 10vw, 7rem)',
+          fontSize: 'clamp(2.5rem, 10vw, 7rem)',
           letterSpacing: '-0.03em',
         }}
       >
@@ -162,35 +167,55 @@ export function ActionStack() {
         });
 
       } else {
-        // MOBILE: Staggered scroll-reveal (no pinning)
-        itemRefs.current.forEach((item, index) => {
-          if (!item) return;
+        // MOBILE: Jeton.com level 3D cascade reveal
+        const items = itemRefs.current.filter(Boolean);
 
+        items.forEach((item, index) => {
           const action = ACTIONS[index];
-          const xOffset = action.direction * 60;
+          const xOffset = action.direction * 80;
+          const rotationY = action.direction * 12;
+          const staggerDelay = index * 0.12;
 
-          gsap.fromTo(
-            item,
-            {
-              opacity: 0,
-              x: xOffset,
-              y: 30,
-              scale: 0.95,
+          // Set initial 3D state
+          gsap.set(item, {
+            opacity: 0,
+            x: xOffset,
+            y: 50,
+            scale: 0.85,
+            rotationY: rotationY,
+            rotationX: 8,
+            transformPerspective: 1000,
+            transformOrigin: action.direction < 0 ? 'right center' : 'left center',
+          });
+
+          // Dramatic 3D entrance
+          gsap.to(item, {
+            opacity: 1,
+            x: 0,
+            y: 0,
+            scale: 1,
+            rotationY: 0,
+            rotationX: 0,
+            duration: 1.2,
+            delay: staggerDelay,
+            ease: 'power3.out',
+            scrollTrigger: {
+              trigger: item,
+              start: 'top 90%',
+              toggleActions: 'play none none none',
             },
-            {
-              opacity: 1,
-              x: 0,
-              y: 0,
-              scale: 1,
-              duration: 0.8,
-              ease: PREMIUM_EASE,
-              scrollTrigger: {
-                trigger: item,
-                start: 'top 85%',
-                toggleActions: 'play none none none',
-              },
-            }
-          );
+          });
+
+          // Subtle parallax on scroll
+          gsap.to(item, {
+            y: (index - 1) * -10,
+            scrollTrigger: {
+              trigger: containerRef.current,
+              start: 'top bottom',
+              end: 'bottom top',
+              scrub: 0.6,
+            },
+          });
         });
       }
     }, containerRef);

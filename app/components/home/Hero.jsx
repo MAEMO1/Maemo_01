@@ -27,11 +27,24 @@ export function Hero() {
         delay: 0.2,
       });
 
-      // Headline - dramatic entrance with scale and slight rotation
+      // Headline - dramatic 3D entrance with perspective
       tl.fromTo(
         headlineRef.current,
-        { opacity: 0, y: 80, scale: 0.92, rotationX: 10 },
-        { opacity: 1, y: 0, scale: 1, rotationX: 0, duration: 1.4 }
+        {
+          opacity: 0,
+          y: 100,
+          scale: 0.88,
+          rotationX: 15,
+          transformPerspective: 1200,
+          transformOrigin: 'center bottom',
+        },
+        {
+          opacity: 1,
+          y: 0,
+          scale: 1,
+          rotationX: 0,
+          duration: 1.4,
+        }
       );
 
       // Subtitle - smooth fade in with offset
@@ -91,7 +104,11 @@ export function Hero() {
           <div ref={ctaRef} className="will-change-transform" style={{ opacity: 0 }}>
             <Link
               href="/contact"
-              className="group inline-flex items-center gap-2 sm:gap-3 px-6 sm:px-8 py-3 sm:py-4 rounded-full bg-ink text-white font-medium hover:bg-charcoal transition-all duration-300 text-sm sm:text-base"
+              className="group inline-flex items-center gap-2 sm:gap-3 px-6 sm:px-8 py-3 sm:py-4 rounded-full bg-ink text-white font-medium hover:bg-charcoal transition-all duration-300 text-sm sm:text-base active:scale-95 active:bg-charcoal"
+              style={{
+                boxShadow: '0 4px 14px rgba(30, 41, 59, 0.25), 0 8px 32px rgba(30, 41, 59, 0.15)',
+                WebkitTapHighlightColor: 'transparent',
+              }}
             >
               {t('home.hero.cta')}
               <svg

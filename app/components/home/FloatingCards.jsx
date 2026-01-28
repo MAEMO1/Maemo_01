@@ -162,14 +162,17 @@ const CARD_POSITIONS = [
 // Cards to show (all 5)
 const ALL_CARDS = ['jaarrekening', 'profitLoss', 'administration', 'marketPosition', 'digitalPresence'];
 
-// Mobile card entrance directions for variety
+// Mobile card entrance - jeton.com level 3D depth animations
 const MOBILE_ENTRANCES = [
-  { x: -40, y: 60, rotation: -4, scale: 0.85 },  // From left
-  { x: 40, y: 50, rotation: 3, scale: 0.9 },    // From right
-  { x: -30, y: 70, rotation: -2, scale: 0.88 }, // From left
-  { x: 35, y: 55, rotation: 4, scale: 0.87 },   // From right
-  { x: 0, y: 80, rotation: 0, scale: 0.85 },    // From bottom center
+  { x: -60, y: 80, rotation: -8, rotationX: 15, scale: 0.75, delay: 0 },
+  { x: 60, y: 70, rotation: 6, rotationX: 12, scale: 0.78, delay: 0.08 },
+  { x: -50, y: 90, rotation: -5, rotationX: 18, scale: 0.72, delay: 0.16 },
+  { x: 55, y: 75, rotation: 7, rotationX: 14, scale: 0.76, delay: 0.24 },
+  { x: 0, y: 100, rotation: 0, rotationX: 20, scale: 0.7, delay: 0.32 },
 ];
+
+// Z-index stacking for depth perception (jeton.com style)
+const MOBILE_Z_INDEX = [15, 12, 9, 6, 3];
 
 export function FloatingCards() {
   const containerRef = useRef(null);
@@ -243,61 +246,85 @@ export function FloatingCards() {
     return () => ctx.revert();
   }, [mounted, isDesktop]);
 
-  // Mobile animations - scroll-triggered entrance for each card
+  // Mobile animations - jeton.com level scroll-triggered 3D entrance
   useLayoutEffect(() => {
     if (!mounted || isDesktop) return;
 
     const ctx = gsap.context(() => {
-      // Animate headline
+      // Animate headline with dramatic entrance
       if (headlineRef.current) {
         gsap.fromTo(
           headlineRef.current,
-          { opacity: 0, y: 40, scale: 0.95 },
+          {
+            opacity: 0,
+            y: 60,
+            scale: 0.9,
+            rotationX: 10,
+            transformPerspective: 1000,
+          },
           {
             opacity: 1,
             y: 0,
             scale: 1,
-            duration: 0.8,
+            rotationX: 0,
+            duration: 1,
             ease: 'power3.out',
             scrollTrigger: {
               trigger: headlineRef.current,
-              start: 'top 85%',
+              start: 'top 88%',
               toggleActions: 'play none none none',
             },
           }
         );
       }
 
-      // Animate each card with staggered, directional entrance
+      // Animate each card with cascading 3D entrance - jeton.com style
       mobileCardsRef.current.forEach((card, index) => {
         if (!card) return;
 
         const entrance = MOBILE_ENTRANCES[index];
 
-        gsap.fromTo(
-          card,
-          {
-            opacity: 0,
-            x: entrance.x,
-            y: entrance.y,
-            rotation: entrance.rotation,
-            scale: entrance.scale,
+        // Initial state with 3D transforms
+        gsap.set(card, {
+          opacity: 0,
+          x: entrance.x,
+          y: entrance.y,
+          rotation: entrance.rotation,
+          rotationX: entrance.rotationX,
+          scale: entrance.scale,
+          transformPerspective: 1200,
+          transformOrigin: 'center bottom',
+          zIndex: MOBILE_Z_INDEX[index],
+        });
+
+        // Animate in with staggered delay
+        gsap.to(card, {
+          opacity: 1,
+          x: 0,
+          y: 0,
+          rotation: 0,
+          rotationX: 0,
+          scale: 1,
+          duration: 1.2,
+          delay: entrance.delay,
+          ease: 'power3.out',
+          scrollTrigger: {
+            trigger: card,
+            start: 'top 92%',
+            toggleActions: 'play none none none',
           },
-          {
-            opacity: 1,
-            x: 0,
-            y: 0,
-            rotation: 0,
-            scale: 1,
-            duration: 0.8,
-            ease: 'power3.out',
-            scrollTrigger: {
-              trigger: card,
-              start: 'top 90%',
-              toggleActions: 'play none none none',
-            },
-          }
-        );
+        });
+
+        // Add subtle parallax on scroll after reveal
+        gsap.to(card, {
+          y: (index - 2) * -15, // Differential parallax based on position
+          scrollTrigger: {
+            trigger: containerRef.current,
+            start: 'top bottom',
+            end: 'bottom top',
+            scrub: 0.5,
+          },
+        });
       });
     }, containerRef);
 
@@ -355,7 +382,7 @@ export function FloatingCards() {
                 );
               })
             ) : (
-              // Mobile/Tablet: grid layout with GSAP scroll-triggered animations
+              // Mobile/Tablet: grid layout with GSAP scroll-triggered 3D animations
               ALL_CARDS.map((cardId, index) => {
                 const CardComponent = CARD_COMPONENTS[cardId];
                 return (
@@ -363,8 +390,14 @@ export function FloatingCards() {
                     key={cardId}
                     ref={(el) => (mobileCardsRef.current[index] = el)}
                     className="flex justify-center will-change-transform"
+                    style={{
+                      zIndex: MOBILE_Z_INDEX[index],
+                      transformStyle: 'preserve-3d',
+                    }}
                   >
-                    <CardComponent t={t} />
+                    <div className="backdrop-blur-sm">
+                      <CardComponent t={t} />
+                    </div>
                   </div>
                 );
               })

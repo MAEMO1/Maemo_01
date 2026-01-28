@@ -47,13 +47,24 @@ export function CTASection() {
           </p>
           <Link
             href="/contact"
-            className="inline-flex items-center gap-3 px-10 py-5 rounded-full font-semibold text-lg transition-all duration-300 hover:scale-[1.02] active:scale-[0.98]"
-            style={{ background: '#1e293b', color: '#ffffff' }}
-            onMouseEnter={(e) => { e.currentTarget.style.background = '#334155'; }}
-            onMouseLeave={(e) => { e.currentTarget.style.background = '#1e293b'; }}
+            className="inline-flex items-center gap-3 px-8 sm:px-10 py-4 sm:py-5 rounded-full font-semibold text-base sm:text-lg transition-all duration-300 hover:scale-[1.02] active:scale-[0.95]"
+            style={{
+              background: '#1e293b',
+              color: '#ffffff',
+              boxShadow: '0 4px 14px rgba(30, 41, 59, 0.25), 0 8px 32px rgba(30, 41, 59, 0.15)',
+              WebkitTapHighlightColor: 'transparent',
+            }}
+            onMouseEnter={(e) => {
+              e.currentTarget.style.background = '#334155';
+              e.currentTarget.style.boxShadow = '0 6px 20px rgba(30, 41, 59, 0.3), 0 12px 40px rgba(30, 41, 59, 0.2)';
+            }}
+            onMouseLeave={(e) => {
+              e.currentTarget.style.background = '#1e293b';
+              e.currentTarget.style.boxShadow = '0 4px 14px rgba(30, 41, 59, 0.25), 0 8px 32px rgba(30, 41, 59, 0.15)';
+            }}
           >
             {t('home.hero.cta')}
-            <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+            <svg className="w-5 h-5 transition-transform duration-300 group-hover:translate-x-1" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
               <path strokeLinecap="round" strokeLinejoin="round" d="M17 8l4 4m0 0l-4 4m4-4H3" />
             </svg>
           </Link>
