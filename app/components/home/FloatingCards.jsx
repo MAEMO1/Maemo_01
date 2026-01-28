@@ -160,13 +160,13 @@ const CARD_POSITIONS = [
 ];
 
 // Mobile card positions - overlapping stack like jeton.com (percentages from center)
-// Creates a fanned/stacked visual composition
+// Creates a fanned/stacked visual composition - centered and balanced
 const MOBILE_CARD_POSITIONS = [
-  { id: 'jaarrekening', x: -25, y: -35, rotation: -6, zIndex: 5, startX: -100, startY: -80 },
-  { id: 'profitLoss', x: 25, y: -30, rotation: 4, zIndex: 4, startX: 100, startY: -60 },
-  { id: 'administration', x: 0, y: 40, rotation: 0, zIndex: 3, startX: 0, startY: 120 },
-  { id: 'marketPosition', x: -20, y: 15, rotation: -3, zIndex: 2, startX: -80, startY: 60 },
-  { id: 'digitalPresence', x: 22, y: 20, rotation: 5, zIndex: 1, startX: 80, startY: 70 },
+  { id: 'jaarrekening', x: -15, y: -25, rotation: -5, zIndex: 5, startX: -80, startY: -60 },
+  { id: 'profitLoss', x: 18, y: -20, rotation: 4, zIndex: 4, startX: 80, startY: -50 },
+  { id: 'administration', x: 0, y: 30, rotation: 0, zIndex: 3, startX: 0, startY: 100 },
+  { id: 'marketPosition', x: -12, y: 8, rotation: -2, zIndex: 2, startX: -60, startY: 50 },
+  { id: 'digitalPresence', x: 15, y: 12, rotation: 3, zIndex: 1, startX: 60, startY: 55 },
 ];
 
 export function FloatingCards() {
@@ -251,29 +251,32 @@ export function FloatingCards() {
         scrollTrigger: {
           trigger: containerRef.current,
           start: 'top top',
-          end: '+=150%', // 1.5x viewport height for scroll
-          pin: true,
+          end: '+=180%', // 1.8x viewport height for scroll - more time to see headline
+          pin: '.floating-cards-content', // Pin the content div, not the whole section
           scrub: 0.6,
           anticipatePin: 1,
         },
       });
 
-      // Headline fades out as cards come in
+      // Headline stays visible briefly, then fades out as cards come in
       if (headlineRef.current) {
-        tl.fromTo(
+        // Hold headline visible for first part of scroll
+        tl.set(headlineRef.current, { opacity: 1, scale: 1 }, 0);
+        // Then fade out
+        tl.to(
           headlineRef.current,
-          { opacity: 1, scale: 1 },
-          { opacity: 0, scale: 0.85, duration: 0.3 },
-          0
+          { opacity: 0, scale: 0.85, duration: 0.25 },
+          0.15 // Start fading after user has scrolled 15% of the animation
         );
       }
 
       // Animate each card from start position to final stacked position
+      // Cards start appearing AFTER headline begins to fade
       mobileCardsRef.current.forEach((card, index) => {
         if (!card) return;
 
         const pos = MOBILE_CARD_POSITIONS[index];
-        const staggerOffset = index * 0.08;
+        const staggerOffset = index * 0.06;
 
         // Set initial state - cards start from outside/far positions
         gsap.set(card, {
@@ -285,23 +288,23 @@ export function FloatingCards() {
           transformPerspective: 1000,
         });
 
-        // Animate to final stacked position
+        // Animate to final stacked position - start at 0.25 (after headline starts fading)
         tl.to(card, {
           xPercent: pos.x,
           yPercent: pos.y,
           opacity: 1,
           scale: 1,
           rotation: pos.rotation,
-          duration: 0.35,
+          duration: 0.3,
           ease: 'power3.out',
-        }, 0.1 + staggerOffset);
+        }, 0.25 + staggerOffset);
       });
 
       // Slight scale up at end for impact
       tl.to(cardsContainerRef.current, {
         scale: 1.02,
-        duration: 0.2,
-      }, 0.6);
+        duration: 0.15,
+      }, 0.7);
 
     }, containerRef);
 
