@@ -159,20 +159,15 @@ const CARD_POSITIONS = [
   { id: 'administration', startX: 0, startY: 150, endX: 0, endY: 55 },
 ];
 
-// Cards to show (all 5)
-const ALL_CARDS = ['jaarrekening', 'profitLoss', 'administration', 'marketPosition', 'digitalPresence'];
-
-// Mobile card entrance - jeton.com level 3D depth animations
-const MOBILE_ENTRANCES = [
-  { x: -60, y: 80, rotation: -8, rotationX: 15, scale: 0.75, delay: 0 },
-  { x: 60, y: 70, rotation: 6, rotationX: 12, scale: 0.78, delay: 0.08 },
-  { x: -50, y: 90, rotation: -5, rotationX: 18, scale: 0.72, delay: 0.16 },
-  { x: 55, y: 75, rotation: 7, rotationX: 14, scale: 0.76, delay: 0.24 },
-  { x: 0, y: 100, rotation: 0, rotationX: 20, scale: 0.7, delay: 0.32 },
+// Mobile card positions - overlapping stack like jeton.com (percentages from center)
+// Creates a fanned/stacked visual composition
+const MOBILE_CARD_POSITIONS = [
+  { id: 'jaarrekening', x: -25, y: -35, rotation: -6, zIndex: 5, startX: -100, startY: -80 },
+  { id: 'profitLoss', x: 25, y: -30, rotation: 4, zIndex: 4, startX: 100, startY: -60 },
+  { id: 'administration', x: 0, y: 40, rotation: 0, zIndex: 3, startX: 0, startY: 120 },
+  { id: 'marketPosition', x: -20, y: 15, rotation: -3, zIndex: 2, startX: -80, startY: 60 },
+  { id: 'digitalPresence', x: 22, y: 20, rotation: 5, zIndex: 1, startX: 80, startY: 70 },
 ];
-
-// Z-index stacking for depth perception (jeton.com style)
-const MOBILE_Z_INDEX = [15, 12, 9, 6, 3];
 
 export function FloatingCards() {
   const containerRef = useRef(null);
@@ -246,86 +241,68 @@ export function FloatingCards() {
     return () => ctx.revert();
   }, [mounted, isDesktop]);
 
-  // Mobile animations - jeton.com level scroll-triggered 3D entrance
+  // Mobile animations - jeton.com style overlapping stack with scroll-pinned reveal
   useLayoutEffect(() => {
     if (!mounted || isDesktop) return;
 
     const ctx = gsap.context(() => {
-      // Animate headline with dramatic entrance
+      // Pin the section and animate cards as user scrolls - like jeton.com
+      const tl = gsap.timeline({
+        scrollTrigger: {
+          trigger: containerRef.current,
+          start: 'top top',
+          end: '+=150%', // 1.5x viewport height for scroll
+          pin: true,
+          scrub: 0.6,
+          anticipatePin: 1,
+        },
+      });
+
+      // Headline fades out as cards come in
       if (headlineRef.current) {
-        gsap.fromTo(
+        tl.fromTo(
           headlineRef.current,
-          {
-            opacity: 0,
-            y: 60,
-            scale: 0.9,
-            rotationX: 10,
-            transformPerspective: 1000,
-          },
-          {
-            opacity: 1,
-            y: 0,
-            scale: 1,
-            rotationX: 0,
-            duration: 1,
-            ease: 'power3.out',
-            scrollTrigger: {
-              trigger: headlineRef.current,
-              start: 'top 88%',
-              toggleActions: 'play none none none',
-            },
-          }
+          { opacity: 1, scale: 1 },
+          { opacity: 0, scale: 0.85, duration: 0.3 },
+          0
         );
       }
 
-      // Animate each card with cascading 3D entrance - jeton.com style
+      // Animate each card from start position to final stacked position
       mobileCardsRef.current.forEach((card, index) => {
         if (!card) return;
 
-        const entrance = MOBILE_ENTRANCES[index];
+        const pos = MOBILE_CARD_POSITIONS[index];
+        const staggerOffset = index * 0.08;
 
-        // Initial state with 3D transforms
+        // Set initial state - cards start from outside/far positions
         gsap.set(card, {
+          xPercent: pos.startX,
+          yPercent: pos.startY,
           opacity: 0,
-          x: entrance.x,
-          y: entrance.y,
-          rotation: entrance.rotation,
-          rotationX: entrance.rotationX,
-          scale: entrance.scale,
-          transformPerspective: 1200,
-          transformOrigin: 'center bottom',
-          zIndex: MOBILE_Z_INDEX[index],
+          scale: 0.7,
+          rotation: pos.rotation * 2,
+          transformPerspective: 1000,
         });
 
-        // Animate in with staggered delay
-        gsap.to(card, {
+        // Animate to final stacked position
+        tl.to(card, {
+          xPercent: pos.x,
+          yPercent: pos.y,
           opacity: 1,
-          x: 0,
-          y: 0,
-          rotation: 0,
-          rotationX: 0,
           scale: 1,
-          duration: 1.2,
-          delay: entrance.delay,
+          rotation: pos.rotation,
+          duration: 0.35,
           ease: 'power3.out',
-          scrollTrigger: {
-            trigger: card,
-            start: 'top 92%',
-            toggleActions: 'play none none none',
-          },
-        });
-
-        // Add subtle parallax on scroll after reveal
-        gsap.to(card, {
-          y: (index - 2) * -15, // Differential parallax based on position
-          scrollTrigger: {
-            trigger: containerRef.current,
-            start: 'top bottom',
-            end: 'bottom top',
-            scrub: 0.5,
-          },
-        });
+        }, 0.1 + staggerOffset);
       });
+
+      // Slight scale up at end for impact
+      tl.to(cardsContainerRef.current, {
+        scale: 1.02,
+        duration: 0.2,
+      }, 0.6);
+
     }, containerRef);
 
     return () => ctx.revert();
@@ -333,19 +310,19 @@ export function FloatingCards() {
 
   return (
     <section ref={containerRef} className="relative bg-white">
-      {/* Single unified layout - works on all screens */}
-      <div className={isDesktop ? 'h-[250vh]' : ''}>
-        <div className={`floating-cards-content ${isDesktop ? 'h-screen' : 'py-12 sm:py-16 md:py-20'} flex flex-col items-center justify-center overflow-hidden px-4 sm:px-6`}>
-          {/* Headline - always visible, animation only on desktop */}
+      {/* Unified layout for both desktop and mobile - scroll-pinned */}
+      <div className={isDesktop ? 'h-[250vh]' : 'h-[200vh]'}>
+        <div className="floating-cards-content h-screen flex items-center justify-center overflow-hidden">
+          {/* Headline - absolute positioned, fades out as cards come in */}
           <div
             ref={headlineRef}
-            className={`${isDesktop ? 'absolute inset-0 flex items-center justify-center pointer-events-none' : 'mb-8 sm:mb-10 md:mb-12'}`}
-            style={isDesktop ? { zIndex: 0 } : {}}
+            className="absolute inset-0 flex items-center justify-center pointer-events-none"
+            style={{ zIndex: 0 }}
           >
             <h2
               className="text-center px-4"
               style={{
-                fontSize: isDesktop ? 'clamp(3rem, 14vw, 14rem)' : 'clamp(2rem, 10vw, 3.5rem)',
+                fontSize: isDesktop ? 'clamp(3rem, 14vw, 14rem)' : 'clamp(2.5rem, 12vw, 4rem)',
                 fontWeight: 700,
                 lineHeight: 1.0,
                 letterSpacing: '-0.03em',
@@ -360,21 +337,21 @@ export function FloatingCards() {
             </h2>
           </div>
 
-          {/* Cards container */}
+          {/* Cards container - always uses absolute positioning for stacking */}
           <div
             ref={cardsContainerRef}
-            className={isDesktop ? 'relative' : 'grid grid-cols-1 sm:grid-cols-2 gap-4 sm:gap-6 max-w-2xl'}
-            style={isDesktop ? { zIndex: 1 } : {}}
+            className="relative"
+            style={{ zIndex: 1 }}
           >
             {isDesktop ? (
-              // Desktop: absolute positioned cards for animation
+              // Desktop: absolute positioned cards
               CARD_POSITIONS.map((card, index) => {
                 const CardComponent = CARD_COMPONENTS[card.id];
                 return (
                   <div
                     key={card.id}
                     ref={(el) => (cardRefs.current[index] = el)}
-                    className="absolute left-1/2 top-1/2"
+                    className="absolute left-1/2 top-1/2 will-change-transform"
                     style={{ transform: 'translate(-50%, -50%)' }}
                   >
                     <CardComponent t={t} />
@@ -382,22 +359,21 @@ export function FloatingCards() {
                 );
               })
             ) : (
-              // Mobile/Tablet: grid layout with GSAP scroll-triggered 3D animations
-              ALL_CARDS.map((cardId, index) => {
-                const CardComponent = CARD_COMPONENTS[cardId];
+              // Mobile: absolute positioned overlapping stack - like jeton.com
+              MOBILE_CARD_POSITIONS.map((pos, index) => {
+                const CardComponent = CARD_COMPONENTS[pos.id];
                 return (
                   <div
-                    key={cardId}
+                    key={pos.id}
                     ref={(el) => (mobileCardsRef.current[index] = el)}
-                    className="flex justify-center will-change-transform"
+                    className="absolute left-1/2 top-1/2 will-change-transform"
                     style={{
-                      zIndex: MOBILE_Z_INDEX[index],
+                      transform: 'translate(-50%, -50%)',
+                      zIndex: pos.zIndex,
                       transformStyle: 'preserve-3d',
                     }}
                   >
-                    <div className="backdrop-blur-sm">
-                      <CardComponent t={t} />
-                    </div>
+                    <CardComponent t={t} />
                   </div>
                 );
               })
