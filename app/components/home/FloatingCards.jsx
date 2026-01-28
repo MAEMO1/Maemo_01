@@ -308,16 +308,21 @@ export function FloatingCards() {
     return () => ctx.revert();
   }, [mounted, isDesktop]);
 
+  // Calculate container dimensions based on breakpoint
+  const containerSize = isDesktop
+    ? { width: '80vw', height: '70vh', maxWidth: '1200px' }
+    : { width: '90vw', height: '60vh', maxWidth: '500px' };
+
   return (
     <section ref={containerRef} className="relative bg-white">
       {/* Unified layout for both desktop and mobile - scroll-pinned */}
       <div className={isDesktop ? 'h-[250vh]' : 'h-[200vh]'}>
         <div className="floating-cards-content h-screen flex items-center justify-center overflow-hidden">
-          {/* Headline - absolute positioned, fades out as cards come in */}
+          {/* Headline - absolute positioned, visible initially, fades out as cards come in */}
           <div
             ref={headlineRef}
             className="absolute inset-0 flex items-center justify-center pointer-events-none"
-            style={{ zIndex: 0 }}
+            style={{ zIndex: 10 }}
           >
             <h2
               className="text-center px-4"
@@ -337,11 +342,16 @@ export function FloatingCards() {
             </h2>
           </div>
 
-          {/* Cards container - always uses absolute positioning for stacking */}
+          {/* Cards container - explicit dimensions for proper centering */}
           <div
             ref={cardsContainerRef}
             className="relative"
-            style={{ zIndex: 1 }}
+            style={{
+              zIndex: 5,
+              width: containerSize.width,
+              height: containerSize.height,
+              maxWidth: containerSize.maxWidth,
+            }}
           >
             {isDesktop ? (
               // Desktop: absolute positioned cards
