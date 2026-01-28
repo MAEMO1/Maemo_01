@@ -159,14 +159,14 @@ const CARD_POSITIONS = [
   { id: 'administration', startX: 0, startY: 150, endX: 0, endY: 52 },
 ];
 
-// Mobile card positions - overlapping stack like jeton.com (percentages from center)
+// Mobile card positions - overlapping stack (first card at bottom, last on top)
 // Creates a fanned/stacked visual composition - centered and balanced
 const MOBILE_CARD_POSITIONS = [
-  { id: 'jaarrekening', x: -12, y: -22, rotation: -4, zIndex: 5, startX: -80, startY: -60 },
-  { id: 'profitLoss', x: 12, y: -18, rotation: 4, zIndex: 4, startX: 80, startY: -50 },
+  { id: 'jaarrekening', x: -12, y: -22, rotation: -4, zIndex: 1, startX: -80, startY: -60 },
+  { id: 'profitLoss', x: 12, y: -18, rotation: 4, zIndex: 2, startX: 80, startY: -50 },
   { id: 'administration', x: 0, y: 28, rotation: 0, zIndex: 3, startX: 0, startY: 100 },
-  { id: 'marketPosition', x: -8, y: 5, rotation: -2, zIndex: 2, startX: -60, startY: 50 },
-  { id: 'digitalPresence', x: 8, y: 8, rotation: 2, zIndex: 1, startX: 60, startY: 55 },
+  { id: 'marketPosition', x: -8, y: 5, rotation: -2, zIndex: 4, startX: -60, startY: 50 },
+  { id: 'digitalPresence', x: 8, y: 8, rotation: 2, zIndex: 5, startX: 60, startY: 55 },
 ];
 
 export function FloatingCards() {
