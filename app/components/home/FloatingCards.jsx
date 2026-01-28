@@ -150,23 +150,23 @@ const CARD_COMPONENTS = {
   ),
 };
 
-// Card positions for desktop animation - percentages from center
+// Card positions for desktop animation - percentages from center (balanced around 0)
 const CARD_POSITIONS = [
-  { id: 'jaarrekening', startX: -150, startY: -100, endX: -55, endY: -45 },
-  { id: 'profitLoss', startX: 150, startY: -80, endX: 55, endY: -40 },
-  { id: 'marketPosition', startX: -120, startY: 100, endX: -50, endY: 45 },
-  { id: 'digitalPresence', startX: 120, startY: 80, endX: 50, endY: 40 },
-  { id: 'administration', startX: 0, startY: 150, endX: 0, endY: 55 },
+  { id: 'jaarrekening', startX: -150, startY: -100, endX: -50, endY: -42 },
+  { id: 'profitLoss', startX: 150, startY: -80, endX: 50, endY: -42 },
+  { id: 'marketPosition', startX: -120, startY: 100, endX: -45, endY: 42 },
+  { id: 'digitalPresence', startX: 120, startY: 80, endX: 45, endY: 42 },
+  { id: 'administration', startX: 0, startY: 150, endX: 0, endY: 52 },
 ];
 
 // Mobile card positions - overlapping stack like jeton.com (percentages from center)
 // Creates a fanned/stacked visual composition - centered and balanced
 const MOBILE_CARD_POSITIONS = [
-  { id: 'jaarrekening', x: -15, y: -25, rotation: -5, zIndex: 5, startX: -80, startY: -60 },
-  { id: 'profitLoss', x: 18, y: -20, rotation: 4, zIndex: 4, startX: 80, startY: -50 },
-  { id: 'administration', x: 0, y: 30, rotation: 0, zIndex: 3, startX: 0, startY: 100 },
-  { id: 'marketPosition', x: -12, y: 8, rotation: -2, zIndex: 2, startX: -60, startY: 50 },
-  { id: 'digitalPresence', x: 15, y: 12, rotation: 3, zIndex: 1, startX: 60, startY: 55 },
+  { id: 'jaarrekening', x: -12, y: -22, rotation: -4, zIndex: 5, startX: -80, startY: -60 },
+  { id: 'profitLoss', x: 12, y: -18, rotation: 4, zIndex: 4, startX: 80, startY: -50 },
+  { id: 'administration', x: 0, y: 28, rotation: 0, zIndex: 3, startX: 0, startY: 100 },
+  { id: 'marketPosition', x: -8, y: 5, rotation: -2, zIndex: 2, startX: -60, startY: 50 },
+  { id: 'digitalPresence', x: 8, y: 8, rotation: 2, zIndex: 1, startX: 60, startY: 55 },
 ];
 
 export function FloatingCards() {
@@ -314,13 +314,13 @@ export function FloatingCards() {
   // Calculate container dimensions based on breakpoint
   const containerSize = isDesktop
     ? { width: '80vw', height: '70vh', maxWidth: '1200px' }
-    : { width: '90vw', height: '60vh', maxWidth: '500px' };
+    : { width: '100%', height: '55vh', maxWidth: '100%' };
 
   return (
-    <section ref={containerRef} className="relative bg-white">
+    <section ref={containerRef} className="relative bg-white" style={{ zIndex: 10 }}>
       {/* Unified layout for both desktop and mobile - scroll-pinned */}
-      <div className={isDesktop ? 'h-[250vh]' : 'h-[200vh]'}>
-        <div className="floating-cards-content h-screen flex items-center justify-center overflow-hidden">
+      <div className={isDesktop ? 'h-[250vh]' : 'h-[240vh]'}>
+        <div className="floating-cards-content h-screen flex items-center justify-center overflow-hidden px-4 bg-white">
           {/* Headline - absolute positioned, visible initially, fades out as cards come in */}
           <div
             ref={headlineRef}
@@ -348,7 +348,7 @@ export function FloatingCards() {
           {/* Cards container - explicit dimensions for proper centering */}
           <div
             ref={cardsContainerRef}
-            className="relative"
+            className="relative mx-auto"
             style={{
               zIndex: 5,
               width: containerSize.width,
