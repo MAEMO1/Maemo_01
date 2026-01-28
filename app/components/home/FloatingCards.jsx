@@ -208,20 +208,21 @@ export function FloatingCards() {
       }
 
       // Cards fly in from their start positions
+      // Note: -50 offset needed because GSAP xPercent/yPercent overwrites CSS translate(-50%, -50%)
       CARD_POSITIONS.forEach((card, index) => {
         const cardEl = cardRefs.current[index];
         if (!cardEl) return;
 
         gsap.set(cardEl, {
-          xPercent: card.startX,
-          yPercent: card.startY,
+          xPercent: card.startX - 50,
+          yPercent: card.startY - 50,
           opacity: 0,
           scale: 0.8,
         });
 
         tl.to(cardEl, {
-          xPercent: card.endX,
-          yPercent: card.endY,
+          xPercent: card.endX - 50,
+          yPercent: card.endY - 50,
           opacity: 1,
           scale: 1,
           duration: 0.4,
@@ -279,9 +280,10 @@ export function FloatingCards() {
         const staggerOffset = index * 0.06;
 
         // Set initial state - cards start from outside/far positions
+        // Note: -50 offset needed because GSAP xPercent/yPercent overwrites CSS translate(-50%, -50%)
         gsap.set(card, {
-          xPercent: pos.startX,
-          yPercent: pos.startY,
+          xPercent: pos.startX - 50,
+          yPercent: pos.startY - 50,
           opacity: 0,
           scale: 0.7,
           rotation: pos.rotation * 2,
@@ -290,8 +292,8 @@ export function FloatingCards() {
 
         // Animate to final stacked position - start at 0.25 (after headline starts fading)
         tl.to(card, {
-          xPercent: pos.x,
-          yPercent: pos.y,
+          xPercent: pos.x - 50,
+          yPercent: pos.y - 50,
           opacity: 1,
           scale: 1,
           rotation: pos.rotation,
