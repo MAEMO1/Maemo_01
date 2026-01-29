@@ -94,10 +94,7 @@ export function Header() {
           <Logo light={useLightColors} />
 
           <div className="flex items-center gap-4 sm:gap-6">
-            {/* Language selector - hidden on mobile (handled by BottomNav) */}
-            <div className="hidden md:block">
-              <LanguageSelector variant={useLightColors ? 'light' : 'dark'} />
-            </div>
+            <LanguageSelector variant={useLightColors ? 'light' : 'dark'} />
 
             {/* Contact link - hidden on mobile (handled by BottomNav) */}
             <Link
