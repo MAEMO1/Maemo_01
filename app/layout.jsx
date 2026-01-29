@@ -2,6 +2,7 @@ import './globals.css';
 import { Providers } from './providers';
 import { Header } from './components/layout/Header';
 import { Footer } from './components/layout/Footer';
+import { BottomNav } from './components/layout/BottomNav';
 
 export const metadata = {
   title: 'maemo | Digital Marketing Bureau',
@@ -43,6 +44,7 @@ export default function RootLayout({ children }) {
           <Header />
           <main>{children}</main>
           <Footer />
+          <BottomNav />
         </Providers>
       </body>
     </html>

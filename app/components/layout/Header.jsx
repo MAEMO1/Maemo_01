@@ -6,7 +6,6 @@ import { usePathname } from 'next/navigation';
 import { useTranslation } from '../../hooks/useTranslation';
 import { Logo } from '../ui/Logo';
 import { LanguageSelector } from './LanguageSelector';
-import { MobileMenu } from './MobileMenu';
 
 // Routes with dark backgrounds at the top
 const DARK_ROUTES = ['/contact'];
@@ -14,7 +13,6 @@ const DARK_ROUTES = ['/contact'];
 export function Header() {
   const { t } = useTranslation();
   const pathname = usePathname();
-  const [menuOpen, setMenuOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
   const [visible, setVisible] = useState(true);
   const lastScrollY = useRef(0);
@@ -96,8 +94,12 @@ export function Header() {
           <Logo light={useLightColors} />
 
           <div className="flex items-center gap-4 sm:gap-6">
-            <LanguageSelector variant={useLightColors ? 'light' : 'dark'} />
+            {/* Language selector - hidden on mobile (handled by BottomNav) */}
+            <div className="hidden md:block">
+              <LanguageSelector variant={useLightColors ? 'light' : 'dark'} />
+            </div>
 
+            {/* Contact link - hidden on mobile (handled by BottomNav) */}
             <Link
               href="/contact"
               className="hidden md:flex items-center gap-2 text-sm font-medium transition-all duration-300"
@@ -117,23 +119,9 @@ export function Header() {
                 <path strokeLinecap="round" strokeLinejoin="round" d="M17 8l4 4m0 0l-4 4m4-4H3" />
               </svg>
             </Link>
-
-            {/* Mobile menu button - minimum 44x44px touch target */}
-            <button
-              onClick={() => setMenuOpen(true)}
-              className="md:hidden p-2.5 -m-2.5 rounded-lg transition-colors min-w-[44px] min-h-[44px] flex items-center justify-center"
-              style={{ color: textColor }}
-              aria-label={t('common.openMenu')}
-            >
-              <svg className="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
-                <path strokeLinecap="round" strokeLinejoin="round" d="M4 6h16M4 12h16M4 18h16" />
-              </svg>
-            </button>
           </div>
         </div>
       </header>
-
-      <MobileMenu isOpen={menuOpen} onClose={() => setMenuOpen(false)} />
     </>
   );
 }
