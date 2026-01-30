@@ -11,7 +11,7 @@
   "nav": {
     "home": "Home",
     "approach": "Approach",
-    "contact": "Pitch us"
+    "contact": "Get in touch"
   },
   "language": {
     "en": "EN",
@@ -24,7 +24,7 @@
       "eyebrow": "Exclusive Business Consultancy",
       "tagline": "We choose our clients.",
       "subtitle": "maemo is an exclusive business consultancy that proactively identifies high-potential enterprises and provides strategic tools to realize their growth potential.",
-      "cta": "Pitch us"
+      "cta": "Get in touch"
     },
     "floatingCards": {
       "headline": "Analyzing your",
@@ -70,6 +70,8 @@
     },
     "statement": {
       "eyebrow": "The Insight",
+      "line1": "We don't wait.",
+      "line2": "We select.",
       "title1": "We identify potential before it",
       "title2": "becomes obvious.",
       "description": "proactively selects high-potential enterprises. We don't wait for opportunities—we find them."
@@ -78,6 +80,29 @@
       "title": "Ready to be",
       "titleAccent": "evaluated?",
       "description": "selects partners with exceptional potential. If you believe your business qualifies, we're listening."
+    },
+    "logos": {
+      "label": "Trusted by ambitious companies"
+    },
+    "metrics": {
+      "headline": "Results that speak",
+      "subheadline": "Our track record of transforming high-potential businesses.",
+      "clients": {
+        "label": "Clients",
+        "sublabel": "Selected partnerships"
+      },
+      "growth": {
+        "label": "Avg. Growth",
+        "sublabel": "Revenue increase"
+      },
+      "revenue": {
+        "label": "Revenue Generated",
+        "sublabel": "For our clients"
+      },
+      "satisfaction": {
+        "label": "Success Rate",
+        "sublabel": "Client retention"
+      }
     }
   },
   "approach": {
@@ -103,7 +128,7 @@
     }
   },
   "contact": {
-    "badge": "PITCH US",
+    "badge": "GET IN TOUCH",
     "title": "Convince us",
     "subtitle": "How it works",
     "pathways": {
@@ -115,12 +140,12 @@
       "signal": {
         "number": "02",
         "title": "Take your shot",
-        "description": "Not approached by us? Pitch us anyway. We may respond when we see potential."
+        "description": "Not approached by us? Reach out anyway. We may respond when we see potential."
       }
     },
     "disclaimer": "We don't always respond. If you don't hear from us, we're likely at capacity or not the right match. No response is also a response.",
     "form": {
-      "badge": "SEND YOUR PITCH",
+      "badge": "SEND YOUR MESSAGE",
       "title": "Tell us about your business",
       "titleSuffix": "— no guarantee of response",
       "companyName": "Company name",
@@ -178,7 +203,9 @@
       "invitationCodeOptional": "(optional)",
       "invitationCodePlaceholder": "Code if you were invited",
       "submit": "Submit",
-      "submitting": "Submitting..."
+      "submitting": "Submitting...",
+      "successMessage": "Message sent successfully! We'll be in touch.",
+      "errorMessage": "Something went wrong. Please try again."
     }
   },
   "footer": {

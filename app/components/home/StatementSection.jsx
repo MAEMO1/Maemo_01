@@ -5,13 +5,14 @@ import { useTranslation } from '../../hooks/useTranslation';
 import { useBreakpoint } from '../../hooks/useMediaQuery';
 import { gsap } from '../../lib/gsap';
 
+// Premium easing - jeton.com style cubic-bezier
+const PREMIUM_EASE = 'cubic-bezier(.215,.61,.355,1)';
+
 export function StatementSection() {
   const { t } = useTranslation();
   const containerRef = useRef(null);
-  const textRef = useRef(null);
-  const eyebrowRef = useRef(null);
-  const headingRef = useRef(null);
-  const bodyRef = useRef(null);
+  const line1Ref = useRef(null);
+  const line2Ref = useRef(null);
   const accentRef = useRef(null);
   const isDesktop = useBreakpoint('md');
   const [mounted, setMounted] = useState(false);
@@ -24,31 +25,65 @@ export function StatementSection() {
     if (!mounted) return;
 
     const ctx = gsap.context(() => {
-      // Premium easing for all animations
-      const premiumEase = 'power3.out';
+      const lines = [line1Ref.current, line2Ref.current].filter(Boolean);
 
       if (isDesktop) {
-        // Desktop: Premium parallax and fade-in effect
-        gsap.fromTo(
-          textRef.current,
-          { y: 80, opacity: 0 },
-          {
-            y: 0,
-            opacity: 1,
-            duration: 1.2,
-            ease: premiumEase,
-            scrollTrigger: {
-              trigger: containerRef.current,
-              start: 'top 80%',
-              end: 'top 45%',
-              scrub: 0.8,
-            },
-          }
-        );
+        // Desktop: Scroll-scrub reveal like ActionStack
+        lines.forEach((line, index) => {
+          const direction = index === 0 ? -1 : 1;
+          const xOffset = direction * 100;
 
-        // Subtle parallax on scroll - differential for depth
-        gsap.to(textRef.current, {
-          y: -60,
+          gsap.fromTo(
+            line,
+            {
+              opacity: 0,
+              x: xOffset,
+              y: 30,
+              scale: 0.92,
+              rotationY: direction * 8,
+              transformPerspective: 1200,
+              transformOrigin: direction < 0 ? 'right center' : 'left center',
+            },
+            {
+              opacity: 1,
+              x: 0,
+              y: 0,
+              scale: 1,
+              rotationY: 0,
+              duration: 1.4,
+              ease: PREMIUM_EASE,
+              scrollTrigger: {
+                trigger: containerRef.current,
+                start: 'top 70%',
+                end: 'top 30%',
+                scrub: 0.6,
+              },
+            }
+          );
+        });
+
+        // Accent bar reveal
+        if (accentRef.current) {
+          gsap.fromTo(
+            accentRef.current,
+            { scaleX: 0, opacity: 0 },
+            {
+              scaleX: 1,
+              opacity: 1,
+              duration: 1,
+              ease: PREMIUM_EASE,
+              scrollTrigger: {
+                trigger: containerRef.current,
+                start: 'top 50%',
+                toggleActions: 'play none none none',
+              },
+            }
+          );
+        }
+
+        // Parallax on continued scroll
+        gsap.to(lines, {
+          y: -40,
           scrollTrigger: {
             trigger: containerRef.current,
             start: 'top top',
@@ -57,47 +92,62 @@ export function StatementSection() {
           },
         });
 
-        // Accent line reveal
-        gsap.fromTo(
-          accentRef.current,
-          { scaleX: 0, transformOrigin: 'left center' },
-          {
-            scaleX: 1,
-            duration: 1,
-            ease: premiumEase,
-            scrollTrigger: {
-              trigger: accentRef.current,
-              start: 'top 85%',
-              toggleActions: 'play none none none',
-            },
-          }
-        );
       } else {
-        // Mobile: Staggered scroll-reveal animations with premium easing
-        const elements = [eyebrowRef.current, headingRef.current, bodyRef.current, accentRef.current];
-        const delays = [0, 0.1, 0.2, 0.3];
-
-        elements.forEach((el, index) => {
-          if (!el) return;
+        // Mobile: 3D cascade reveal matching ActionStack mobile
+        lines.forEach((line, index) => {
+          const direction = index === 0 ? -1 : 1;
+          const xOffset = direction * 60;
 
           gsap.fromTo(
-            el,
-            { opacity: 0, y: 40, scale: 0.98 },
+            line,
+            {
+              opacity: 0,
+              x: xOffset,
+              y: 40,
+              scale: 0.88,
+              rotationY: direction * 10,
+              rotationX: 6,
+              transformPerspective: 1000,
+              transformOrigin: direction < 0 ? 'right center' : 'left center',
+            },
             {
               opacity: 1,
+              x: 0,
               y: 0,
               scale: 1,
-              duration: 0.8,
-              delay: delays[index],
-              ease: premiumEase,
+              rotationY: 0,
+              rotationX: 0,
+              duration: 1.2,
+              delay: index * 0.15,
+              ease: PREMIUM_EASE,
               scrollTrigger: {
-                trigger: el,
+                trigger: line,
                 start: 'top 88%',
                 toggleActions: 'play none none none',
               },
             }
           );
         });
+
+        // Accent bar
+        if (accentRef.current) {
+          gsap.fromTo(
+            accentRef.current,
+            { scaleX: 0, opacity: 0 },
+            {
+              scaleX: 1,
+              opacity: 1,
+              duration: 0.8,
+              delay: 0.3,
+              ease: PREMIUM_EASE,
+              scrollTrigger: {
+                trigger: accentRef.current,
+                start: 'top 90%',
+                toggleActions: 'play none none none',
+              },
+            }
+          );
+        }
       }
     }, containerRef);
 
@@ -107,75 +157,70 @@ export function StatementSection() {
   return (
     <section
       ref={containerRef}
-      className="relative pt-24 sm:pt-28 md:pt-36 lg:pt-44 pb-20 sm:pb-24 md:pb-32 lg:pb-40 overflow-hidden"
-      style={{ background: '#f8fafc' }}
+      className="relative pt-28 sm:pt-36 md:pt-44 lg:pt-56 pb-36 sm:pb-44 md:pb-56 lg:pb-72 overflow-hidden"
+      style={{ background: '#fafafa' }}
     >
-      {/* Gradient overlay for smooth transition from ActionStack */}
+      {/* Subtle gradient transition from white */}
       <div
-        className="absolute inset-x-0 top-0 h-32 sm:h-40 md:h-48 pointer-events-none"
+        className="absolute inset-x-0 top-0 h-24 pointer-events-none"
         style={{
-          background: 'linear-gradient(to bottom, #ffffff 0%, #f8fafc 100%)',
+          background: 'linear-gradient(to bottom, #ffffff 0%, #fafafa 100%)',
         }}
         aria-hidden="true"
       />
-      <div ref={textRef} className="max-w-6xl mx-auto px-4 sm:px-6 md:px-12">
-        {/* Eyebrow */}
-        <span
-          ref={eyebrowRef}
-          className="block uppercase tracking-[0.15em] sm:tracking-[0.2em] text-[10px] sm:text-xs font-semibold mb-6 sm:mb-8 will-change-transform"
-          style={{ color: '#94a3b8', opacity: isDesktop ? undefined : 0 }}
-        >
-          {t('home.statement.eyebrow') || 'The Insight'}
-        </span>
 
-        {/* Main Statement - Large, confident typography */}
-        <h2
-          ref={headingRef}
-          className="font-semibold leading-[0.95] tracking-tight mb-8 sm:mb-10 will-change-transform"
-          style={{
-            fontSize: 'clamp(2rem, 5vw, 4.5rem)',
-            color: '#0f172a',
-            opacity: isDesktop ? undefined : 0,
-          }}
-        >
-          {t('home.statement.title1')}
-          <br />
-          <span style={{ color: '#94a3b8' }}>
-            {t('home.statement.title2')}
-          </span>
-        </h2>
-
-        {/* Body text - Clean column */}
-        <div ref={bodyRef} className="max-w-2xl will-change-transform" style={{ opacity: isDesktop ? undefined : 0 }}>
-          <p
-            className="text-base sm:text-lg md:text-xl leading-relaxed"
-            style={{ color: '#64748b' }}
+      <div className="max-w-6xl mx-auto px-6 md:px-12">
+        <div className="flex flex-col items-center text-center">
+          {/* Line 1 - Bold statement */}
+          <div
+            ref={line1Ref}
+            className="will-change-transform"
+            style={{ opacity: 0, transformStyle: 'preserve-3d' }}
           >
-            <strong className="font-semibold" style={{ color: '#0f172a' }}>maemo</strong>{' '}
-            {t('home.statement.description').split('—').map((part, i, arr) => (
-              <span key={i}>
-                {part}
-                {i < arr.length - 1 && (
-                  <>
-                    —
-                    <span
-                      className="font-semibold border-b-2 pb-0.5"
-                      style={{ color: '#0f172a', borderColor: '#e85d4c' }}
-                    >
-                    </span>
-                  </>
-                )}
-              </span>
-            ))}
-          </p>
-        </div>
+            <span
+              className="block font-semibold leading-[0.95] tracking-tight"
+              style={{
+                fontSize: 'clamp(2.25rem, 8vw, 5.5rem)',
+                color: '#0f172a',
+                letterSpacing: '-0.03em',
+              }}
+            >
+              {t('home.statement.line1')}
+            </span>
+          </div>
 
-        {/* Subtle accent line */}
-        <div
-          ref={accentRef}
-          className="mt-12 sm:mt-16 h-px w-16 sm:w-24 will-change-transform"
-          style={{ background: 'linear-gradient(90deg, #e85d4c, transparent)', opacity: isDesktop ? undefined : 0 }}
-        />
+          {/* Accent bar between lines */}
+          <div
+            ref={accentRef}
+            className="my-6 sm:my-8 md:my-10 will-change-transform"
+            style={{
+              width: '80px',
+              height: '4px',
+              background: '#e85d4c',
+              borderRadius: '4px',
+              transformOrigin: 'center',
+              opacity: 0,
+            }}
+          />
+
+          {/* Line 2 - Colored accent */}
+          <div
+            ref={line2Ref}
+            className="will-change-transform"
+            style={{ opacity: 0, transformStyle: 'preserve-3d' }}
+          >
+            <span
+              className="block font-semibold leading-[0.95] tracking-tight"
+              style={{
+                fontSize: 'clamp(2.25rem, 8vw, 5.5rem)',
+                color: '#e85d4c',
+                letterSpacing: '-0.03em',
+              }}
+            >
+              {t('home.statement.line2')}
+            </span>
+          </div>
+        </div>
       </div>
     </section>
   );

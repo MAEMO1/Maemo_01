@@ -9,6 +9,9 @@ export default function Template({ children }) {
   const hasAnimated = useRef(false);
 
   useEffect(() => {
+    // Scroll to top on route change
+    window.scrollTo(0, 0);
+
     // Reset animation state on route change
     hasAnimated.current = false;
     setIsVisible(false);

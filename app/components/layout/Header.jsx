@@ -96,26 +96,28 @@ export function Header() {
           <div className="flex items-center gap-4 sm:gap-6">
             <LanguageSelector variant={useLightColors ? 'light' : 'dark'} />
 
-            {/* Contact link - hidden on mobile (handled by BottomNav) */}
-            <Link
-              href="/contact"
-              className="hidden md:flex items-center gap-2 text-sm font-medium transition-all duration-300"
-              style={{
-                color: textColor,
-                letterSpacing: '0.1em',
-              }}
-              onMouseEnter={(e) => {
-                e.currentTarget.style.color = '#e85d4c';
-              }}
-              onMouseLeave={(e) => {
-                e.currentTarget.style.color = textColor;
-              }}
-            >
-              <span>{t('nav.contact')}</span>
-              <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
-                <path strokeLinecap="round" strokeLinejoin="round" d="M17 8l4 4m0 0l-4 4m4-4H3" />
-              </svg>
-            </Link>
+            {/* Contact link - hidden on mobile (handled by BottomNav) and hidden on contact page */}
+            {pathname !== '/contact' && (
+              <Link
+                href="/contact"
+                className="hidden md:flex items-center gap-2 text-sm font-medium transition-all duration-300"
+                style={{
+                  color: textColor,
+                  letterSpacing: '0.1em',
+                }}
+                onMouseEnter={(e) => {
+                  e.currentTarget.style.color = '#e85d4c';
+                }}
+                onMouseLeave={(e) => {
+                  e.currentTarget.style.color = textColor;
+                }}
+              >
+                <span>{t('nav.contact')}</span>
+                <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                  <path strokeLinecap="round" strokeLinejoin="round" d="M17 8l4 4m0 0l-4 4m4-4H3" />
+                </svg>
+              </Link>
+            )}
           </div>
         </div>
       </header>

@@ -28,3 +28,4 @@ _src_backup
 
 # MCP server config (contains API tokens)
 .mcp.json
+.env.local

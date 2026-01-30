@@ -11,7 +11,7 @@
   "nav": {
     "home": "Accueil",
     "approach": "Approche",
-    "contact": "Pitchez-nous"
+    "contact": "Contactez-nous"
   },
   "language": {
     "en": "EN",
@@ -24,7 +24,7 @@
       "eyebrow": "Conseil d'Affaires Exclusif",
       "tagline": "Nous choisissons nos clients.",
       "subtitle": "maemo est un cabinet de conseil exclusif qui identifie proactivement les entreprises à haut potentiel et fournit des outils stratégiques pour réaliser leur potentiel de croissance.",
-      "cta": "Pitchez-nous"
+      "cta": "Contactez-nous"
     },
     "floatingCards": {
       "headline": "Nous analysons vos",
@@ -70,6 +70,8 @@
     },
     "statement": {
       "eyebrow": "L'Insight",
+      "line1": "Nous n'attendons pas.",
+      "line2": "Nous sélectionnons.",
       "title1": "Nous identifions le potentiel avant qu'il ne",
       "title2": "devienne évident.",
       "description": "sélectionne proactivement des entreprises à haut potentiel. Nous n'attendons pas les opportunités—nous les trouvons."
@@ -78,6 +80,29 @@
       "title": "Prêt à être",
       "titleAccent": "évalué?",
       "description": "sélectionne des partenaires au potentiel exceptionnel. Si vous pensez que votre entreprise se qualifie, nous écoutons."
+    },
+    "logos": {
+      "label": "Approuvé par des entreprises ambitieuses"
+    },
+    "metrics": {
+      "headline": "Des résultats qui parlent",
+      "subheadline": "Notre historique de transformation d'entreprises à haut potentiel.",
+      "clients": {
+        "label": "Clients",
+        "sublabel": "Partenariats sélectionnés"
+      },
+      "growth": {
+        "label": "Croissance Moy.",
+        "sublabel": "Augmentation des revenus"
+      },
+      "revenue": {
+        "label": "Revenus Générés",
+        "sublabel": "Pour nos clients"
+      },
+      "satisfaction": {
+        "label": "Taux de Succès",
+        "sublabel": "Rétention client"
+      }
     }
   },
   "approach": {
@@ -103,7 +128,7 @@
     }
   },
   "contact": {
-    "badge": "PITCHEZ-NOUS",
+    "badge": "CONTACTEZ-NOUS",
     "title": "Convainquez-nous",
     "subtitle": "Comment ça fonctionne",
     "pathways": {
@@ -115,12 +140,12 @@
       "signal": {
         "number": "02",
         "title": "Tentez votre chance",
-        "description": "Pas contacté par nous? Pitchez-nous quand même. Nous répondrons peut-être si nous voyons du potentiel."
+        "description": "Pas contacté par nous? Contactez-nous quand même. Nous répondrons peut-être si nous voyons du potentiel."
       }
     },
     "disclaimer": "Nous ne répondons pas toujours. Si vous n'avez pas de nouvelles, nous sommes probablement à pleine capacité ou pas le bon match. Pas de réponse est aussi une réponse.",
     "form": {
-      "badge": "ENVOYEZ VOTRE PITCH",
+      "badge": "ENVOYEZ VOTRE MESSAGE",
       "title": "Parlez-nous de votre entreprise",
       "titleSuffix": "— aucune garantie de réponse",
       "companyName": "Nom de l'entreprise",
@@ -178,7 +203,9 @@
       "invitationCodeOptional": "(optionnel)",
       "invitationCodePlaceholder": "Code si vous avez été invité",
       "submit": "Envoyer",
-      "submitting": "Envoi..."
+      "submitting": "Envoi...",
+      "successMessage": "Message envoyé avec succès! Nous vous contacterons.",
+      "errorMessage": "Une erreur s'est produite. Veuillez réessayer."
     }
   },
   "footer": {

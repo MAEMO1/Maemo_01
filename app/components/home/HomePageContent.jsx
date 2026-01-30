@@ -47,20 +47,13 @@ export function CTASection() {
           </p>
           <Link
             href="/contact"
-            className="inline-flex items-center gap-3 px-8 sm:px-10 py-4 sm:py-5 rounded-full font-semibold text-base sm:text-lg transition-all duration-300 hover:scale-[1.02] active:scale-[0.95]"
+            className="inline-flex items-center gap-3 px-8 sm:px-10 py-4 sm:py-5 rounded-xl font-semibold text-base sm:text-lg transition-all duration-300 hover:scale-[0.98] active:scale-[0.96]"
             style={{
               background: '#1e293b',
               color: '#ffffff',
               boxShadow: '0 4px 14px rgba(30, 41, 59, 0.25), 0 8px 32px rgba(30, 41, 59, 0.15)',
               WebkitTapHighlightColor: 'transparent',
-            }}
-            onMouseEnter={(e) => {
-              e.currentTarget.style.background = '#334155';
-              e.currentTarget.style.boxShadow = '0 6px 20px rgba(30, 41, 59, 0.3), 0 12px 40px rgba(30, 41, 59, 0.2)';
-            }}
-            onMouseLeave={(e) => {
-              e.currentTarget.style.background = '#1e293b';
-              e.currentTarget.style.boxShadow = '0 4px 14px rgba(30, 41, 59, 0.25), 0 8px 32px rgba(30, 41, 59, 0.15)';
+              transitionTimingFunction: 'cubic-bezier(.215,.61,.355,1)',
             }}
           >
             {t('home.hero.cta')}

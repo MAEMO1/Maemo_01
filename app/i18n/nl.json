@@ -11,7 +11,7 @@
   "nav": {
     "home": "Home",
     "approach": "Aanpak",
-    "contact": "Pitch ons"
+    "contact": "Neem contact op"
   },
   "language": {
     "en": "EN",
@@ -24,7 +24,7 @@
       "eyebrow": "Exclusief Bedrijfsadvies",
       "tagline": "Wij kiezen onze klanten.",
       "subtitle": "maemo is een exclusieve business consultancy die proactief hoogpotentiële ondernemingen identificeert en strategische tools biedt om hun groeipotentieel te realiseren.",
-      "cta": "Pitch ons"
+      "cta": "Neem contact op"
     },
     "floatingCards": {
       "headline": "We analyseren jouw",
@@ -70,6 +70,8 @@
     },
     "statement": {
       "eyebrow": "Het Inzicht",
+      "line1": "Wij wachten niet.",
+      "line2": "Wij selecteren.",
       "title1": "We identificeren potentieel voordat het",
       "title2": "zichtbaar wordt.",
       "description": "selecteert proactief hoogpotentiële ondernemingen. We wachten niet op kansen—we vinden ze."
@@ -78,6 +80,29 @@
       "title": "Klaar om",
       "titleAccent": "geëvalueerd te worden?",
       "description": "selecteert partners met uitzonderlijk potentieel. Als je gelooft dat jouw onderneming kwalificeert, luisteren we."
+    },
+    "logos": {
+      "label": "Vertrouwd door ambitieuze bedrijven"
+    },
+    "metrics": {
+      "headline": "Resultaten die spreken",
+      "subheadline": "Onze track record in het transformeren van hoogpotentiële bedrijven.",
+      "clients": {
+        "label": "Klanten",
+        "sublabel": "Geselecteerde partnerschappen"
+      },
+      "growth": {
+        "label": "Gem. Groei",
+        "sublabel": "Omzetstijging"
+      },
+      "revenue": {
+        "label": "Omzet Gegenereerd",
+        "sublabel": "Voor onze klanten"
+      },
+      "satisfaction": {
+        "label": "Succesratio",
+        "sublabel": "Klantbehoud"
+      }
     }
   },
   "approach": {
@@ -103,7 +128,7 @@
     }
   },
   "contact": {
-    "badge": "PITCH ONS",
+    "badge": "NEEM CONTACT OP",
     "title": "Overtuig ons",
     "subtitle": "Hoe het werkt",
     "pathways": {
@@ -115,12 +140,12 @@
       "signal": {
         "number": "02",
         "title": "Waag je kans",
-        "description": "Niet door ons benaderd? Pitch ons toch. We reageren mogelijk wanneer we potentieel zien."
+        "description": "Niet door ons benaderd? Neem toch contact op. We reageren mogelijk wanneer we potentieel zien."
       }
     },
     "disclaimer": "We reageren niet altijd. Als je niets hoort, zijn we waarschijnlijk op capaciteit of niet de juiste match. Geen antwoord is ook een antwoord.",
     "form": {
-      "badge": "STUUR JE PITCH",
+      "badge": "STUUR JE BERICHT",
       "title": "Vertel ons over je bedrijf",
       "titleSuffix": "— geen garantie op reactie",
       "companyName": "Bedrijfsnaam",
@@ -178,7 +203,9 @@
       "invitationCodeOptional": "(optioneel)",
       "invitationCodePlaceholder": "Code indien je bent uitgenodigd",
       "submit": "Verstuur",
-      "submitting": "Versturen..."
+      "submitting": "Versturen...",
+      "successMessage": "Bericht succesvol verzonden! We nemen contact op.",
+      "errorMessage": "Er ging iets mis. Probeer het opnieuw."
     }
   },
   "footer": {

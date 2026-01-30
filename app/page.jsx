@@ -13,9 +13,9 @@ export default function HomePage() {
   return (
     <>
       <Hero />
-      <HomePageContent />
       <FloatingCards />
       <ActionStack />
+      <HomePageContent />
       <StatementSection />
       <CTASection />
     </>

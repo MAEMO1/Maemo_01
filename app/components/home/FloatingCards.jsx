@@ -22,10 +22,12 @@ const PALETTE = {
 const CARD_COMPONENTS = {
   jaarrekening: ({ t }) => (
     <div
-      className={`${CARD_BASE} rounded-2xl sm:rounded-3xl p-3 sm:p-4 md:p-5 flex flex-col justify-between will-change-transform`}
+      className={`${CARD_BASE} rounded-2xl sm:rounded-3xl p-3 sm:p-4 md:p-5 flex flex-col justify-between will-change-transform group`}
       style={{
         background: `linear-gradient(145deg, ${PALETTE.deepEmerald} 0%, #065F46 100%)`,
-        boxShadow: '0 25px 50px rgba(6, 78, 59, 0.25)',
+        boxShadow: '0 25px 50px rgba(6, 78, 59, 0.25), inset 0 1px 0 rgba(255,255,255,0.1)',
+        backdropFilter: 'blur(8px)',
+        border: '1px solid rgba(255,255,255,0.1)',
       }}
     >
       <div className="flex items-center gap-2">
@@ -51,11 +53,13 @@ const CARD_COMPONENTS = {
   ),
   profitLoss: ({ t }) => (
     <div
-      className={`${CARD_BASE} rounded-2xl sm:rounded-3xl p-3 sm:p-4 md:p-5 flex flex-col will-change-transform`}
+      className={`${CARD_BASE} rounded-2xl sm:rounded-3xl p-3 sm:p-4 md:p-5 flex flex-col will-change-transform group`}
       style={{
-        background: '#ffffff',
+        background: 'linear-gradient(145deg, rgba(255,255,255,0.95) 0%, rgba(255,255,255,0.85) 100%)',
         border: `2px solid ${PALETTE.oxfordNavy}`,
-        boxShadow: '0 25px 50px rgba(30, 58, 138, 0.15)',
+        boxShadow: '0 25px 50px rgba(30, 58, 138, 0.15), inset 0 1px 0 rgba(255,255,255,0.8)',
+        backdropFilter: 'blur(20px)',
+        WebkitBackdropFilter: 'blur(20px)',
       }}
     >
       <div className="flex items-center gap-2 mb-2 sm:mb-3">
@@ -78,11 +82,13 @@ const CARD_COMPONENTS = {
   ),
   administration: ({ t }) => (
     <div
-      className={`${CARD_BASE} rounded-2xl sm:rounded-3xl p-3 sm:p-4 md:p-5 flex flex-col items-center justify-center will-change-transform`}
+      className={`${CARD_BASE} rounded-2xl sm:rounded-3xl p-3 sm:p-4 md:p-5 flex flex-col items-center justify-center will-change-transform group`}
       style={{
-        background: `linear-gradient(145deg, ${PALETTE.ivory} 0%, #f1f5f9 100%)`,
-        border: '1px solid rgba(55, 65, 81, 0.1)',
-        boxShadow: '0 25px 50px rgba(55, 65, 81, 0.12)',
+        background: `linear-gradient(145deg, rgba(248,250,252,0.9) 0%, rgba(241,245,249,0.85) 100%)`,
+        border: '1px solid rgba(255, 255, 255, 0.6)',
+        boxShadow: '0 25px 50px rgba(55, 65, 81, 0.12), inset 0 1px 0 rgba(255,255,255,0.8)',
+        backdropFilter: 'blur(20px)',
+        WebkitBackdropFilter: 'blur(20px)',
       }}
     >
       <div
@@ -105,10 +111,12 @@ const CARD_COMPONENTS = {
   ),
   marketPosition: ({ t }) => (
     <div
-      className={`${CARD_BASE} rounded-2xl sm:rounded-3xl p-3 sm:p-4 md:p-5 flex flex-col will-change-transform`}
+      className={`${CARD_BASE} rounded-2xl sm:rounded-3xl p-3 sm:p-4 md:p-5 flex flex-col will-change-transform group`}
       style={{
         background: `linear-gradient(145deg, ${PALETTE.burnishedCopper} 0%, #B45309 100%)`,
-        boxShadow: '0 25px 50px rgba(154, 52, 18, 0.2)',
+        boxShadow: '0 25px 50px rgba(154, 52, 18, 0.2), inset 0 1px 0 rgba(255,255,255,0.15)',
+        backdropFilter: 'blur(8px)',
+        border: '1px solid rgba(255,255,255,0.1)',
       }}
     >
       <div className="flex items-center gap-2 mb-2 sm:mb-3">
@@ -132,10 +140,12 @@ const CARD_COMPONENTS = {
   ),
   digitalPresence: ({ t }) => (
     <div
-      className={`${CARD_BASE} rounded-2xl sm:rounded-3xl p-3 sm:p-4 md:p-5 flex flex-col items-center justify-center will-change-transform`}
+      className={`${CARD_BASE} rounded-2xl sm:rounded-3xl p-3 sm:p-4 md:p-5 flex flex-col items-center justify-center will-change-transform group`}
       style={{
         background: `linear-gradient(145deg, ${PALETTE.slate} 0%, #0f172a 100%)`,
-        boxShadow: '0 25px 50px rgba(15, 23, 42, 0.3)',
+        boxShadow: '0 25px 50px rgba(15, 23, 42, 0.3), inset 0 1px 0 rgba(255,255,255,0.1)',
+        backdropFilter: 'blur(8px)',
+        border: '1px solid rgba(255,255,255,0.08)',
       }}
     >
       <div className="w-8 h-8 sm:w-10 sm:h-10 md:w-12 md:h-12 rounded-lg sm:rounded-xl mb-2 sm:mb-3 bg-white/10 flex items-center justify-center">

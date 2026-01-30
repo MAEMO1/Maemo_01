@@ -42,8 +42,8 @@ const ACTIONS = [
   },
 ];
 
-// Premium easing - like jeton.com
-const PREMIUM_EASE = 'power3.out';
+// Premium easing - jeton.com style cubic-bezier
+const PREMIUM_EASE = 'cubic-bezier(.215,.61,.355,1)';
 
 function ActionItem({ action, t, innerRef }) {
   return (

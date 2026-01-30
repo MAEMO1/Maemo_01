@@ -1,27 +1,10 @@
 'use client';
 
-import { useState, useEffect } from 'react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 
 export function BottomNav() {
   const pathname = usePathname();
-  const [visible, setVisible] = useState(true);
-  const [lastScrollY, setLastScrollY] = useState(0);
-
-  // Hide on scroll down, show on scroll up
-  useEffect(() => {
-    const handleScroll = () => {
-      const currentScrollY = window.scrollY;
-      const scrollingDown = currentScrollY > lastScrollY && currentScrollY > 100;
-
-      setVisible(!scrollingDown);
-      setLastScrollY(currentScrollY);
-    };
-
-    window.addEventListener('scroll', handleScroll, { passive: true });
-    return () => window.removeEventListener('scroll', handleScroll);
-  }, [lastScrollY]);
 
   const navItems = [
     {
@@ -44,11 +27,8 @@ export function BottomNav() {
 
   return (
     <nav
-      className={`fixed bottom-0 left-0 right-0 z-50 md:hidden transition-all duration-500 ${
-        visible ? 'translate-y-0 opacity-100' : 'translate-y-full opacity-0'
-      }`}
+      className="fixed bottom-0 left-0 right-0 z-50 md:hidden"
       style={{
-        transitionTimingFunction: 'cubic-bezier(0.23, 1, 0.32, 1)',
         paddingBottom: 'env(safe-area-inset-bottom)',
       }}
     >

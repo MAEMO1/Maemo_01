@@ -220,12 +220,47 @@ export function ContactContent() {
     }));
   };
 
+  const [submitStatus, setSubmitStatus] = useState(null); // 'success' | 'error' | null
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     setIsSubmitting(true);
-    await new Promise(resolve => setTimeout(resolve, 2000));
-    console.log('Form submitted:', formData);
-    setIsSubmitting(false);
+    setSubmitStatus(null);
+
+    try {
+      const response = await fetch('/api/contact', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(formData),
+      });
+
+      const result = await response.json();
+
+      if (result.success) {
+        setSubmitStatus('success');
+        // Reset form
+        setFormData({
+          companyName: '',
+          website: '',
+          sector: '',
+          region: '',
+          teamSize: '',
+          revenue: '',
+          goals: [],
+          timing: '',
+          name: '',
+          email: '',
+          invitationCode: '',
+        });
+      } else {
+        setSubmitStatus('error');
+      }
+    } catch (error) {
+      console.error('Submit error:', error);
+      setSubmitStatus('error');
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   const goals = ['leads', 'repositioning', 'tools', 'website'];
@@ -277,10 +312,10 @@ export function ContactContent() {
         />
       </div>
 
-      {/* Hero Section - Premium entrance */}
+      {/* Hero Section - Compact for form visibility */}
       <section
         ref={heroRef}
-        className="relative min-h-[60vh] md:min-h-[70vh] flex items-center justify-center px-4 sm:px-6 pt-28 sm:pt-36 pb-16 sm:pb-20"
+        className="relative flex items-center justify-center px-4 sm:px-6 pt-28 sm:pt-32 pb-12 sm:pb-16"
       >
         <div className="max-w-5xl mx-auto text-center relative z-10">
           {/* Animated badge */}
@@ -351,7 +386,7 @@ export function ContactContent() {
       </section>
 
       {/* Pathways Section with 3D card animations */}
-      <section className="relative px-4 sm:px-6 pb-20">
+      <section className="relative px-4 sm:px-6 pb-12">
         <div className="max-w-4xl mx-auto">
           <div className="grid sm:grid-cols-2 gap-6">
             {/* Card 1 - Uitgenodigd */}
@@ -466,28 +501,10 @@ export function ContactContent() {
         </div>
       </section>
 
-      {/* Big Text Divider - Parallax effect */}
-      <section className="py-24 md:py-32 px-4 sm:px-6 overflow-hidden">
-        <h2
-          ref={dividerRef}
-          className="text-center max-w-5xl mx-auto will-change-transform"
-          style={{
-            fontSize: isDesktop ? 'clamp(3rem, 8vw, 6rem)' : 'clamp(2rem, 10vw, 3rem)',
-            fontWeight: 700,
-            letterSpacing: '-0.03em',
-            lineHeight: 1.1,
-            color: 'rgba(255,255,255,0.06)',
-            textShadow: '0 0 80px rgba(255,255,255,0.03)',
-          }}
-        >
-          {t('contact.form.badge')}
-        </h2>
-      </section>
-
       {/* Form Section - White with premium animations */}
       <section
         ref={formSectionRef}
-        className="bg-white py-20 md:py-28 px-4 sm:px-6 relative"
+        className="bg-white py-16 md:py-20 px-4 sm:px-6 relative"
       >
         {/* Subtle top gradient transition */}
         <div
@@ -677,30 +694,24 @@ export function ContactContent() {
               />
             </div>
 
-            {/* Submit button with premium animation */}
+            {/* Submit button - jeton.com style */}
             <div ref={getFieldRef()}>
               <button
                 type="submit"
                 disabled={isSubmitting}
-                className="group w-full py-5 rounded-full font-semibold text-lg text-white transition-all duration-500 flex items-center justify-center gap-3 min-h-[56px] relative overflow-hidden"
+                className="group w-full py-5 rounded-xl font-semibold text-lg text-white transition-all duration-300 flex items-center justify-center gap-3 min-h-[56px] hover:scale-[0.98] active:scale-[0.96]"
                 style={{
                   background: PALETTE.ink,
                   boxShadow: isSubmitting ? 'none' : `0 8px 32px ${PALETTE.ink}30`,
+                  transitionTimingFunction: 'cubic-bezier(.215,.61,.355,1)',
                 }}
               >
-                {/* Animated gradient on hover */}
-                <div
-                  className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-500"
-                  style={{
-                    background: `linear-gradient(135deg, ${PALETTE.slate} 0%, ${PALETTE.ink} 100%)`,
-                  }}
-                />
-                <span className="relative z-10">
+                <span>
                   {isSubmitting ? t('contact.form.submitting') : t('contact.form.submit')}
                 </span>
                 {!isSubmitting && (
                   <svg
-                    className="w-5 h-5 relative z-10 transition-transform duration-300 group-hover:translate-x-2"
+                    className="w-5 h-5 transition-transform duration-300 group-hover:translate-x-1"
                     fill="none"
                     viewBox="0 0 24 24"
                     stroke="currentColor"
@@ -713,6 +724,32 @@ export function ContactContent() {
                   <div className="w-5 h-5 border-2 border-white/30 border-t-white rounded-full animate-spin" />
                 )}
               </button>
+
+              {/* Success/Error messages */}
+              {submitStatus === 'success' && (
+                <div
+                  className="mt-4 p-4 rounded-xl text-center"
+                  style={{
+                    background: 'rgba(34, 197, 94, 0.1)',
+                    border: '1px solid rgba(34, 197, 94, 0.3)',
+                    color: '#16a34a',
+                  }}
+                >
+                  {t('contact.form.successMessage') || 'Message sent successfully! We\'ll be in touch.'}
+                </div>
+              )}
+              {submitStatus === 'error' && (
+                <div
+                  className="mt-4 p-4 rounded-xl text-center"
+                  style={{
+                    background: 'rgba(239, 68, 68, 0.1)',
+                    border: '1px solid rgba(239, 68, 68, 0.3)',
+                    color: '#dc2626',
+                  }}
+                >
+                  {t('contact.form.errorMessage') || 'Something went wrong. Please try again.'}
+                </div>
+              )}
             </div>
           </form>
         </div>
@@ -823,23 +860,16 @@ function ChipButton({ children, selected, onClick }) {
     <button
       type="button"
       onClick={onClick}
-      className="px-5 py-3 rounded-full text-sm font-medium transition-all duration-300 min-h-[48px] relative overflow-hidden group"
+      className="px-5 py-3 rounded-xl text-sm font-medium transition-all duration-300 min-h-[48px] hover:scale-[0.98] active:scale-[0.96]"
       style={{
         background: selected ? PALETTE.ink : '#ffffff',
         color: selected ? '#ffffff' : PALETTE.stone,
         border: `2px solid ${selected ? PALETTE.ink : '#e2e8f0'}`,
-        transform: selected ? 'scale(1.05)' : 'scale(1)',
         boxShadow: selected ? `0 4px 16px ${PALETTE.ink}30` : 'none',
+        transitionTimingFunction: 'cubic-bezier(.215,.61,.355,1)',
       }}
     >
-      {/* Hover effect */}
-      {!selected && (
-        <div
-          className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-300"
-          style={{ background: PALETTE.ivory }}
-        />
-      )}
-      <span className="relative z-10">{children}</span>
+      {children}
     </button>
   );
 }
