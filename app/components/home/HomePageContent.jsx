@@ -1,25 +1,133 @@
 'use client';
 
+import { useRef, useLayoutEffect, useState, useEffect } from 'react';
 import Link from 'next/link';
 import { useTranslation } from '../../hooks/useTranslation';
+import { useBreakpoint } from '../../hooks/useMediaQuery';
+import { gsap } from '../../lib/gsap';
 import { AnimatedSection } from '../ui/AnimatedSection';
+
+const PREMIUM_EASE = 'cubic-bezier(.215,.61,.355,1)';
 
 export function HomePageContent() {
   const { t } = useTranslation();
+  const containerRef = useRef(null);
+  const line1Ref = useRef(null);
+  const line2Ref = useRef(null);
+  const isDesktop = useBreakpoint('md');
+  const [mounted, setMounted] = useState(false);
+
+  useEffect(() => {
+    setMounted(true);
+  }, []);
+
+  useLayoutEffect(() => {
+    if (!mounted) return;
+
+    const ctx = gsap.context(() => {
+      // Split text into words for line 1
+      const line1 = line1Ref.current;
+      const line2 = line2Ref.current;
+
+      if (line1 && line2) {
+        // Get the text content
+        const text1 = t('home.bigText.line1');
+        const text2 = t('home.bigText.line2');
+
+        // Create word spans for line 1
+        line1.innerHTML = text1.split(' ').map((word, i) =>
+          `<span class="word-wrapper" style="display: inline-block; overflow: hidden; vertical-align: top;">
+            <span class="word" style="display: inline-block; transform: translateY(100%); opacity: 0;" data-index="${i}">${word}</span>
+          </span>`
+        ).join(' ');
+
+        // Create word spans for line 2
+        line2.innerHTML = text2.split(' ').map((word, i) =>
+          `<span class="word-wrapper" style="display: inline-block; overflow: hidden; vertical-align: top;">
+            <span class="word" style="display: inline-block; transform: translateY(100%); opacity: 0;" data-index="${i}">${word}</span>
+          </span>`
+        ).join(' ');
+
+        // Animate words on scroll
+        const words1 = line1.querySelectorAll('.word');
+        const words2 = line2.querySelectorAll('.word');
+
+        // Line 1 animation
+        gsap.to(words1, {
+          y: 0,
+          opacity: 1,
+          duration: 0.8,
+          stagger: 0.08,
+          ease: PREMIUM_EASE,
+          scrollTrigger: {
+            trigger: containerRef.current,
+            start: 'top 75%',
+            toggleActions: 'play none none none',
+          },
+        });
+
+        // Line 2 animation with delay
+        gsap.to(words2, {
+          y: 0,
+          opacity: 1,
+          duration: 0.8,
+          stagger: 0.08,
+          delay: 0.3,
+          ease: PREMIUM_EASE,
+          scrollTrigger: {
+            trigger: containerRef.current,
+            start: 'top 75%',
+            toggleActions: 'play none none none',
+          },
+        });
+
+        // Subtle parallax on scroll
+        if (isDesktop) {
+          gsap.to([line1, line2], {
+            y: -20,
+            scrollTrigger: {
+              trigger: containerRef.current,
+              start: 'top bottom',
+              end: 'bottom top',
+              scrub: 1,
+            },
+          });
+        }
+      }
+    }, containerRef);
+
+    return () => ctx.revert();
+  }, [mounted, isDesktop, t]);
 
   return (
-    <>
-      {/* Big Text Section */}
-      <section className="py-12 md:py-32 flex items-center justify-center px-6 bg-white">
-        <AnimatedSection className="text-center max-w-5xl" animation="fade-in-scale">
-          <h2 className="text-headline text-primary">
+    <section
+      ref={containerRef}
+      className="py-20 md:py-40 flex items-center justify-center px-6 bg-white overflow-hidden"
+    >
+      <div className="text-center max-w-5xl">
+        <h2
+          className="will-change-transform"
+          style={{
+            fontSize: 'clamp(2.5rem, 8vw, 5rem)',
+            fontWeight: 600,
+            lineHeight: 1.1,
+            letterSpacing: '-0.03em',
+            color: '#1e293b',
+          }}
+        >
+          <span ref={line1Ref} className="block mb-2">
             {t('home.bigText.line1')}
-            <br />
+          </span>
+          <span
+            ref={line2Ref}
+            className="block"
+            style={{ color: '#e85d4c' }}
+          >
             {t('home.bigText.line2')}
-          </h2>
-        </AnimatedSection>
-      </section>
-    </>
+          </span>
+        </h2>
+      </div>
+    </section>
   );
 }
 
