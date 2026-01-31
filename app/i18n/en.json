@@ -26,38 +26,12 @@
       "subtitle": "maemo is an exclusive business consultancy that proactively identifies high-potential enterprises and provides strategic tools to realize their growth potential.",
       "cta": "Get in touch"
     },
-    "floatingCards": {
-      "headline": "Analyzing your",
-      "headlineAccent": "opportunities",
-      "cards": {
-        "jaarrekening": {
-          "title": "Annual Report",
-          "subtitle": "Financial Statement",
-          "value": "€847K",
-          "label": "Revenue verified",
-          "status": "Approved"
-        },
-        "profitLoss": {
-          "title": "P&L",
-          "value": "+34%",
-          "label": "Profit margin"
-        },
-        "marketPosition": {
-          "title": "Market Position",
-          "label": "Market Share",
-          "growth": "+12%"
-        },
-        "digitalPresence": {
-          "title": "Digital Presence",
-          "value": "89%",
-          "label": "Online Score"
-        },
-        "administration": {
-          "title": "Administration",
-          "label": "Fully organized",
-          "status": "Verified"
-        }
-      }
+    "services": {
+      "headline": "What we do",
+      "strategy": "Strategy",
+      "marketing": "Marketing",
+      "brand": "Brand Identity",
+      "digital": "Digital Growth"
     },
     "actionStack": {
       "analyze": "Analyze",
@@ -128,9 +102,8 @@
     }
   },
   "contact": {
-    "badge": "Exclusive Access",
     "title": "Convince us",
-    "subtitle": "Door ajar — not everyone enters",
+    "subtitle": "Not everyone enters.",
     "pathways": {
       "invited": {
         "number": "01",
@@ -145,7 +118,6 @@
     },
     "disclaimer": "We don't always respond. If you don't hear from us, we're likely at capacity or not the right match. No response is also a response.",
     "form": {
-      "badge": "SEND YOUR MESSAGE",
       "title": "Tell us about your business",
       "titleSuffix": "— no guarantee of response",
       "companyName": "Company name",

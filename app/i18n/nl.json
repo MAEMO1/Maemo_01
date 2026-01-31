@@ -26,38 +26,12 @@
       "subtitle": "maemo is een exclusieve business consultancy die proactief hoogpotentiële ondernemingen identificeert en strategische tools biedt om hun groeipotentieel te realiseren.",
       "cta": "Neem contact op"
     },
-    "floatingCards": {
-      "headline": "We analyseren jouw",
-      "headlineAccent": "kansen",
-      "cards": {
-        "jaarrekening": {
-          "title": "Jaarrekening",
-          "subtitle": "Jaarverslag",
-          "value": "€847K",
-          "label": "Omzet geverifieerd",
-          "status": "Goedgekeurd"
-        },
-        "profitLoss": {
-          "title": "W&V",
-          "value": "+34%",
-          "label": "Winstmarge"
-        },
-        "marketPosition": {
-          "title": "Marktpositie",
-          "label": "Marktaandeel",
-          "growth": "+12%"
-        },
-        "digitalPresence": {
-          "title": "Digitale Aanwezigheid",
-          "value": "89%",
-          "label": "Online Score"
-        },
-        "administration": {
-          "title": "Administratie",
-          "label": "Volledig georganiseerd",
-          "status": "Geverifieerd"
-        }
-      }
+    "services": {
+      "headline": "Wat we doen",
+      "strategy": "Strategie",
+      "marketing": "Marketing",
+      "brand": "Brand Identity",
+      "digital": "Digitale Groei"
     },
     "actionStack": {
       "analyze": "Analyseren",
@@ -128,9 +102,8 @@
     }
   },
   "contact": {
-    "badge": "Exclusieve Toegang",
     "title": "Overtuig ons",
-    "subtitle": "Deur op een kier — niet iedereen komt binnen",
+    "subtitle": "Niet iedereen komt binnen.",
     "pathways": {
       "invited": {
         "number": "01",
@@ -145,7 +118,6 @@
     },
     "disclaimer": "We reageren niet altijd. Als je niets hoort, zijn we waarschijnlijk op capaciteit of niet de juiste match. Geen antwoord is ook een antwoord.",
     "form": {
-      "badge": "STUUR JE BERICHT",
       "title": "Vertel ons over je bedrijf",
       "titleSuffix": "— geen garantie op reactie",
       "companyName": "Bedrijfsnaam",
