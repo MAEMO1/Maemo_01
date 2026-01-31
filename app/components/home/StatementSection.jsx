@@ -81,15 +81,23 @@ export function StatementSection() {
           );
         }
 
-        // Parallax on continued scroll
-        gsap.to(lines, {
-          y: -40,
-          scrollTrigger: {
-            trigger: containerRef.current,
-            start: 'top top',
-            end: 'bottom top',
-            scrub: true,
-          },
+        // Subtle parallax on continued scroll - starts AFTER reveal is complete
+        // Using a separate fromTo to avoid conflicting with the reveal animation
+        lines.forEach((line, index) => {
+          gsap.fromTo(
+            line,
+            { yPercent: 0 },
+            {
+              yPercent: -8, // Subtle effect, percentage-based for consistency
+              ease: 'none',
+              scrollTrigger: {
+                trigger: containerRef.current,
+                start: 'top 30%', // Starts after reveal ends (reveal ends at 'top 30%')
+                end: 'bottom top',
+                scrub: 0.8,
+              },
+            }
+          );
         });
 
       } else {

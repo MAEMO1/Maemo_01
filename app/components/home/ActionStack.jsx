@@ -153,18 +153,7 @@ export function ActionStack() {
           }, endProgress - 0.2);
         });
 
-        // Parallax effect on scroll after reveal
-        items.forEach((item, index) => {
-          gsap.to(item, {
-            y: (index - 1) * -20, // Differential parallax
-            scrollTrigger: {
-              trigger: containerRef.current,
-              start: 'top top',
-              end: 'bottom top',
-              scrub: true,
-            },
-          });
-        });
+        // Note: Parallax removed - was causing scroll jank due to conflicting with pinned timeline
 
       } else {
         // MOBILE: Jeton.com level 3D cascade reveal
@@ -206,16 +195,7 @@ export function ActionStack() {
             },
           });
 
-          // Subtle parallax on scroll
-          gsap.to(item, {
-            y: (index - 1) * -10,
-            scrollTrigger: {
-              trigger: containerRef.current,
-              start: 'top bottom',
-              end: 'bottom top',
-              scrub: 0.6,
-            },
-          });
+          // Note: Mobile parallax removed - can cause scroll jank
         });
       }
     }, containerRef);

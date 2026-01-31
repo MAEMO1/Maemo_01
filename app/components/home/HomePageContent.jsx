@@ -81,17 +81,22 @@ export function HomePageContent() {
           },
         });
 
-        // Subtle parallax on scroll
+        // Subtle parallax on scroll - starts after reveal completes
         if (isDesktop) {
-          gsap.to([line1, line2], {
-            y: -20,
-            scrollTrigger: {
-              trigger: containerRef.current,
-              start: 'top bottom',
-              end: 'bottom top',
-              scrub: 1,
-            },
-          });
+          gsap.fromTo(
+            [line1, line2],
+            { yPercent: 0 },
+            {
+              yPercent: -5, // Very subtle for smooth feel
+              ease: 'none',
+              scrollTrigger: {
+                trigger: containerRef.current,
+                start: 'top 50%', // After reveal trigger point
+                end: 'bottom top',
+                scrub: 0.8,
+              },
+            }
+          );
         }
       }
     }, containerRef);
@@ -115,15 +120,19 @@ export function HomePageContent() {
             color: '#1e293b',
           }}
         >
-          <span ref={line1Ref} className="block mb-2">
-            {t('home.bigText.line1')}
+          <span
+            ref={line1Ref}
+            className="block mb-2"
+            style={{ visibility: mounted ? 'visible' : 'hidden' }}
+          >
+            {!mounted && t('home.bigText.line1')}
           </span>
           <span
             ref={line2Ref}
             className="block"
-            style={{ color: '#e85d4c' }}
+            style={{ color: '#e85d4c', visibility: mounted ? 'visible' : 'hidden' }}
           >
-            {t('home.bigText.line2')}
+            {!mounted && t('home.bigText.line2')}
           </span>
         </h2>
       </div>

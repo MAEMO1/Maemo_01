@@ -2,7 +2,7 @@ import { Hero } from './components/home/Hero';
 import { FloatingCards } from './components/home/FloatingCards';
 import { ActionStack } from './components/home/ActionStack';
 import { StatementSection } from './components/home/StatementSection';
-import { HomePageContent, CTASection } from './components/home/HomePageContent';
+import { CTASection } from './components/home/HomePageContent';
 
 export const metadata = {
   title: 'maemo | Digital Marketing Bureau',
@@ -15,7 +15,6 @@ export default function HomePage() {
       <Hero />
       <FloatingCards />
       <ActionStack />
-      <HomePageContent />
       <StatementSection />
       <CTASection />
     </>
