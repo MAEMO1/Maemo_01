@@ -9,8 +9,20 @@ export default function Template({ children }) {
   const hasAnimated = useRef(false);
 
   useEffect(() => {
-    // Scroll to top on route change
-    window.scrollTo(0, 0);
+    // Force scroll to top on route change - iOS Safari compatible
+    // Use multiple methods to ensure it works across all browsers
+
+    // Method 1: Standard scrollTo
+    window.scrollTo({ top: 0, left: 0, behavior: 'instant' });
+
+    // Method 2: Set scrollTop directly (backup for iOS)
+    document.documentElement.scrollTop = 0;
+    document.body.scrollTop = 0; // For Safari
+
+    // Method 3: Delayed scroll for iOS scroll restoration override
+    const scrollTimer = setTimeout(() => {
+      window.scrollTo({ top: 0, left: 0, behavior: 'instant' });
+    }, 50);
 
     // Reset animation state on route change
     hasAnimated.current = false;
@@ -22,7 +34,10 @@ export default function Template({ children }) {
       hasAnimated.current = true;
     });
 
-    return () => cancelAnimationFrame(timer);
+    return () => {
+      cancelAnimationFrame(timer);
+      clearTimeout(scrollTimer);
+    };
   }, [pathname]);
 
   return (

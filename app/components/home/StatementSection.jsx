@@ -83,7 +83,7 @@ export function StatementSection() {
 
         // Subtle parallax on continued scroll - starts AFTER reveal is complete
         // Using a separate fromTo to avoid conflicting with the reveal animation
-        lines.forEach((line, index) => {
+        lines.forEach((line) => {
           gsap.fromTo(
             line,
             { yPercent: 0 },
