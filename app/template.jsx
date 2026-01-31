@@ -2,6 +2,7 @@
 
 import { useEffect, useState, useRef } from 'react';
 import { usePathname } from 'next/navigation';
+import { getLenis } from './hooks/useLenis';
 
 export default function Template({ children }) {
   const pathname = usePathname();
@@ -9,20 +10,27 @@ export default function Template({ children }) {
   const hasAnimated = useRef(false);
 
   useEffect(() => {
-    // Force scroll to top on route change - iOS Safari compatible
-    // Use multiple methods to ensure it works across all browsers
+    // Scroll to top on route change - must use Lenis for smooth scroll compatibility
+    // Mobile (especially iOS Safari) needs more aggressive reset
 
-    // Method 1: Standard scrollTo
-    window.scrollTo({ top: 0, left: 0, behavior: 'instant' });
-
-    // Method 2: Set scrollTop directly (backup for iOS)
-    document.documentElement.scrollTop = 0;
-    document.body.scrollTop = 0; // For Safari
-
-    // Method 3: Delayed scroll for iOS scroll restoration override
-    const scrollTimer = setTimeout(() => {
+    const scrollToTop = () => {
+      const lenis = getLenis();
+      if (lenis) {
+        lenis.scrollTo(0, { immediate: true });
+      }
+      // Always also set native scroll as backup
       window.scrollTo({ top: 0, left: 0, behavior: 'instant' });
-    }, 50);
+      document.documentElement.scrollTop = 0;
+      document.body.scrollTop = 0;
+    };
+
+    // Immediate scroll
+    scrollToTop();
+
+    // Mobile needs multiple attempts due to iOS scroll restoration
+    const scrollTimer1 = setTimeout(scrollToTop, 10);
+    const scrollTimer2 = setTimeout(scrollToTop, 50);
+    const scrollTimer3 = setTimeout(scrollToTop, 150); // Extra delay for slow mobile
 
     // Reset animation state on route change
     hasAnimated.current = false;
@@ -36,7 +44,9 @@ export default function Template({ children }) {
 
     return () => {
       cancelAnimationFrame(timer);
-      clearTimeout(scrollTimer);
+      clearTimeout(scrollTimer1);
+      clearTimeout(scrollTimer2);
+      clearTimeout(scrollTimer3);
     };
   }, [pathname]);
 
