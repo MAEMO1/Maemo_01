@@ -22,9 +22,6 @@ export function ContactContent() {
   // Refs for GSAP animations
   const containerRef = useRef(null);
   const heroRef = useRef(null);
-  const badgeRef = useRef(null);
-  const titleRef = useRef(null);
-  const subtitleRef = useRef(null);
   const pathwayRefs = useRef([]);
   const dividerRef = useRef(null);
   const formSectionRef = useRef(null);
@@ -51,48 +48,70 @@ export function ContactContent() {
     setMounted(true);
   }, []);
 
-  // Hero entrance animation - Premium subtle style
+  // Hero entrance animation - Premium dramatic style
   useLayoutEffect(() => {
     if (!mounted) return;
 
     const ctx = gsap.context(() => {
       const tl = gsap.timeline({ 
-        defaults: { ease: 'power2.out' } // Smoother, more subtle easing
+        defaults: { ease: 'power3.out' }
       });
 
-      // Badge entrance - subtle fade up
-      if (badgeRef.current) {
-        gsap.set(badgeRef.current, { opacity: 0, y: 16 });
-        tl.to(badgeRef.current, { 
-          opacity: 1, 
-          y: 0, 
-          duration: 0.6 
-        }, 0.1);
-      }
+      // Background elements float in
+      tl.fromTo('.hero-orb-1', 
+        { opacity: 0, scale: 0.8, x: 100 },
+        { opacity: 1, scale: 1, x: 0, duration: 1.5 },
+        0
+      );
+      tl.fromTo('.hero-orb-2', 
+        { opacity: 0, scale: 0.8, y: 100 },
+        { opacity: 1, scale: 1, y: 0, duration: 1.5 },
+        0.2
+      );
+      tl.fromTo('.hero-grid',
+        { opacity: 0 },
+        { opacity: 1, duration: 1 },
+        0.5
+      );
 
-      // Title entrance - elegant slide up without 3D effects
-      if (titleRef.current) {
-        gsap.set(titleRef.current, {
-          opacity: 0,
-          y: 40,
-        });
-        tl.to(titleRef.current, {
-          opacity: 1,
-          y: 0,
-          duration: 0.8,
-          ease: 'power3.out',
-        }, 0.25);
-      }
+      // Left content - staggered entrance
+      tl.fromTo('.hero-eyebrow',
+        { opacity: 0, x: -40 },
+        { opacity: 1, x: 0, duration: 0.8 },
+        0.3
+      );
+      
+      tl.fromTo('.hero-title-line',
+        { opacity: 0, y: 80, rotateX: 15 },
+        { opacity: 1, y: 0, rotateX: 0, duration: 1, stagger: 0.1 },
+        0.4
+      );
 
-      // Subtitle fade in - very subtle
-      if (subtitleRef.current) {
-        gsap.set(subtitleRef.current, { opacity: 0, y: 24 });
-        tl.to(subtitleRef.current, { 
-          opacity: 1, 
-          y: 0, 
-          duration: 0.7 
-        }, 0.5);
-      }
+      tl.fromTo('.hero-subtitle',
+        { opacity: 0, y: 30 },
+        { opacity: 1, y: 0, duration: 0.8 },
+        0.8
+      );
+
+      // Right visual elements
+      tl.fromTo('.hero-visual-card',
+        { opacity: 0, y: 60, scale: 0.9 },
+        { opacity: 1, y: 0, scale: 1, duration: 0.9, stagger: 0.15, ease: 'back.out(1.4)' },
+        0.6
+      );
+
+      tl.fromTo('.hero-signal-line',
+        { opacity: 0, strokeDashoffset: 300 },
+        { opacity: 1, strokeDashoffset: 0, duration: 1.2, ease: 'power2.inOut' },
+        1
+      );
+
+      // Scroll indicator
+      tl.fromTo('.scroll-indicator',
+        { opacity: 0, y: 20 },
+        { opacity: 1, y: 0, duration: 0.6 },
+        1.4
+      );
     }, containerRef);
 
     return () => ctx.revert();
@@ -278,19 +297,51 @@ export function ContactContent() {
 
   return (
     <div ref={containerRef} className="min-h-screen bg-ink overflow-hidden">
-      {/* Premium subtle background */}
+      {/* Abstract Background Elements */}
       <div className="fixed inset-0 pointer-events-none overflow-hidden">
-        {/* Single subtle gradient orb - jeton.com style */}
+        {/* Large gradient orb - top right */}
         <div
-          className="absolute w-[800px] h-[800px] rounded-full"
+          className="hero-orb-1 absolute"
           style={{
-            background: `radial-gradient(circle, rgba(232, 93, 76, 0.04) 0%, transparent 60%)`,
+            width: 'clamp(500px, 60vw, 900px)',
+            height: 'clamp(500px, 60vw, 900px)',
+            background: 'radial-gradient(circle, rgba(232, 93, 76, 0.08) 0%, rgba(232, 93, 76, 0.02) 40%, transparent 70%)',
             top: '-10%',
-            right: '-20%',
-            filter: 'blur(100px)',
+            right: '-15%',
+            filter: 'blur(80px)',
+            animation: 'float-gentle 20s ease-in-out infinite',
           }}
         />
-        {/* Very subtle noise texture overlay */}
+        
+        {/* Secondary orb - bottom left */}
+        <div
+          className="hero-orb-2 absolute"
+          style={{
+            width: 'clamp(400px, 50vw, 700px)',
+            height: 'clamp(400px, 50vw, 700px)',
+            background: 'radial-gradient(circle, rgba(99, 102, 241, 0.06) 0%, transparent 60%)',
+            bottom: '10%',
+            left: '-10%',
+            filter: 'blur(100px)',
+            animation: 'float-gentle 25s ease-in-out infinite reverse',
+          }}
+        />
+
+        {/* Animated grid pattern */}
+        <div 
+          className="hero-grid absolute inset-0 opacity-[0.03]"
+          style={{
+            backgroundImage: `
+              linear-gradient(rgba(255,255,255,0.1) 1px, transparent 1px),
+              linear-gradient(90deg, rgba(255,255,255,0.1) 1px, transparent 1px)
+            `,
+            backgroundSize: '80px 80px',
+            maskImage: 'radial-gradient(ellipse at 30% 50%, black 0%, transparent 70%)',
+            WebkitMaskImage: 'radial-gradient(ellipse at 30% 50%, black 0%, transparent 70%)',
+          }}
+        />
+
+        {/* Noise texture overlay */}
         <div
           className="absolute inset-0 opacity-[0.015]"
           style={{
@@ -299,79 +350,252 @@ export function ContactContent() {
         />
       </div>
 
-      {/* Hero Section - Premium jeton.com style */}
+      {/* Hero Section - Asymmetric Premium Design */}
       <section
         ref={heroRef}
-        className="relative flex items-center justify-center px-6 sm:px-8 pt-32 sm:pt-40 pb-16 sm:pb-20"
+        className="relative min-h-screen flex items-center px-6 sm:px-8 lg:px-16 xl:px-24 pt-24 pb-16"
       >
-        <div className="max-w-4xl mx-auto text-center relative z-10">
-          {/* Refined badge - minimal and elegant */}
-          <div
-            ref={badgeRef}
-            className="inline-flex items-center gap-2 px-4 py-2 rounded-full mb-8"
-            style={{
-              background: 'rgba(232, 93, 76, 0.08)',
-              border: '1px solid rgba(232, 93, 76, 0.15)',
-            }}
-          >
-            <span
-              className="w-1.5 h-1.5 rounded-full"
-              style={{
-                background: PALETTE.coral,
-              }}
-            />
-            <span
-              className="text-[11px] font-medium tracking-[0.15em] uppercase"
-              style={{ color: PALETTE.coral }}
-            >
-              {t('contact.badge')}
-            </span>
+        <div className="max-w-7xl mx-auto w-full">
+          <div className="grid lg:grid-cols-2 gap-12 lg:gap-8 items-center">
+            {/* Left: Typography Content */}
+            <div className="relative z-10 order-2 lg:order-1">
+              {/* Eyebrow badge */}
+              <div className="hero-eyebrow inline-flex items-center gap-3 mb-8">
+                <div className="h-px w-8 bg-gradient-to-r from-coral to-transparent" />
+                <span 
+                  className="text-[11px] font-semibold tracking-[0.2em] uppercase"
+                  style={{ color: PALETTE.coral }}
+                >
+                  {t('contact.badge')}
+                </span>
+              </div>
+
+              {/* Title - Dramatic typography */}
+              <h1 className="mb-8" style={{ perspective: '1000px' }}>
+                <span 
+                  className="hero-title-line block"
+                  style={{
+                    fontSize: isDesktop ? 'clamp(3.5rem, 6vw, 6rem)' : 'clamp(2.5rem, 10vw, 4rem)',
+                    fontWeight: 300,
+                    lineHeight: 0.95,
+                    letterSpacing: '-0.03em',
+                    color: 'rgba(255,255,255,0.7)',
+                    transformOrigin: 'left center',
+                  }}
+                >
+                  {t('contact.title').split(' ')[0]}
+                </span>
+                <span 
+                  className="hero-title-line block"
+                  style={{
+                    fontSize: isDesktop ? 'clamp(3.5rem, 6vw, 6rem)' : 'clamp(2.5rem, 10vw, 4rem)',
+                    fontWeight: 600,
+                    lineHeight: 0.95,
+                    letterSpacing: '-0.03em',
+                    color: '#ffffff',
+                    transformOrigin: 'left center',
+                  }}
+                >
+                  {t('contact.title').split(' ').slice(1).join(' ')}
+                </span>
+              </h1>
+
+              {/* Subtitle with decorative element */}
+              <div className="hero-subtitle relative">
+                <div 
+                  className="absolute -left-4 top-0 bottom-0 w-1 rounded-full"
+                  style={{
+                    background: 'linear-gradient(to bottom, rgba(232, 93, 76, 0.5), transparent)',
+                  }}
+                />
+                <p 
+                  className="text-base sm:text-lg leading-relaxed pl-6"
+                  style={{ 
+                    color: 'rgba(255,255,255,0.45)',
+                    fontWeight: 400,
+                    maxWidth: '420px',
+                  }}
+                >
+                  {t('contact.subtitle')}
+                </p>
+              </div>
+
+              {/* Signal pulse indicator */}
+              <div className="hero-subtitle mt-12 flex items-center gap-4">
+                <div className="relative">
+                  <div 
+                    className="w-3 h-3 rounded-full"
+                    style={{ background: PALETTE.coral }}
+                  />
+                  <div 
+                    className="absolute inset-0 w-3 h-3 rounded-full animate-ping"
+                    style={{ background: PALETTE.coral, opacity: 0.5 }}
+                  />
+                </div>
+                <span 
+                  className="text-xs tracking-[0.15em] uppercase"
+                  style={{ color: 'rgba(255,255,255,0.3)' }}
+                >
+                  {t('contact.pathways.signal.number')} — {t('contact.pathways.signal.title')}
+                </span>
+              </div>
+            </div>
+
+            {/* Right: Abstract Visual Composition */}
+            <div className="relative order-1 lg:order-2 h-[400px] sm:h-[500px] lg:h-[600px]">
+              {/* Main floating card - Invited pathway */}
+              <div 
+                className="hero-visual-card absolute top-[5%] right-[5%] lg:right-[10%] w-[240px] sm:w-[280px] rounded-2xl p-6 backdrop-blur-sm"
+                style={{
+                  background: 'linear-gradient(135deg, rgba(232, 93, 76, 0.15) 0%, rgba(232, 93, 76, 0.05) 100%)',
+                  border: '1px solid rgba(232, 93, 76, 0.2)',
+                  boxShadow: '0 25px 80px rgba(232, 93, 76, 0.15), inset 0 1px 0 rgba(255,255,255,0.1)',
+                  animation: 'float-gentle 8s ease-in-out infinite',
+                }}
+              >
+                <div className="flex items-start gap-4">
+                  <div 
+                    className="flex items-center justify-center w-12 h-12 rounded-xl text-white font-bold text-lg flex-shrink-0"
+                    style={{ background: PALETTE.coral }}
+                  >
+                    {t('contact.pathways.invited.number')}
+                  </div>
+                  <div>
+                    <h3 className="font-semibold text-lg mb-1 text-white">
+                      {t('contact.pathways.invited.title')}
+                    </h3>
+                    <p className="text-sm leading-relaxed" style={{ color: 'rgba(255,255,255,0.5)' }}>
+                      {t('contact.pathways.invited.description').slice(0, 60)}...
+                    </p>
+                  </div>
+                </div>
+                {/* Decorative corner accent */}
+                <div 
+                  className="absolute -top-px -right-px w-16 h-16 overflow-hidden rounded-tr-2xl"
+                  style={{
+                    background: 'linear-gradient(135deg, transparent 50%, rgba(232, 93, 76, 0.3) 50%)',
+                  }}
+                />
+              </div>
+
+              {/* Secondary floating card - Signal */}
+              <div 
+                className="hero-visual-card absolute bottom-[15%] left-[0%] lg:left-[5%] w-[220px] sm:w-[260px] rounded-2xl p-6"
+                style={{
+                  background: 'rgba(255, 255, 255, 0.03)',
+                  border: '1px solid rgba(255, 255, 255, 0.08)',
+                  boxShadow: '0 20px 60px rgba(0, 0, 0, 0.3), inset 0 1px 0 rgba(255,255,255,0.05)',
+                  animation: 'float-gentle 10s ease-in-out infinite reverse',
+                }}
+              >
+                <div className="flex items-start gap-4">
+                  <div 
+                    className="flex items-center justify-center w-12 h-12 rounded-xl font-bold text-lg flex-shrink-0"
+                    style={{
+                      background: 'rgba(255,255,255,0.06)',
+                      border: '1px solid rgba(255,255,255,0.1)',
+                      color: 'rgba(255,255,255,0.5)',
+                    }}
+                  >
+                    {t('contact.pathways.signal.number')}
+                  </div>
+                  <div>
+                    <h3 className="font-medium text-lg mb-1 text-white">
+                      {t('contact.pathways.signal.title')}
+                    </h3>
+                    <p className="text-sm leading-relaxed" style={{ color: 'rgba(255,255,255,0.4)' }}>
+                      {t('contact.pathways.signal.description').slice(0, 50)}...
+                    </p>
+                  </div>
+                </div>
+              </div>
+
+              {/* Abstract geometric shapes */}
+              <div 
+                className="hero-visual-card absolute top-[40%] left-[30%] w-20 h-20 rounded-2xl opacity-60"
+                style={{
+                  background: 'linear-gradient(135deg, rgba(232, 93, 76, 0.2), transparent)',
+                  border: '1px solid rgba(232, 93, 76, 0.15)',
+                  transform: 'rotate(12deg)',
+                  animation: 'float-gentle 12s ease-in-out infinite',
+                }}
+              />
+              
+              <div 
+                className="hero-visual-card absolute bottom-[35%] right-[20%] w-14 h-14 rounded-full opacity-40"
+                style={{
+                  background: 'radial-gradient(circle, rgba(232, 93, 76, 0.3), transparent)',
+                  animation: 'float-gentle 15s ease-in-out infinite 2s',
+                }}
+              />
+
+              {/* SVG Connection Lines */}
+              <svg 
+                className="absolute inset-0 w-full h-full pointer-events-none"
+                viewBox="0 0 600 600"
+                preserveAspectRatio="xMidYMid slice"
+              >
+                <defs>
+                  <linearGradient id="lineGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+                    <stop offset="0%" stopColor="rgba(232, 93, 76, 0.3)" />
+                    <stop offset="100%" stopColor="rgba(232, 93, 76, 0)" />
+                  </linearGradient>
+                </defs>
+                <path
+                  className="hero-signal-line"
+                  d="M 100 400 Q 200 350 300 200 Q 380 80 500 100"
+                  fill="none"
+                  stroke="url(#lineGradient)"
+                  strokeWidth="1.5"
+                  strokeDasharray="300"
+                  strokeDashoffset="300"
+                  strokeLinecap="round"
+                />
+                <path
+                  className="hero-signal-line"
+                  d="M 120 420 Q 220 370 320 220"
+                  fill="none"
+                  stroke="rgba(255,255,255,0.05)"
+                  strokeWidth="1"
+                  strokeDasharray="200"
+                  strokeDashoffset="200"
+                  strokeLinecap="round"
+                />
+              </svg>
+
+              {/* Stats mini cards */}
+              <div 
+                className="hero-visual-card absolute top-[60%] right-[5%] px-4 py-3 rounded-xl backdrop-blur-md"
+                style={{
+                  background: 'rgba(30, 41, 59, 0.6)',
+                  border: '1px solid rgba(255,255,255,0.08)',
+                  animation: 'float-gentle 7s ease-in-out infinite 1s',
+                }}
+              >
+                <div className="text-xs uppercase tracking-wider mb-1" style={{ color: 'rgba(255,255,255,0.4)' }}>
+                  Response Rate
+                </div>
+                <div className="text-xl font-semibold text-white">Selective</div>
+              </div>
+            </div>
           </div>
-
-          {/* Title - Premium typography with lighter weight */}
-          <h1
-            ref={titleRef}
-            className="mb-6"
-            style={{
-              fontSize: isDesktop ? 'clamp(3rem, 6vw, 5rem)' : 'clamp(2.25rem, 8vw, 3.5rem)',
-              fontWeight: 500,
-              lineHeight: 1.05,
-              letterSpacing: '-0.02em',
-              color: '#ffffff',
-            }}
-          >
-            {t('contact.title').split(' ')[0]}{' '}
-            <span
-              style={{
-                color: PALETTE.coral,
-                fontWeight: 400, // Lighter weight for accent word
-              }}
-            >
-              {t('contact.title').split(' ').slice(1).join(' ')}
-            </span>
-          </h1>
-
-          {/* Subtitle - Refined and readable */}
-          <p
-            ref={subtitleRef}
-            className="text-base sm:text-lg md:text-xl leading-relaxed max-w-xl mx-auto"
-            style={{ 
-              color: 'rgba(255,255,255,0.55)',
-              fontWeight: 400,
-              letterSpacing: '0.01em',
-            }}
-          >
-            {t('contact.subtitle')}
-          </p>
         </div>
 
-        {/* Subtle bottom gradient fade */}
+        {/* Scroll indicator */}
         <div
-          className="absolute bottom-0 left-0 right-0 h-24"
-          style={{
-            background: 'linear-gradient(to top, rgba(30,41,59,1) 0%, transparent 100%)',
-          }}
-        />
+          className="scroll-indicator absolute bottom-8 left-1/2 -translate-x-1/2 flex flex-col items-center gap-2"
+          style={{ opacity: 0 }}
+        >
+          <div className="w-5 h-8 rounded-full border border-white/20 flex items-start justify-center p-1">
+            <div 
+              className="w-1 h-2 rounded-full animate-float"
+              style={{ background: 'rgba(232, 93, 76, 0.6)' }}
+            />
+          </div>
+          <span className="text-[10px] uppercase tracking-widest" style={{ color: 'rgba(255,255,255,0.3)' }}>
+            {t('common.scroll')}
+          </span>
+        </div>
       </section>
 
       {/* Pathways Section - Refined cards */}
