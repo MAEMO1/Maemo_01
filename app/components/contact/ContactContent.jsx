@@ -51,47 +51,54 @@ export function ContactContent() {
     setMounted(true);
   }, []);
 
-  // Hero entrance animation
+  // Hero entrance animation - Premium subtle style
   useLayoutEffect(() => {
     if (!mounted) return;
 
     const ctx = gsap.context(() => {
-      const tl = gsap.timeline({ defaults: { ease: 'power3.out' } });
+      const tl = gsap.timeline({ 
+        defaults: { ease: 'power2.out' } // Smoother, more subtle easing
+      });
 
-      // Badge entrance
+      // Badge entrance - subtle fade up
       if (badgeRef.current) {
-        gsap.set(badgeRef.current, { opacity: 0, y: 30, scale: 0.9 });
-        tl.to(badgeRef.current, { opacity: 1, y: 0, scale: 1, duration: 0.8 }, 0.2);
+        gsap.set(badgeRef.current, { opacity: 0, y: 16 });
+        tl.to(badgeRef.current, { 
+          opacity: 1, 
+          y: 0, 
+          duration: 0.6 
+        }, 0.1);
       }
 
-      // Title dramatic entrance with 3D perspective
+      // Title entrance - elegant slide up without 3D effects
       if (titleRef.current) {
         gsap.set(titleRef.current, {
           opacity: 0,
-          y: 80,
-          rotationX: 15,
-          transformPerspective: 1200,
-          transformOrigin: 'center bottom',
+          y: 40,
         });
         tl.to(titleRef.current, {
           opacity: 1,
           y: 0,
-          rotationX: 0,
-          duration: 1.2,
-        }, 0.3);
+          duration: 0.8,
+          ease: 'power3.out',
+        }, 0.25);
       }
 
-      // Subtitle fade in
+      // Subtitle fade in - very subtle
       if (subtitleRef.current) {
-        gsap.set(subtitleRef.current, { opacity: 0, y: 40 });
-        tl.to(subtitleRef.current, { opacity: 1, y: 0, duration: 1 }, 0.6);
+        gsap.set(subtitleRef.current, { opacity: 0, y: 24 });
+        tl.to(subtitleRef.current, { 
+          opacity: 1, 
+          y: 0, 
+          duration: 0.7 
+        }, 0.5);
       }
     }, containerRef);
 
     return () => ctx.revert();
   }, [mounted]);
 
-  // Pathway cards scroll animation
+  // Pathway cards scroll animation - Subtle entrance
   useLayoutEffect(() => {
     if (!mounted) return;
 
@@ -99,23 +106,17 @@ export function ContactContent() {
       pathwayRefs.current.forEach((card, index) => {
         if (!card) return;
 
-        const direction = index === 0 ? -1 : 1;
-
         gsap.set(card, {
           opacity: 0,
-          x: direction * 100,
-          y: 50,
-          rotationY: direction * 10,
-          transformPerspective: 1000,
+          y: 30,
         });
 
         gsap.to(card, {
           opacity: 1,
-          x: 0,
           y: 0,
-          rotationY: 0,
-          duration: 1,
-          ease: 'power3.out',
+          duration: 0.7,
+          delay: index * 0.1,
+          ease: 'power2.out',
           scrollTrigger: {
             trigger: card,
             start: 'top 85%',
@@ -277,82 +278,65 @@ export function ContactContent() {
 
   return (
     <div ref={containerRef} className="min-h-screen bg-ink overflow-hidden">
-      {/* Animated background orbs */}
+      {/* Premium subtle background */}
       <div className="fixed inset-0 pointer-events-none overflow-hidden">
+        {/* Single subtle gradient orb - jeton.com style */}
         <div
-          className="absolute w-[600px] h-[600px] rounded-full opacity-[0.04] animate-pulse"
+          className="absolute w-[800px] h-[800px] rounded-full"
           style={{
-            background: `radial-gradient(circle, ${PALETTE.coral} 0%, transparent 70%)`,
-            top: '5%',
-            right: '-200px',
-            filter: 'blur(80px)',
-            animation: 'pulse 8s ease-in-out infinite',
+            background: `radial-gradient(circle, rgba(232, 93, 76, 0.04) 0%, transparent 60%)`,
+            top: '-10%',
+            right: '-20%',
+            filter: 'blur(100px)',
           }}
         />
+        {/* Very subtle noise texture overlay */}
         <div
-          className="absolute w-[400px] h-[400px] rounded-full opacity-[0.03]"
+          className="absolute inset-0 opacity-[0.015]"
           style={{
-            background: 'radial-gradient(circle, #ffffff 0%, transparent 70%)',
-            bottom: '10%',
-            left: '-100px',
-            filter: 'blur(60px)',
-            animation: 'pulse 10s ease-in-out infinite reverse',
-          }}
-        />
-        {/* Subtle grid pattern */}
-        <div
-          className="absolute inset-0 opacity-[0.02]"
-          style={{
-            backgroundImage: `
-              linear-gradient(rgba(255,255,255,0.1) 1px, transparent 1px),
-              linear-gradient(90deg, rgba(255,255,255,0.1) 1px, transparent 1px)
-            `,
-            backgroundSize: '60px 60px',
+            backgroundImage: `url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E")`,
           }}
         />
       </div>
 
-      {/* Hero Section - Compact for form visibility */}
+      {/* Hero Section - Premium jeton.com style */}
       <section
         ref={heroRef}
-        className="relative flex items-center justify-center px-4 sm:px-6 pt-28 sm:pt-32 pb-12 sm:pb-16"
+        className="relative flex items-center justify-center px-6 sm:px-8 pt-32 sm:pt-40 pb-16 sm:pb-20"
       >
-        <div className="max-w-5xl mx-auto text-center relative z-10">
-          {/* Animated badge */}
+        <div className="max-w-4xl mx-auto text-center relative z-10">
+          {/* Refined badge - minimal and elegant */}
           <div
             ref={badgeRef}
-            className="inline-flex items-center gap-2.5 px-5 py-2.5 rounded-full mb-10"
+            className="inline-flex items-center gap-2 px-4 py-2 rounded-full mb-8"
             style={{
-              background: 'linear-gradient(135deg, rgba(232, 93, 76, 0.15) 0%, rgba(232, 93, 76, 0.08) 100%)',
-              border: '1px solid rgba(232, 93, 76, 0.3)',
-              backdropFilter: 'blur(20px)',
+              background: 'rgba(232, 93, 76, 0.08)',
+              border: '1px solid rgba(232, 93, 76, 0.15)',
             }}
           >
             <span
-              className="w-2 h-2 rounded-full"
+              className="w-1.5 h-1.5 rounded-full"
               style={{
                 background: PALETTE.coral,
-                boxShadow: `0 0 12px ${PALETTE.coral}`,
-                animation: 'pulse 2s ease-in-out infinite',
               }}
             />
             <span
-              className="text-xs font-semibold tracking-[0.2em] uppercase"
+              className="text-[11px] font-medium tracking-[0.15em] uppercase"
               style={{ color: PALETTE.coral }}
             >
               {t('contact.badge')}
             </span>
           </div>
 
-          {/* Title with dramatic typography */}
+          {/* Title - Premium typography with lighter weight */}
           <h1
             ref={titleRef}
-            className="mb-8"
+            className="mb-6"
             style={{
-              fontSize: isDesktop ? 'clamp(3.5rem, 10vw, 7rem)' : 'clamp(2.5rem, 12vw, 4rem)',
-              fontWeight: 700,
-              lineHeight: 1.0,
-              letterSpacing: '-0.03em',
+              fontSize: isDesktop ? 'clamp(3rem, 6vw, 5rem)' : 'clamp(2.25rem, 8vw, 3.5rem)',
+              fontWeight: 500,
+              lineHeight: 1.05,
+              letterSpacing: '-0.02em',
               color: '#ffffff',
             }}
           >
@@ -360,69 +344,63 @@ export function ContactContent() {
             <span
               style={{
                 color: PALETTE.coral,
-                textShadow: `0 0 80px ${PALETTE.coral}40`,
+                fontWeight: 400, // Lighter weight for accent word
               }}
             >
               {t('contact.title').split(' ').slice(1).join(' ')}
             </span>
           </h1>
 
+          {/* Subtitle - Refined and readable */}
           <p
             ref={subtitleRef}
-            className="text-lg sm:text-xl md:text-2xl leading-relaxed max-w-2xl mx-auto"
-            style={{ color: 'rgba(255,255,255,0.5)' }}
+            className="text-base sm:text-lg md:text-xl leading-relaxed max-w-xl mx-auto"
+            style={{ 
+              color: 'rgba(255,255,255,0.55)',
+              fontWeight: 400,
+              letterSpacing: '0.01em',
+            }}
           >
             {t('contact.subtitle')}
           </p>
         </div>
 
-        {/* Decorative elements */}
+        {/* Subtle bottom gradient fade */}
         <div
-          className="absolute bottom-0 left-0 right-0 h-32"
+          className="absolute bottom-0 left-0 right-0 h-24"
           style={{
             background: 'linear-gradient(to top, rgba(30,41,59,1) 0%, transparent 100%)',
           }}
         />
       </section>
 
-      {/* Pathways Section with 3D card animations */}
-      <section className="relative px-4 sm:px-6 pb-12">
+      {/* Pathways Section - Refined cards */}
+      <section className="relative px-6 sm:px-8 pb-16">
         <div className="max-w-4xl mx-auto">
-          <div className="grid sm:grid-cols-2 gap-6">
+          <div className="grid sm:grid-cols-2 gap-5">
             {/* Card 1 - Uitgenodigd */}
             <div
               ref={(el) => { pathwayRefs.current[0] = el; }}
-              className="group relative rounded-3xl p-8 transition-all duration-500 hover:scale-[1.02] cursor-pointer"
+              className="group relative rounded-2xl p-7 transition-all duration-300 hover:translate-y-[-2px] cursor-pointer"
               style={{
-                background: 'linear-gradient(145deg, rgba(232, 93, 76, 0.12) 0%, rgba(232, 93, 76, 0.04) 100%)',
-                border: '1px solid rgba(232, 93, 76, 0.2)',
-                backdropFilter: 'blur(20px)',
-                transformStyle: 'preserve-3d',
+                background: 'rgba(232, 93, 76, 0.06)',
+                border: '1px solid rgba(232, 93, 76, 0.12)',
               }}
             >
-              {/* Glow effect on hover */}
-              <div
-                className="absolute inset-0 rounded-3xl opacity-0 group-hover:opacity-100 transition-opacity duration-700"
-                style={{
-                  background: `radial-gradient(circle at 30% 30%, ${PALETTE.coral}30 0%, transparent 60%)`,
-                  filter: 'blur(20px)',
-                }}
-              />
               <div className="relative z-10">
-                <div className="flex items-start gap-5">
+                <div className="flex items-start gap-4">
                   <div
-                    className="flex items-center justify-center w-16 h-16 rounded-2xl text-white font-bold text-xl flex-shrink-0 transition-transform duration-500 group-hover:scale-110 group-hover:rotate-3"
+                    className="flex items-center justify-center w-12 h-12 rounded-xl text-white font-semibold text-lg flex-shrink-0 transition-transform duration-300 group-hover:scale-105"
                     style={{
-                      background: `linear-gradient(135deg, ${PALETTE.coral} 0%, #d44a3a 100%)`,
-                      boxShadow: `0 12px 32px ${PALETTE.coral}50`,
+                      background: PALETTE.coral,
                     }}
                   >
                     {t('contact.pathways.invited.number')}
                   </div>
                   <div>
                     <h3
-                      className="font-semibold text-xl mb-3 transition-colors duration-300 group-hover:text-white"
-                      style={{ color: 'rgba(255,255,255,0.9)' }}
+                      className="font-medium text-lg mb-2 transition-colors duration-300 group-hover:text-white"
+                      style={{ color: 'rgba(255,255,255,0.95)' }}
                     >
                       {t('contact.pathways.invited.title')}
                     </h3>
@@ -437,37 +415,28 @@ export function ContactContent() {
             {/* Card 2 - Waag je kans */}
             <div
               ref={(el) => { pathwayRefs.current[1] = el; }}
-              className="group relative rounded-3xl p-8 transition-all duration-500 hover:scale-[1.02] cursor-pointer"
+              className="group relative rounded-2xl p-7 transition-all duration-300 hover:translate-y-[-2px] cursor-pointer"
               style={{
-                background: 'linear-gradient(145deg, rgba(255,255,255,0.08) 0%, rgba(255,255,255,0.02) 100%)',
-                border: '1px solid rgba(255,255,255,0.1)',
-                backdropFilter: 'blur(20px)',
-                transformStyle: 'preserve-3d',
+                background: 'rgba(255,255,255,0.03)',
+                border: '1px solid rgba(255,255,255,0.08)',
               }}
             >
-              <div
-                className="absolute inset-0 rounded-3xl opacity-0 group-hover:opacity-100 transition-opacity duration-700"
-                style={{
-                  background: 'radial-gradient(circle at 70% 30%, rgba(255,255,255,0.08) 0%, transparent 60%)',
-                  filter: 'blur(20px)',
-                }}
-              />
               <div className="relative z-10">
-                <div className="flex items-start gap-5">
+                <div className="flex items-start gap-4">
                   <div
-                    className="flex items-center justify-center w-16 h-16 rounded-2xl font-bold text-xl flex-shrink-0 transition-transform duration-500 group-hover:scale-110 group-hover:-rotate-3"
+                    className="flex items-center justify-center w-12 h-12 rounded-xl font-semibold text-lg flex-shrink-0 transition-transform duration-300 group-hover:scale-105"
                     style={{
-                      background: 'rgba(255,255,255,0.05)',
-                      border: '2px solid rgba(255,255,255,0.15)',
-                      color: 'rgba(255,255,255,0.4)',
+                      background: 'rgba(255,255,255,0.06)',
+                      border: '1px solid rgba(255,255,255,0.1)',
+                      color: 'rgba(255,255,255,0.5)',
                     }}
                   >
                     {t('contact.pathways.signal.number')}
                   </div>
                   <div>
                     <h3
-                      className="font-semibold text-xl mb-3 transition-colors duration-300 group-hover:text-white"
-                      style={{ color: 'rgba(255,255,255,0.9)' }}
+                      className="font-medium text-lg mb-2 transition-colors duration-300 group-hover:text-white"
+                      style={{ color: 'rgba(255,255,255,0.95)' }}
                     >
                       {t('contact.pathways.signal.title')}
                     </h3>
@@ -480,21 +449,15 @@ export function ContactContent() {
             </div>
           </div>
 
-          {/* Disclaimer with animated border */}
+          {/* Disclaimer - Subtle styling */}
           <div
-            className="mt-8 rounded-2xl px-8 py-5 text-center relative overflow-hidden"
+            className="mt-6 rounded-xl px-6 py-4 text-center"
             style={{
-              background: 'linear-gradient(135deg, rgba(232, 93, 76, 0.08) 0%, rgba(232, 93, 76, 0.03) 100%)',
+              background: 'rgba(232, 93, 76, 0.04)',
+              border: '1px solid rgba(232, 93, 76, 0.1)',
             }}
           >
-            <div
-              className="absolute inset-0 rounded-2xl"
-              style={{
-                border: '1px solid rgba(232, 93, 76, 0.2)',
-                animation: 'borderPulse 3s ease-in-out infinite',
-              }}
-            />
-            <p className="text-sm relative z-10" style={{ color: `${PALETTE.coral}cc` }}>
+            <p className="text-sm" style={{ color: 'rgba(232, 93, 76, 0.8)' }}>
               {t('contact.disclaimer')}
             </p>
           </div>
@@ -755,13 +718,6 @@ export function ContactContent() {
         </div>
       </section>
 
-      {/* CSS for custom animations */}
-      <style jsx global>{`
-        @keyframes borderPulse {
-          0%, 100% { opacity: 0.5; }
-          50% { opacity: 1; }
-        }
-      `}</style>
     </div>
   );
 }
