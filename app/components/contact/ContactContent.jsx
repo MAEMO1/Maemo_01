@@ -5,13 +5,24 @@ import { useTranslation } from '../../hooks/useTranslation';
 import { useBreakpoint } from '../../hooks/useMediaQuery';
 import { gsap, ScrollTrigger } from '../../lib/gsap';
 
-// Palette matching homepage
+// Refined palette - softer, more premium
 const PALETTE = {
-  ink: '#1e293b',
+  ink: '#0f172a',
+  inkLight: '#1e293b',
   coral: '#e85d4c',
+  coralSoft: '#f47564',
   slate: '#334155',
   stone: '#64748b',
+  sand: '#94a3b8',
   ivory: '#f8fafc',
+  cream: '#ffffff',
+};
+
+// Premium easing curves
+const EASE = {
+  premium: 'cubic-bezier(0.16, 1, 0.3, 1)',
+  smooth: 'cubic-bezier(0.4, 0, 0.2, 1)',
+  bounce: 'cubic-bezier(0.34, 1.56, 0.64, 1)',
 };
 
 export function ContactContent() {
@@ -22,11 +33,12 @@ export function ContactContent() {
   // Refs for GSAP animations
   const containerRef = useRef(null);
   const heroRef = useRef(null);
-  const badgeRef = useRef(null);
-  const titleRef = useRef(null);
+  const eyebrowRef = useRef(null);
+  const titleLine1Ref = useRef(null);
+  const titleLine2Ref = useRef(null);
   const subtitleRef = useRef(null);
-  const pathwayRefs = useRef([]);
   const dividerRef = useRef(null);
+  const pathwaysRef = useRef(null);
   const formSectionRef = useRef(null);
   const formTitleRef = useRef(null);
   const formFieldsRef = useRef([]);
@@ -46,77 +58,75 @@ export function ContactContent() {
   });
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [focusedField, setFocusedField] = useState(null);
+  const [submitStatus, setSubmitStatus] = useState(null);
 
   useEffect(() => {
     setMounted(true);
   }, []);
 
-  // Hero entrance animation - Premium subtle style
+  // Hero entrance animation - Premium dramatic style
   useLayoutEffect(() => {
     if (!mounted) return;
 
     const ctx = gsap.context(() => {
-      const tl = gsap.timeline({ 
-        defaults: { ease: 'power2.out' } // Smoother, more subtle easing
+      const tl = gsap.timeline({
+        defaults: { ease: EASE.premium },
+        delay: 0.1,
       });
 
-      // Badge entrance - subtle fade up
-      if (badgeRef.current) {
-        gsap.set(badgeRef.current, { opacity: 0, y: 16 });
-        tl.to(badgeRef.current, { 
-          opacity: 1, 
-          y: 0, 
-          duration: 0.6 
-        }, 0.1);
+      // Eyebrow - subtle fade in first
+      if (eyebrowRef.current) {
+        gsap.set(eyebrowRef.current, { opacity: 0, y: 20 });
+        tl.to(eyebrowRef.current, { opacity: 1, y: 0, duration: 0.8 }, 0);
       }
 
-      // Title entrance - elegant slide up without 3D effects
-      if (titleRef.current) {
-        gsap.set(titleRef.current, {
-          opacity: 0,
-          y: 40,
-        });
-        tl.to(titleRef.current, {
-          opacity: 1,
-          y: 0,
-          duration: 0.8,
-          ease: 'power3.out',
-        }, 0.25);
+      // Title Line 1 - dramatic slide up with slight scale
+      if (titleLine1Ref.current) {
+        gsap.set(titleLine1Ref.current, { opacity: 0, y: 80, scale: 0.95 });
+        tl.to(
+          titleLine1Ref.current,
+          { opacity: 1, y: 0, scale: 1, duration: 1.2 },
+          0.2
+        );
       }
 
-      // Subtitle fade in - very subtle
+      // Title Line 2 - offset timing for rhythm
+      if (titleLine2Ref.current) {
+        gsap.set(titleLine2Ref.current, { opacity: 0, y: 60 });
+        tl.to(titleLine2Ref.current, { opacity: 1, y: 0, duration: 1 }, 0.5);
+      }
+
+      // Subtitle - elegant fade
       if (subtitleRef.current) {
-        gsap.set(subtitleRef.current, { opacity: 0, y: 24 });
-        tl.to(subtitleRef.current, { 
-          opacity: 1, 
-          y: 0, 
-          duration: 0.7 
-        }, 0.5);
+        gsap.set(subtitleRef.current, { opacity: 0, y: 30 });
+        tl.to(subtitleRef.current, { opacity: 1, y: 0, duration: 0.8 }, 0.8);
+      }
+
+      // Divider line - draw in animation
+      if (dividerRef.current) {
+        gsap.set(dividerRef.current, { scaleX: 0, transformOrigin: 'left center' });
+        tl.to(dividerRef.current, { scaleX: 1, duration: 1.2 }, 0.6);
       }
     }, containerRef);
 
     return () => ctx.revert();
   }, [mounted]);
 
-  // Pathway cards scroll animation - Subtle entrance
+  // Pathways entrance - staggered reveal
   useLayoutEffect(() => {
-    if (!mounted) return;
+    if (!mounted || !pathwaysRef.current) return;
 
     const ctx = gsap.context(() => {
-      pathwayRefs.current.forEach((card, index) => {
-        if (!card) return;
+      const cards = pathwaysRef.current.querySelectorAll('.pathway-card');
 
-        gsap.set(card, {
-          opacity: 0,
-          y: 30,
-        });
-
+      cards.forEach((card, index) => {
+        gsap.set(card, { opacity: 0, y: 40 });
         gsap.to(card, {
           opacity: 1,
           y: 0,
-          duration: 0.7,
-          delay: index * 0.1,
-          ease: 'power2.out',
+          duration: 0.9,
+          delay: index * 0.15,
+          ease: EASE.premium,
           scrollTrigger: {
             trigger: card,
             start: 'top 85%',
@@ -129,76 +139,38 @@ export function ContactContent() {
     return () => ctx.revert();
   }, [mounted]);
 
-  // Big text divider parallax
-  useLayoutEffect(() => {
-    if (!mounted || !dividerRef.current) return;
-
-    const ctx = gsap.context(() => {
-      gsap.set(dividerRef.current, { opacity: 0, scale: 0.8, y: 60 });
-
-      gsap.to(dividerRef.current, {
-        opacity: 1,
-        scale: 1,
-        y: 0,
-        duration: 1.2,
-        ease: 'power3.out',
-        scrollTrigger: {
-          trigger: dividerRef.current,
-          start: 'top 80%',
-          toggleActions: 'play none none none',
-        },
-      });
-
-      // Parallax effect on scroll
-      gsap.to(dividerRef.current, {
-        y: -30,
-        scrollTrigger: {
-          trigger: dividerRef.current,
-          start: 'top bottom',
-          end: 'bottom top',
-          scrub: 1,
-        },
-      });
-    }, containerRef);
-
-    return () => ctx.revert();
-  }, [mounted]);
-
-  // Form section staggered reveal
+  // Form section animation
   useLayoutEffect(() => {
     if (!mounted) return;
 
     const ctx = gsap.context(() => {
-      // Form title
       if (formTitleRef.current) {
-        gsap.set(formTitleRef.current, { opacity: 0, y: 60 });
+        gsap.set(formTitleRef.current, { opacity: 0, y: 50 });
         gsap.to(formTitleRef.current, {
           opacity: 1,
           y: 0,
           duration: 1,
-          ease: 'power3.out',
+          ease: EASE.premium,
           scrollTrigger: {
             trigger: formTitleRef.current,
-            start: 'top 85%',
+            start: 'top 80%',
             toggleActions: 'play none none none',
           },
         });
       }
 
-      // Form fields staggered entrance
       formFieldsRef.current.forEach((field, index) => {
         if (!field) return;
-
-        gsap.set(field, { opacity: 0, y: 40 });
+        gsap.set(field, { opacity: 0, y: 30 });
         gsap.to(field, {
           opacity: 1,
           y: 0,
-          duration: 0.8,
-          delay: index * 0.08,
-          ease: 'power3.out',
+          duration: 0.7,
+          delay: index * 0.06,
+          ease: EASE.premium,
           scrollTrigger: {
             trigger: formSectionRef.current,
-            start: 'top 70%',
+            start: 'top 65%',
             toggleActions: 'play none none none',
           },
         });
@@ -209,19 +181,17 @@ export function ContactContent() {
   }, [mounted]);
 
   const handleInputChange = (field, value) => {
-    setFormData(prev => ({ ...prev, [field]: value }));
+    setFormData((prev) => ({ ...prev, [field]: value }));
   };
 
   const toggleGoal = (goal) => {
-    setFormData(prev => ({
+    setFormData((prev) => ({
       ...prev,
       goals: prev.goals.includes(goal)
-        ? prev.goals.filter(g => g !== goal)
-        : [...prev.goals, goal]
+        ? prev.goals.filter((g) => g !== goal)
+        : [...prev.goals, goal],
     }));
   };
-
-  const [submitStatus, setSubmitStatus] = useState(null); // 'success' | 'error' | null
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -239,7 +209,6 @@ export function ContactContent() {
 
       if (result.success) {
         setSubmitStatus('success');
-        // Reset form
         setFormData({
           companyName: '',
           website: '',
@@ -273,218 +242,267 @@ export function ContactContent() {
   let fieldIndex = 0;
   const getFieldRef = () => {
     const index = fieldIndex++;
-    return (el) => { formFieldsRef.current[index] = el; };
+    return (el) => {
+      formFieldsRef.current[index] = el;
+    };
   };
 
   return (
     <div ref={containerRef} className="min-h-screen bg-ink overflow-hidden">
-      {/* Premium subtle background */}
+      {/* Premium Ambient Background */}
       <div className="fixed inset-0 pointer-events-none overflow-hidden">
-        {/* Single subtle gradient orb - jeton.com style */}
+        {/* Soft gradient orbs - layered depth */}
         <div
-          className="absolute w-[800px] h-[800px] rounded-full"
+          className="absolute w-[1000px] h-[1000px] rounded-full opacity-60"
           style={{
-            background: `radial-gradient(circle, rgba(232, 93, 76, 0.04) 0%, transparent 60%)`,
-            top: '-10%',
-            right: '-20%',
+            background: `radial-gradient(circle, rgba(232, 93, 76, 0.06) 0%, transparent 55%)`,
+            top: '-20%',
+            right: '-10%',
+            filter: 'blur(80px)',
+          }}
+        />
+        <div
+          className="absolute w-[800px] h-[800px] rounded-full opacity-40"
+          style={{
+            background: `radial-gradient(circle, rgba(30, 41, 59, 0.15) 0%, transparent 50%)`,
+            bottom: '10%',
+            left: '-15%',
             filter: 'blur(100px)',
           }}
         />
-        {/* Very subtle noise texture overlay */}
+        {/* Subtle noise texture */}
         <div
-          className="absolute inset-0 opacity-[0.015]"
+          className="absolute inset-0 opacity-[0.02]"
           style={{
-            backgroundImage: `url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E")`,
+            backgroundImage: `url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.7' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E")`,
           }}
         />
       </div>
 
-      {/* Hero Section - Premium jeton.com style */}
+      {/* Hero Section - Premium Editorial Style */}
       <section
         ref={heroRef}
-        className="relative flex items-center justify-center px-6 sm:px-8 pt-32 sm:pt-40 pb-16 sm:pb-20"
+        className="relative flex items-center justify-center px-6 sm:px-8 lg:px-12 pt-32 sm:pt-40 lg:pt-48 pb-20 sm:pb-28"
       >
-        <div className="max-w-4xl mx-auto text-center relative z-10">
-          {/* Refined badge - minimal and elegant */}
+        <div className="max-w-6xl mx-auto text-center relative z-10">
+          {/* Elegant Eyebrow - refined */}
           <div
-            ref={badgeRef}
-            className="inline-flex items-center gap-2 px-4 py-2 rounded-full mb-8"
-            style={{
-              background: 'rgba(232, 93, 76, 0.08)',
-              border: '1px solid rgba(232, 93, 76, 0.15)',
-            }}
+            ref={eyebrowRef}
+            className="inline-flex items-center gap-3 mb-10 sm:mb-14"
           >
             <span
-              className="w-1.5 h-1.5 rounded-full"
-              style={{
-                background: PALETTE.coral,
-              }}
+              className="h-px w-8 sm:w-12"
+              style={{ background: PALETTE.coral }}
             />
             <span
-              className="text-[11px] font-medium tracking-[0.15em] uppercase"
+              className="text-[11px] sm:text-xs font-medium tracking-[0.2em] uppercase"
               style={{ color: PALETTE.coral }}
             >
               {t('contact.badge')}
             </span>
+            <span
+              className="h-px w-8 sm:w-12"
+              style={{ background: PALETTE.coral }}
+            />
           </div>
 
-          {/* Title - Premium typography with lighter weight */}
-          <h1
-            ref={titleRef}
-            className="mb-6"
-            style={{
-              fontSize: isDesktop ? 'clamp(3rem, 6vw, 5rem)' : 'clamp(2.25rem, 8vw, 3.5rem)',
-              fontWeight: 500,
-              lineHeight: 1.05,
-              letterSpacing: '-0.02em',
-              color: '#ffffff',
-            }}
-          >
-            {t('contact.title').split(' ')[0]}{' '}
-            <span
+          {/* Title - Dramatic Split Typography */}
+          <div className="mb-8 sm:mb-10">
+            <h1
+              ref={titleLine1Ref}
+              className="block mb-2 sm:mb-3"
               style={{
+                fontSize: isDesktop
+                  ? 'clamp(3.5rem, 8vw, 7rem)'
+                  : 'clamp(2.5rem, 10vw, 4rem)',
+                fontWeight: 600,
+                lineHeight: 1,
+                letterSpacing: '-0.03em',
+                color: '#ffffff',
+              }}
+            >
+              {t('contact.title').split(' ')[0]}
+            </h1>
+            <span
+              ref={titleLine2Ref}
+              className="block"
+              style={{
+                fontSize: isDesktop
+                  ? 'clamp(3rem, 7vw, 6rem)'
+                  : 'clamp(2rem, 8vw, 3.5rem)',
+                fontWeight: 300,
+                lineHeight: 1.1,
+                letterSpacing: '-0.02em',
                 color: PALETTE.coral,
-                fontWeight: 400, // Lighter weight for accent word
+                fontStyle: 'italic',
               }}
             >
               {t('contact.title').split(' ').slice(1).join(' ')}
             </span>
-          </h1>
+          </div>
 
-          {/* Subtitle - Refined and readable */}
+          {/* Refined Subtitle */}
           <p
             ref={subtitleRef}
-            className="text-base sm:text-lg md:text-xl leading-relaxed max-w-xl mx-auto"
-            style={{ 
-              color: 'rgba(255,255,255,0.55)',
+            className="text-base sm:text-lg max-w-md mx-auto leading-relaxed mb-10"
+            style={{
+              color: 'rgba(255,255,255,0.45)',
               fontWeight: 400,
-              letterSpacing: '0.01em',
+              letterSpacing: '0.02em',
             }}
           >
             {t('contact.subtitle')}
           </p>
-        </div>
 
-        {/* Subtle bottom gradient fade */}
-        <div
-          className="absolute bottom-0 left-0 right-0 h-24"
-          style={{
-            background: 'linear-gradient(to top, rgba(30,41,59,1) 0%, transparent 100%)',
-          }}
-        />
-      </section>
-
-      {/* Pathways Section - Refined cards */}
-      <section className="relative px-6 sm:px-8 pb-16">
-        <div className="max-w-4xl mx-auto">
-          <div className="grid sm:grid-cols-2 gap-5">
-            {/* Card 1 - Uitgenodigd */}
-            <div
-              ref={(el) => { pathwayRefs.current[0] = el; }}
-              className="group relative rounded-2xl p-7 transition-all duration-300 hover:translate-y-[-2px] cursor-pointer"
-              style={{
-                background: 'rgba(232, 93, 76, 0.06)',
-                border: '1px solid rgba(232, 93, 76, 0.12)',
-              }}
-            >
-              <div className="relative z-10">
-                <div className="flex items-start gap-4">
-                  <div
-                    className="flex items-center justify-center w-12 h-12 rounded-xl text-white font-semibold text-lg flex-shrink-0 transition-transform duration-300 group-hover:scale-105"
-                    style={{
-                      background: PALETTE.coral,
-                    }}
-                  >
-                    {t('contact.pathways.invited.number')}
-                  </div>
-                  <div>
-                    <h3
-                      className="font-medium text-lg mb-2 transition-colors duration-300 group-hover:text-white"
-                      style={{ color: 'rgba(255,255,255,0.95)' }}
-                    >
-                      {t('contact.pathways.invited.title')}
-                    </h3>
-                    <p className="text-sm leading-relaxed" style={{ color: 'rgba(255,255,255,0.5)' }}>
-                      {t('contact.pathways.invited.description')}
-                    </p>
-                  </div>
-                </div>
-              </div>
-            </div>
-
-            {/* Card 2 - Waag je kans */}
-            <div
-              ref={(el) => { pathwayRefs.current[1] = el; }}
-              className="group relative rounded-2xl p-7 transition-all duration-300 hover:translate-y-[-2px] cursor-pointer"
-              style={{
-                background: 'rgba(255,255,255,0.03)',
-                border: '1px solid rgba(255,255,255,0.08)',
-              }}
-            >
-              <div className="relative z-10">
-                <div className="flex items-start gap-4">
-                  <div
-                    className="flex items-center justify-center w-12 h-12 rounded-xl font-semibold text-lg flex-shrink-0 transition-transform duration-300 group-hover:scale-105"
-                    style={{
-                      background: 'rgba(255,255,255,0.06)',
-                      border: '1px solid rgba(255,255,255,0.1)',
-                      color: 'rgba(255,255,255,0.5)',
-                    }}
-                  >
-                    {t('contact.pathways.signal.number')}
-                  </div>
-                  <div>
-                    <h3
-                      className="font-medium text-lg mb-2 transition-colors duration-300 group-hover:text-white"
-                      style={{ color: 'rgba(255,255,255,0.95)' }}
-                    >
-                      {t('contact.pathways.signal.title')}
-                    </h3>
-                    <p className="text-sm leading-relaxed" style={{ color: 'rgba(255,255,255,0.5)' }}>
-                      {t('contact.pathways.signal.description')}
-                    </p>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-
-          {/* Disclaimer - Subtle styling */}
+          {/* Animated Divider */}
           <div
-            className="mt-6 rounded-xl px-6 py-4 text-center"
+            ref={dividerRef}
+            className="h-px w-24 sm:w-32 mx-auto mb-16 sm:mb-20"
             style={{
-              background: 'rgba(232, 93, 76, 0.04)',
-              border: '1px solid rgba(232, 93, 76, 0.1)',
+              background: `linear-gradient(90deg, transparent, ${PALETTE.coral}40, transparent)`,
             }}
-          >
-            <p className="text-sm" style={{ color: 'rgba(232, 93, 76, 0.8)' }}>
-              {t('contact.disclaimer')}
-            </p>
+          />
+
+          {/* Pathways Section - Integrated in Hero */}
+          <div ref={pathwaysRef} className="max-w-4xl mx-auto">
+            <div className="grid sm:grid-cols-2 gap-6 sm:gap-8">
+              {/* Pathway 01 - Featured */}
+              <div
+                className="pathway-card group relative rounded-2xl p-8 sm:p-10 text-left transition-all duration-500 hover:translate-y-[-4px]"
+                style={{
+                  background: `linear-gradient(135deg, rgba(232, 93, 76, 0.08) 0%, rgba(232, 93, 76, 0.03) 100%)`,
+                  border: '1px solid rgba(232, 93, 76, 0.15)',
+                  boxShadow: '0 4px 30px rgba(232, 93, 76, 0.05)',
+                }}
+              >
+                {/* Number badge */}
+                <div
+                  className="absolute -top-3 -right-3 w-10 h-10 rounded-full flex items-center justify-center text-sm font-semibold"
+                  style={{
+                    background: PALETTE.coral,
+                    color: '#fff',
+                    boxShadow: `0 4px 15px ${PALETTE.coral}50`,
+                  }}
+                >
+                  {t('contact.pathways.invited.number')}
+                </div>
+
+                <div className="relative z-10">
+                  <h3
+                    className="font-semibold text-xl sm:text-2xl mb-4 transition-colors duration-300"
+                    style={{ color: '#ffffff' }}
+                  >
+                    {t('contact.pathways.invited.title')}
+                  </h3>
+                  <p
+                    className="text-sm sm:text-base leading-relaxed"
+                    style={{ color: 'rgba(255,255,255,0.55)' }}
+                  >
+                    {t('contact.pathways.invited.description')}
+                  </p>
+                </div>
+
+                {/* Hover accent line */}
+                <div
+                  className="absolute bottom-0 left-0 h-1 rounded-full transition-all duration-500 group-hover:w-full"
+                  style={{
+                    width: '0%',
+                    background: PALETTE.coral,
+                  }}
+                />
+              </div>
+
+              {/* Pathway 02 - Secondary */}
+              <div
+                className="pathway-card group relative rounded-2xl p-8 sm:p-10 text-left transition-all duration-500 hover:translate-y-[-4px]"
+                style={{
+                  background: 'rgba(255,255,255,0.02)',
+                  border: '1px solid rgba(255,255,255,0.08)',
+                }}
+              >
+                {/* Number badge */}
+                <div
+                  className="absolute -top-3 -right-3 w-10 h-10 rounded-full flex items-center justify-center text-sm font-semibold"
+                  style={{
+                    background: 'rgba(255,255,255,0.08)',
+                    border: '1px solid rgba(255,255,255,0.15)',
+                    color: 'rgba(255,255,255,0.5)',
+                  }}
+                >
+                  {t('contact.pathways.signal.number')}
+                </div>
+
+                <div className="relative z-10">
+                  <h3
+                    className="font-semibold text-xl sm:text-2xl mb-4 transition-colors duration-300 group-hover:text-white"
+                    style={{ color: 'rgba(255,255,255,0.9)' }}
+                  >
+                    {t('contact.pathways.signal.title')}
+                  </h3>
+                  <p
+                    className="text-sm sm:text-base leading-relaxed"
+                    style={{ color: 'rgba(255,255,255,0.5)' }}
+                  >
+                    {t('contact.pathways.signal.description')}
+                  </p>
+                </div>
+
+                {/* Hover accent line */}
+                <div
+                  className="absolute bottom-0 left-0 h-1 rounded-full transition-all duration-500 group-hover:w-full"
+                  style={{
+                    width: '0%',
+                    background: 'rgba(255,255,255,0.3)',
+                  }}
+                />
+              </div>
+            </div>
+
+            {/* Disclaimer - Elegant styling */}
+            <div
+              className="mt-10 rounded-2xl px-8 py-6 text-center border border-dashed"
+              style={{
+                background: 'rgba(232, 93, 76, 0.03)',
+                borderColor: 'rgba(232, 93, 76, 0.2)',
+              }}
+            >
+              <p className="text-sm sm:text-base" style={{ color: 'rgba(232, 93, 76, 0.75)' }}>
+                {t('contact.disclaimer')}
+              </p>
+            </div>
           </div>
         </div>
       </section>
 
-      {/* Form Section - White with premium animations */}
+      {/* Form Section - Clean Premium */}
       <section
         ref={formSectionRef}
-        className="bg-white py-16 md:py-20 px-4 sm:px-6 relative"
+        className="bg-white py-20 md:py-28 px-4 sm:px-6 lg:px-8 relative"
       >
-        {/* Subtle top gradient transition */}
+        {/* Smooth transition gradient */}
         <div
-          className="absolute top-0 left-0 right-0 h-24 -translate-y-full"
+          className="absolute top-0 left-0 right-0 h-32 -translate-y-full"
           style={{
             background: `linear-gradient(to bottom, ${PALETTE.ink} 0%, ${PALETTE.ink} 100%)`,
           }}
         />
 
         <div className="max-w-2xl mx-auto">
-          {/* Form header */}
-          <div ref={formTitleRef} className="text-center mb-14">
+          {/* Form header - Premium typography */}
+          <div ref={formTitleRef} className="text-center mb-16">
+            <span
+              className="inline-block text-[11px] font-medium tracking-[0.2em] uppercase mb-4"
+              style={{ color: PALETTE.coral }}
+            >
+              {t('contact.form.badge')}
+            </span>
             <h2
               className="mb-4"
               style={{
-                fontSize: isDesktop ? 'clamp(2.5rem, 5vw, 4rem)' : 'clamp(2rem, 8vw, 3rem)',
-                fontWeight: 700,
+                fontSize: isDesktop
+                  ? 'clamp(2.5rem, 5vw, 3.5rem)'
+                  : 'clamp(2rem, 7vw, 2.75rem)',
+                fontWeight: 600,
                 letterSpacing: '-0.02em',
                 color: PALETTE.ink,
                 lineHeight: 1.1,
@@ -492,14 +510,14 @@ export function ContactContent() {
             >
               {t('contact.form.title')}
             </h2>
-            <p className="text-xl" style={{ color: PALETTE.stone }}>
+            <p className="text-lg" style={{ color: PALETTE.stone }}>
               {t('contact.form.titleSuffix')}
             </p>
           </div>
 
-          <form onSubmit={handleSubmit} className="space-y-8">
+          <form onSubmit={handleSubmit} className="space-y-10">
             {/* Company info row */}
-            <div ref={getFieldRef()} className="grid sm:grid-cols-2 gap-5">
+            <div ref={getFieldRef()} className="grid sm:grid-cols-2 gap-6">
               <InputField
                 label={t('contact.form.companyName')}
                 value={formData.companyName}
@@ -522,13 +540,13 @@ export function ContactContent() {
             </div>
 
             {/* Sector & Region row */}
-            <div ref={getFieldRef()} className="grid sm:grid-cols-2 gap-5">
+            <div ref={getFieldRef()} className="grid sm:grid-cols-2 gap-6">
               <SelectField
                 label={t('contact.form.sector')}
                 value={formData.sector}
                 onChange={(v) => handleInputChange('sector', v)}
                 placeholder={t('contact.form.sectorPlaceholder')}
-                options={sectors.map(s => ({ value: s, label: t(`contact.form.sectors.${s}`) }))}
+                options={sectors.map((s) => ({ value: s, label: t(`contact.form.sectors.${s}`) }))}
                 focused={focusedField === 'sector'}
                 onFocus={() => setFocusedField('sector')}
                 onBlur={() => setFocusedField(null)}
@@ -546,14 +564,14 @@ export function ContactContent() {
             </div>
 
             {/* Team size & Revenue row */}
-            <div ref={getFieldRef()} className="grid sm:grid-cols-2 gap-5">
+            <div ref={getFieldRef()} className="grid sm:grid-cols-2 gap-6">
               <SelectField
                 label={t('contact.form.teamSize')}
                 labelSuffix={t('contact.form.regionOptional')}
                 value={formData.teamSize}
                 onChange={(v) => handleInputChange('teamSize', v)}
                 placeholder={t('contact.form.teamSizePlaceholder')}
-                options={teamSizes.map(s => ({ value: s, label: t(`contact.form.teamSizes.${s}`) }))}
+                options={teamSizes.map((s) => ({ value: s, label: t(`contact.form.teamSizes.${s}`) }))}
                 focused={focusedField === 'teamSize'}
                 onFocus={() => setFocusedField('teamSize')}
                 onBlur={() => setFocusedField(null)}
@@ -564,7 +582,7 @@ export function ContactContent() {
                 value={formData.revenue}
                 onChange={(v) => handleInputChange('revenue', v)}
                 placeholder={t('contact.form.revenuePlaceholder')}
-                options={revenues.map(r => ({ value: r, label: t(`contact.form.revenues.${r}`) }))}
+                options={revenues.map((r) => ({ value: r, label: t(`contact.form.revenues.${r}`) }))}
                 focused={focusedField === 'revenue'}
                 onFocus={() => setFocusedField('revenue')}
                 onBlur={() => setFocusedField(null)}
@@ -573,11 +591,14 @@ export function ContactContent() {
 
             {/* Goals */}
             <div ref={getFieldRef()}>
-              <label className="block text-sm font-medium mb-4" style={{ color: PALETTE.ink }}>
+              <label
+                className="block text-sm font-medium mb-4"
+                style={{ color: PALETTE.ink }}
+              >
                 {t('contact.form.goal')}
               </label>
               <div className="flex flex-wrap gap-3">
-                {goals.map(goal => (
+                {goals.map((goal) => (
                   <ChipButton
                     key={goal}
                     selected={formData.goals.includes(goal)}
@@ -591,11 +612,14 @@ export function ContactContent() {
 
             {/* Timing */}
             <div ref={getFieldRef()}>
-              <label className="block text-sm font-medium mb-4" style={{ color: PALETTE.ink }}>
+              <label
+                className="block text-sm font-medium mb-4"
+                style={{ color: PALETTE.ink }}
+              >
                 {t('contact.form.timing')}
               </label>
               <div className="flex flex-wrap gap-3">
-                {timings.map(time => (
+                {timings.map((time) => (
                   <ChipButton
                     key={time}
                     selected={formData.timing === time}
@@ -607,7 +631,7 @@ export function ContactContent() {
               </div>
             </div>
 
-            {/* Animated divider */}
+            {/* Divider */}
             <div
               ref={getFieldRef()}
               className="h-px relative overflow-hidden"
@@ -615,13 +639,14 @@ export function ContactContent() {
               <div
                 className="absolute inset-0"
                 style={{
-                  background: 'linear-gradient(90deg, transparent 0%, #e2e8f0 20%, #e2e8f0 80%, transparent 100%)',
+                  background:
+                    'linear-gradient(90deg, transparent 0%, #e2e8f0 20%, #e2e8f0 80%, transparent 100%)',
                 }}
               />
             </div>
 
             {/* Contact info row */}
-            <div ref={getFieldRef()} className="grid sm:grid-cols-2 gap-5">
+            <div ref={getFieldRef()} className="grid sm:grid-cols-2 gap-6">
               <InputField
                 label={t('contact.form.name')}
                 value={formData.name}
@@ -657,21 +682,21 @@ export function ContactContent() {
               />
             </div>
 
-            {/* Submit button - jeton.com style */}
+            {/* Submit button */}
             <div ref={getFieldRef()}>
               <button
                 type="submit"
                 disabled={isSubmitting}
-                className="group w-full py-5 rounded-xl font-semibold text-lg text-white transition-all duration-300 flex items-center justify-center gap-3 min-h-[56px] hover:scale-[0.98] active:scale-[0.96]"
+                className="group w-full py-5 rounded-xl font-semibold text-lg text-white transition-all duration-300 flex items-center justify-center gap-3 min-h-[60px] hover:scale-[0.98] active:scale-[0.96]"
                 style={{
                   background: PALETTE.ink,
-                  boxShadow: isSubmitting ? 'none' : `0 8px 32px ${PALETTE.ink}30`,
-                  transitionTimingFunction: 'cubic-bezier(.215,.61,.355,1)',
+                  boxShadow: isSubmitting
+                    ? 'none'
+                    : `0 8px 32px ${PALETTE.ink}30, 0 2px 8px ${PALETTE.ink}20`,
+                  transitionTimingFunction: EASE.premium,
                 }}
               >
-                <span>
-                  {isSubmitting ? t('contact.form.submitting') : t('contact.form.submit')}
-                </span>
+                <span>{isSubmitting ? t('contact.form.submitting') : t('contact.form.submit')}</span>
                 {!isSubmitting && (
                   <svg
                     className="w-5 h-5 transition-transform duration-300 group-hover:translate-x-1"
@@ -693,42 +718,55 @@ export function ContactContent() {
                 <div
                   className="mt-4 p-4 rounded-xl text-center"
                   style={{
-                    background: 'rgba(34, 197, 94, 0.1)',
-                    border: '1px solid rgba(34, 197, 94, 0.3)',
+                    background: 'rgba(34, 197, 94, 0.08)',
+                    border: '1px solid rgba(34, 197, 94, 0.25)',
                     color: '#16a34a',
                   }}
                 >
-                  {t('contact.form.successMessage') || 'Message sent successfully! We\'ll be in touch.'}
+                  {t('contact.form.successMessage') ||
+                    "Message sent successfully! We'll be in touch."}
                 </div>
               )}
               {submitStatus === 'error' && (
                 <div
                   className="mt-4 p-4 rounded-xl text-center"
                   style={{
-                    background: 'rgba(239, 68, 68, 0.1)',
-                    border: '1px solid rgba(239, 68, 68, 0.3)',
+                    background: 'rgba(239, 68, 68, 0.08)',
+                    border: '1px solid rgba(239, 68, 68, 0.25)',
                     color: '#dc2626',
                   }}
                 >
-                  {t('contact.form.errorMessage') || 'Something went wrong. Please try again.'}
+                  {t('contact.form.errorMessage') ||
+                    'Something went wrong. Please try again.'}
                 </div>
               )}
             </div>
           </form>
         </div>
       </section>
-
     </div>
   );
 }
 
-function InputField({ label, labelSuffix, value, onChange, placeholder, type = 'text', focused, onFocus, onBlur }) {
+function InputField({
+  label,
+  labelSuffix,
+  value,
+  onChange,
+  placeholder,
+  type = 'text',
+  focused,
+  onFocus,
+  onBlur,
+}) {
   return (
     <div className="group">
       <label className="block text-sm font-medium mb-2.5" style={{ color: PALETTE.ink }}>
         {label}
         {labelSuffix && (
-          <span className="ml-1.5" style={{ color: PALETTE.stone, fontWeight: 400 }}>{labelSuffix}</span>
+          <span className="ml-1.5" style={{ color: PALETTE.stone, fontWeight: 400 }}>
+            {labelSuffix}
+          </span>
         )}
       </label>
       <div className="relative">
@@ -739,22 +777,14 @@ function InputField({ label, labelSuffix, value, onChange, placeholder, type = '
           onFocus={onFocus}
           onBlur={onBlur}
           placeholder={placeholder}
-          className="w-full px-5 py-4 rounded-2xl transition-all duration-300 focus:outline-none min-h-[56px]"
+          className="w-full px-5 py-4 rounded-xl transition-all duration-300 focus:outline-none min-h-[56px]"
           style={{
             background: focused ? '#ffffff' : PALETTE.ivory,
             border: `2px solid ${focused ? PALETTE.coral : 'transparent'}`,
             boxShadow: focused
-              ? `0 0 0 4px ${PALETTE.coral}15, 0 8px 24px ${PALETTE.coral}10`
+              ? `0 0 0 4px ${PALETTE.coral}12, 0 12px 24px ${PALETTE.coral}08`
               : '0 2px 8px rgba(0,0,0,0.04)',
             transform: focused ? 'translateY(-2px)' : 'translateY(0)',
-          }}
-        />
-        {/* Focus indicator line */}
-        <div
-          className="absolute bottom-0 left-1/2 -translate-x-1/2 h-0.5 rounded-full transition-all duration-300"
-          style={{
-            width: focused ? '80%' : '0%',
-            background: PALETTE.coral,
           }}
         />
       </div>
@@ -762,13 +792,25 @@ function InputField({ label, labelSuffix, value, onChange, placeholder, type = '
   );
 }
 
-function SelectField({ label, labelSuffix, value, onChange, placeholder, options, focused, onFocus, onBlur }) {
+function SelectField({
+  label,
+  labelSuffix,
+  value,
+  onChange,
+  placeholder,
+  options,
+  focused,
+  onFocus,
+  onBlur,
+}) {
   return (
     <div className="group">
       <label className="block text-sm font-medium mb-2.5" style={{ color: PALETTE.ink }}>
         {label}
         {labelSuffix && (
-          <span className="ml-1.5" style={{ color: PALETTE.stone, fontWeight: 400 }}>{labelSuffix}</span>
+          <span className="ml-1.5" style={{ color: PALETTE.stone, fontWeight: 400 }}>
+            {labelSuffix}
+          </span>
         )}
       </label>
       <div className="relative">
@@ -777,20 +819,22 @@ function SelectField({ label, labelSuffix, value, onChange, placeholder, options
           onChange={(e) => onChange(e.target.value)}
           onFocus={onFocus}
           onBlur={onBlur}
-          className="w-full px-5 py-4 rounded-2xl transition-all duration-300 focus:outline-none appearance-none cursor-pointer min-h-[56px]"
+          className="w-full px-5 py-4 rounded-xl transition-all duration-300 focus:outline-none appearance-none cursor-pointer min-h-[56px]"
           style={{
             background: focused ? '#ffffff' : PALETTE.ivory,
             border: `2px solid ${focused ? PALETTE.coral : 'transparent'}`,
             boxShadow: focused
-              ? `0 0 0 4px ${PALETTE.coral}15, 0 8px 24px ${PALETTE.coral}10`
+              ? `0 0 0 4px ${PALETTE.coral}12, 0 12px 24px ${PALETTE.coral}08`
               : '0 2px 8px rgba(0,0,0,0.04)',
             color: value ? PALETTE.ink : PALETTE.stone,
             transform: focused ? 'translateY(-2px)' : 'translateY(0)',
           }}
         >
           <option value="">{placeholder}</option>
-          {options.map(opt => (
-            <option key={opt.value} value={opt.value}>{opt.label}</option>
+          {options.map((opt) => (
+            <option key={opt.value} value={opt.value}>
+              {opt.label}
+            </option>
           ))}
         </select>
         <svg
@@ -821,8 +865,8 @@ function ChipButton({ children, selected, onClick }) {
         background: selected ? PALETTE.ink : '#ffffff',
         color: selected ? '#ffffff' : PALETTE.stone,
         border: `2px solid ${selected ? PALETTE.ink : '#e2e8f0'}`,
-        boxShadow: selected ? `0 4px 16px ${PALETTE.ink}30` : 'none',
-        transitionTimingFunction: 'cubic-bezier(.215,.61,.355,1)',
+        boxShadow: selected ? `0 4px 16px ${PALETTE.ink}25` : 'none',
+        transitionTimingFunction: EASE.premium,
       }}
     >
       {children}

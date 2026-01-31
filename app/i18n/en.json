@@ -128,9 +128,9 @@
     }
   },
   "contact": {
-    "badge": "GET IN TOUCH",
+    "badge": "Exclusive Access",
     "title": "Convince us",
-    "subtitle": "How it works",
+    "subtitle": "Door ajar — not everyone enters",
     "pathways": {
       "invited": {
         "number": "01",
